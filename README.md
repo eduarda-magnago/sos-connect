@@ -6,7 +6,9 @@
 
 `1° semestre/2026`
 
-Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo desenvolvido.
+Este projeto propõe o desenvolvimento de uma plataforma digital voltada para auxiliar pessoas em situações de calamidade, conectando cidadãos afetados, voluntários e instituições de apoio. A solução permitirá a localização de abrigos e centros de assistência, a visualização de necessidades de doações e a organização de missões de voluntariado, facilitando a coordenação de ajuda durante emergências.
+
+A plataforma será acessível por dispositivos web e mobile e terá como objetivo centralizar informações importantes em um único sistema, tornando mais eficiente a comunicação entre quem precisa de ajuda e quem pode ajudar. Dessa forma, o sistema busca contribuir para uma resposta mais rápida e organizada em cenários de desastre, promovendo colaboração e solidariedade entre a comunidade.
 
 ## Integrantes
 

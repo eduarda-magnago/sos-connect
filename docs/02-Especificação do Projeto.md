@@ -42,16 +42,35 @@ Apresente aqui as histórias de usuário que são relevantes para o projeto de s
 
 ## Requisitos
 
-As tabelas que se seguem apresentam os requisitos funcionais e não funcionais que detalham o escopo do projeto. Para determinar a prioridade de requisitos, aplicar uma técnica de priorização de requisitos e detalhar como a técnica foi aplicada.
+As tabelas a seguir apresentam os requisitos funcionais e não funcionais que definem o escopo da solução proposta.
+Para a definição da prioridade foi utilizada a técnica *MoSCoW*, que classifica os requisitos de acordo com sua importância para o funcionamento do sistema.
 
-<strong>Crie no mínimo 12 Requisitos funcionais, 6 não funcionais e 3 restrições</strong>
-<strong>Cada aluno será responsável pela execução completa (back, web e mobile) de pelo menos 2 requisitos que será acompanhado pelo professor</strong>
+**A classificação utilizada foi:**
+- **Alta prioridade:**  funcionalidades essenciais para o funcionamento da plataforma.
+- **Média prioridade:** funcionalidades importantes, mas que não impedem o funcionamento básico do sistema.
+- **Baixa prioridade:** funcionalidades complementares ou melhorias futuras.
+
+<strong>Cada aluno será responsável pela execução completa (back, web e mobile) de pelo menos 2 requisitos que será acompanhado pelo professor.</strong>
+
 ### Requisitos Funcionais
 
 |ID    | Descrição do Requisito  | Prioridade | Responsável |
 |------|-----------------------------------------|----|----|
-|RF-001| Permitir que o usuário cadastre tarefas | ALTA | Pedro |
-|RF-002| Emitir um relatório de tarefas no mês   | MÉDIA | João |
+|RF-001| Permitir que instituições cadastrem abrigos ou centros de apoio | ALTA | Mayara |
+|RF-002| Permitir visualizar abrigos disponíveis em um mapa interativo  | MÉDIA | Mayara |
+|RF-003| Permitir que instituições registrem necessidades de doações (água, alimentos, medicamentos etc.) | ALTA | NOME|
+|RF-004| Permitir que usuários visualizem pedidos de doação registrados por instituições  | ALTA | NOME |
+|RF-005| Permitir que voluntários se candidatem para realizar missões de ajuda | ALTA | NOME |
+|RF-006| Permitir que instituições atualizem o status de necessidades (atendida, pendente etc.)*   | MÉDIA | NOME |
+|RF-007| Permitir que instituições troquem recursos entre si dentro da plataforma | MÉDIA | NOME |
+|RF-008| Permitir que usuários reportem situações de emergência ou novas áreas afetadas   | MÉDIA | NOME |
+|RF-009| Permitir que usuários iniciem conversa ou solicitem contato com um abrigo ou instituição | ALTA | NOME |
+|RF-010| Permitir que usuários consultem informações detalhadas sobre cada abrigo (capacidade, serviços disponíveis, contato)  | ALTA | NOME |
+|RF-011| Permitir envio de notificações para informar novas missões ou necessidades urgentes | ALTA | NOME |
+|RF-012| Permitir que administradores validem instituições cadastradas na plataforma   | ALTA | NOME |
+|RF-013| Permitir que usuários compartilhem abrigos, pedidos de doação ou missões de ajuda em redes sociais   | ALTA | NOME |
+
+
 
 ### Requisitos não Funcionais
 

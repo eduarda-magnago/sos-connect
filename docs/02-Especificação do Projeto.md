@@ -96,8 +96,6 @@ O projeto está restrito pelos itens apresentados na tabela a seguir.
 |02| O sistema deverá ser entregue até o final do semestre letivo      |
 |03| O desenvolvimento será realizado pela equipe de alunos definida na disciplina     |
 
-
-
 ## Diagrama de Casos de Uso
 
 O diagrama de casos de uso é o próximo passo após a elicitação de requisitos, que utiliza um modelo gráfico e uma tabela com as descrições sucintas dos casos de uso e dos atores. Ele contempla a fronteira do sistema e o detalhamento dos requisitos funcionais com a indicação dos atores, casos de uso e seus relacionamentos. 
@@ -114,21 +112,39 @@ As referências abaixo irão auxiliá-lo na geração do artefato “Diagrama de
 
 # Gerenciamento de Projeto
 
-De acordo com o PMBoK v6 as dez áreas que constituem os pilares para gerenciar projetos, e que caracterizam a multidisciplinaridade envolvida, são: Integração, Escopo, Cronograma (Tempo), Custos, Qualidade, Recursos, Comunicações, Riscos, Aquisições, Partes Interessadas. Para desenvolver projetos um profissional deve se preocupar em gerenciar todas essas dez áreas. Elas se complementam e se relacionam, de tal forma que não se deve apenas examinar uma área de forma estanque. É preciso considerar, por exemplo, que as áreas de Escopo, Cronograma e Custos estão muito relacionadas. Assim, se eu amplio o escopo de um projeto eu posso afetar seu cronograma e seus custos.
+O projeto será gerenciado através de divisão modular das funcionalidades e desenvolvimento em etapas incrementais, seguindo o cronograma definido. Cada integrante da equipe ficará responsável por um módulo do sistema (CRUD), permitindo desenvolvimento paralelo enquanto se mantém integração entre as partes.
+
+A gestão das tarefas será feita utilizando ferramentas como GitHub para versionamento, Github Projects para acompanhamento das tarefas e reuniões semanais através do Microsoft Teams para alinhar o progresso. Essa abordagem permite controlar o progresso do projeto, reduzir riscos de atraso e garantir que todas as funcionalidades essenciais sejam entregues dentro do prazo.
 
 ## Gerenciamento de Tempo
 
-Com diagramas bem organizados que permitem gerenciar o tempo nos projetos, o gerente de projetos agenda e coordena tarefas dentro de um projeto para estimar o tempo necessário de conclusão.
+O cronograma do projeto foi dividido em cinco etapas principais, seguindo o calendário da disciplina:
 
-![Diagrama de rede simplificado notação francesa (método francês)](img/02-diagrama-rede-simplificado.png)
+**Etapa 1** – Concepção e Planejamento (09/02 – 08/03)
+Formação do grupo, definição do problema, levantamento de requisitos, criação das personas, histórias de usuário, requisitos e arquitetura inicial do sistema.
 
-O gráfico de Gantt ou diagrama de Gantt também é uma ferramenta visual utilizada para controlar e gerenciar o cronograma de atividades de um projeto. Com ele, é possível listar tudo que precisa ser feito para colocar o projeto em prática, dividir em atividades e estimar o tempo necessário para executá-las.
+**Etapa 2** – Desenvolvimento do Back-end (09/03 – 12/04)
+Implementação da Web API REST, modelagem do banco de dados NoSQL, definição de rotas e autenticação, além da documentação da arquitetura da API.
 
-![Gráfico de Gantt](img/02-grafico-gantt.png)
+**Etapa 3** – Desenvolvimento do Front-end Web (13/04 – 10/05)
+Desenvolvimento da interface web, criação de wireframes, modelagem de processos e integração com a API.
+
+**Etapa 4** – Desenvolvimento do Front-end Mobile (11/05 – 31/05)
+Desenvolvimento da versão mobile da aplicação, integração com o backend e realização de testes de integração.
+
+**Etapa 5** – Testes Finais e Apresentação (01/06 – 21/06)
+Finalização do sistema, documentação final, análise das tecnologias utilizadas e preparação da apresentação e do vídeo do projeto.
+
+<img width="1100" height="500" alt="gantt_projeto_distribuido_dia_mes" src="https://github.com/user-attachments/assets/ea987e3c-e85b-4f00-8405-2a7f2bf7db7d" />
+
 
 ## Gerenciamento de Equipe
 
-O gerenciamento adequado de tarefas contribuirá para que o projeto alcance altos níveis de produtividade. Por isso, é fundamental que ocorra a gestão de tarefas e de pessoas, de modo que os times envolvidos no projeto possam ser facilmente gerenciados. 
+A equipe será organizada de forma colaborativa, com divisão de responsabilidades entre os integrantes de acordo com os módulos do sistema. Cada membro será responsável pelo desenvolvimento e manutenção de um conjunto específico de funcionalidades, contribuindo para o avanço do projeto de forma paralela.
 
-![Simple Project Timeline](img/02-project-timeline.png)
+Além da divisão de tarefas, a equipe manterá comunicação constante para garantir alinhamento nas decisões técnicas e integração entre os módulos desenvolvidos. A colaboração entre os integrantes será essencial para resolver problemas, revisar implementações e assegurar a qualidade do sistema.
+
+Dessa forma, a gestão da equipe busca promover organização, cooperação e responsabilidade compartilhada, contribuindo para o desenvolvimento eficiente do projeto.
+
+<img width="1507" height="225" alt="cronograma" src="https://github.com/user-attachments/assets/fa7346d9-bcdb-4dc6-ba17-bce58883e7b8" />
 

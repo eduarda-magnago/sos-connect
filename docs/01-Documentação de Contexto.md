@@ -1,6 +1,11 @@
 # Introdução
 
-Texto descritivo com a visão geral do projeto abordado. Inclui o contexto, o problema, os objetivos, a justificativa e o público-alvo do projeto.
+Os desastres naturais, como enchentes, deslizamentos de terra e tempestades intensas, têm causado impactos cada vez mais significativos em diversas regiões do mundo. Esses eventos frequentemente resultam na destruição de moradias, interrupção de serviços essenciais e deslocamento de milhares de pessoas, que precisam buscar abrigo temporário e assistência emergencial. Em muitos casos, as vítimas dependem da atuação conjunta de governos, organizações humanitárias e voluntários para garantir suporte básico durante e após a crise.
+
+Estudos indicam que, nos últimos 10 anos, desastres climáticos causaram cerca de 250 milhões de deslocamentos internos, o equivalente a 70 mil por dia (ONU, 2025). No Brasil, por exemplo, temporais atingiram a Zona da Mata - MG recentemente, deixando muitos estragos, com dezenas de mortos, desaparecidos e milhares de desabrigados e desalojados (TV Unicamp, 2026), evidenciando cada vez mais a necessidade de ferramentas que facilitem a troca de informações e a coordenação das ações durante emergências.
+
+Nesse contexto, soluções tecnológicas podem desempenhar um papel importante na organização e na comunicação durante essas situações. Com aplicações digitais, é possível conectar pessoas afetadas, voluntários, organizações e autoridades públicas, facilitando o compartilhamento de informações, a solicitação de ajuda e a coordenação de recursos de forma mais rápida e eficiente.
+
 
 ## Problema
 Nesse momento você deve apresentar o problema que a sua aplicação deve  resolver. No entanto, não é a hora de comentar sobre a aplicação.
@@ -25,12 +30,9 @@ Apresente também alguns (pelo menos 2) objetivos específicos dependendo de ond
 
 ## Justificativa
 
-Descreva a importância ou a motivação para trabalhar com esta aplicação que você escolheu. Indique as razões pelas quais você escolheu seus objetivos específicos ou as razões para aprofundar em certos aspectos do software.
+Diante do aumento da frequência e intensidade de desastres naturais, torna-se fundamental desenvolver ferramentas que contribuam para uma resposta mais organizada e eficiente em situações de calamidade. A falta de comunicação e de informações centralizadas frequentemente dificulta o acesso das vítimas a abrigo, alimentos e outros recursos essenciais, prolongando o sofrimento das comunidades afetadas. Segundo dados do Cemaden, o Brasil registrou 1.161 desastres naturais em 2023, incluindo eventos hidrológicos (como inundações) e geológicos (como deslizamentos), com dezenas de mortes, milhares de feridos e dezenas de milhares de pessoas desabrigadas.
 
-O grupo de trabalho pode fazer uso de questionários, entrevistas e dados estatísticos, que podem ser apresentados, com o objetivo de esclarecer detalhes do problema que será abordado pelo grupo.
-
-> **Links Úteis**:
-> - [Como montar a justificativa](https://guiadamonografia.com.br/como-montar-justificativa-do-tcc/)
+Portanto, torna-se evidente a necessidade de mecanismos que facilitem a mobilização rápida de ajuda humanitária e a coordenação entre diferentes atores envolvidos na resposta emergencial. Assim, o desenvolvimento de uma aplicação web e mobile para gestão e comunicação em situações de calamidade pode melhorar a organização das ações de ajuda, conectando vítimas, voluntários, organizações e autoridades e facilitando a divulgação de necessidades e recursos.
 
 ## Público-Alvo
 

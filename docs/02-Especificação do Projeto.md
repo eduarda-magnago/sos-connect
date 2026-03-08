@@ -8,19 +8,12 @@ Apresente uma visão geral do que será abordado nesta parte do documento, enume
 
 ## Personas
 
-Pedro Paulo tem 26 anos, é arquiteto recém-formado e autônomo. Pensa em se desenvolver profissionalmente através de um mestrado fora do país, pois adora viajar, é solteiro e sempre quis fazer um intercâmbio. Está buscando uma agência que o ajude a encontrar universidades na Europa que aceitem alunos estrangeiros.
-
-Enumere e detalhe as personas da sua solução. Para tanto, baseie-se tanto nos documentos disponibilizados na disciplina e/ou nos seguintes links:
-
-> **Links Úteis**:
-> - [Rock Content](https://rockcontent.com/blog/personas/)
-> - [Hotmart](https://blog.hotmart.com/pt-br/como-criar-persona-negocio/)
-> - [O que é persona?](https://resultadosdigitais.com.br/blog/persona-o-que-e/)
-> - [Persona x Público-alvo](https://flammo.com.br/blog/persona-e-publico-alvo-qual-a-diferenca/)
-> - [Mapa de Empatia](https://resultadosdigitais.com.br/blog/mapa-da-empatia/)
-> - [Mapa de Stalkeholders](https://www.racecomunicacao.com.br/blog/como-fazer-o-mapeamento-de-stakeholders/)
->
-Lembre-se que você deve ser enumerar e descrever precisamente e personalizada todos os clientes ideais que sua solução almeja.
+ 
+| Persona | Perfil e Contexto | Necessidades e Objetivos |
+|--------------------|------------------------------------|----------------------------------------|
+| Maria Luíza <br> ( Vítima ) | 34 anos, mãe de dois filhos. Moradora de área de risco. Teve que abandonar sua casa devido a fortes temporais         | **Necessidade:** Encontrar abrigo seguro imediatamente.  <br> **Objetivo:** Localizar vagas em abrigos próximos que aceitem sua família e suprimentos básicos         |
+| Carlos Alberto <br> ( Gestor) | 45 anos, coordenador de uma ONG local. Gerencia um centro de apoio sobrecarregado. | **Necessidade:** Centralizar pedidos de doações e coordenar recursos. <br> **Objetivo:** Atualizar a capacidade do abrigo e solicitar itens urgentes (água, remédios)
+ | Juliana Mendes <br> ( Voluntária ) | 22 anos, estudante de enfermagem. Deseja ajudar, mas não sabe onde sua habilidade é mais útil. | **Necessidade:** Visualizar missões de ajuda técnica e pontos de coleta. <br> **Objetivo:** Contribuir de forma segura e eficiente para a mitigação do desastre
 
 ## Histórias de Usuários
 

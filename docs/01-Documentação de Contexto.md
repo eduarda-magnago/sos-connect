@@ -17,7 +17,7 @@ A aplicação será utilizada em cenários de calamidade pública e assistência
 
 ## Objetivos
 
-O objetivo geral deste trabalho é desenvolver uma solução tecnológica que centralize a gestão e a comunicação em situações de desastres naturais, visando otimizar a conexão entre vítimas, voluntários, organizações humanitárias e autoridades.
+O objetivo geral é desenvolver uma solução tecnológica que centralize a gestão e a comunicação em situações de desastres naturais, visando otimizar a conexão entre vítimas, voluntários, organizações humanitárias e autoridades.
 
 Objetivos específicos:
 

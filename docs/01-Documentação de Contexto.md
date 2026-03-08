@@ -17,12 +17,14 @@ A aplicação será utilizada em cenários de calamidade pública e assistência
 
 ## Objetivos
 
-Aqui você deve descrever os objetivos do trabalho indicando que o objetivo geral é desenvolver um software para solucionar o problema apresentado acima. 
+O objetivo geral deste trabalho é desenvolver uma solução tecnológica que centralize a gestão e a comunicação em situações de desastres naturais, visando otimizar a conexão entre vítimas, voluntários, organizações humanitárias e autoridades.
 
-Apresente também alguns (pelo menos 2) objetivos específicos dependendo de onde você vai querer concentrar a sua prática investigativa, ou como você vai aprofundar no seu trabalho.
- 
-> **Links Úteis**:
-> - [Objetivo geral e objetivo específico: como fazer e quais verbos utilizar](https://blog.mettzer.com/diferenca-entre-objetivo-geral-e-objetivo-especifico/)
+Objetivos específicos:
+
+* Centralizar a Informação de Abrigos: Disponibilizar um mecanismo que permita a visualização em tempo real de pontos de apoio, incluindo capacidades, serviços oferecidos e disponibilidade de vagas.
+* Sincronizar Demandas de Insumos: Estabelecer um fluxo de atualização para que instituições possam registrar necessidades críticas, garantindo que doações sejam direcionadas para onde há falta real.
+* Agilizar Alertas e Comunicação: Implementar funcionalidades para o reporte de novas situações de risco e canais de diálogo entre a população afetada e as instituições voluntárias.
+* Fomentar a Colaboração Institucional: Facilitar a troca de recursos e informações entre diferentes centros de apoio para equilibrar estoques e esforços regionais.
 
 ## Justificativa
 

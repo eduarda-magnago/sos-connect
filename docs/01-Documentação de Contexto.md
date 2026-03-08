@@ -8,16 +8,12 @@ Nesse contexto, soluções tecnológicas podem desempenhar um papel importante n
 
 
 ## Problema
-Nesse momento você deve apresentar o problema que a sua aplicação deve  resolver. No entanto, não é a hora de comentar sobre a aplicação.
+O gerenciamento de crises humanitárias decorrentes de desastres naturais, como enchentes e deslizamentos, enfrenta obstáculos críticos na coordenação de informações entre os diversos agentes envolvidos. Atualmente, a resposta a emergências sofre com a fragmentação de dados, onde vítimas em situação de vulnerabilidade frequentemente desconhecem a localização de abrigos seguros ou a disponibilidade de vagas que comportem suas famílias.
 
-Descreva também o contexto em que essa aplicação será usada, se  houver: empresa, tecnologias, etc. Novamente, descreva apenas o que de  fato existir, pois ainda não é a hora de apresentar requisitos  detalhados ou projetos.
+Ao mesmo tempo, instituições de apoio e ONGs operam de forma isolada, muitas vezes sobrecarregadas e sem ferramentas para comunicar em tempo real suas necessidades mais urgentes de insumos, como água e medicamentos. Essa desarticulação estende-se aos voluntários e doadores que, embora motivados, carecem de orientações claras sobre onde suas habilidades técnicas ou recursos materiais seriam mais eficazes. O cenário é agravado pela ausência de um canal centralizado que permita o reporte ágil de novas ocorrências e a troca de recursos entre os próprios centros de acolhimento, resultando em uma resposta logística lenta e ineficiente diante de desastres que exigem agilidade extrema.
 
-Nesse momento, o grupo pode optar por fazer uso  de ferramentas como Design Thinking, que permite um olhar de ponta a ponta para o problema.
+A aplicação será utilizada em cenários de calamidade pública e assistência humanitária, operando em ambientes de alta pressão onde a comunicação rápida é vital. O ecossistema envolve dispositivos móveis e web para uso por vítimas e voluntários.
 
-> **Links Úteis**:
-> - [Objetivos, Problema de pesquisa e Justificativa](https://medium.com/@versioparole/objetivos-problema-de-pesquisa-e-justificativa-c98c8233b9c3)
-> - [Matriz Certezas, Suposições e Dúvidas](https://medium.com/educa%C3%A7%C3%A3o-fora-da-caixa/matriz-certezas-suposi%C3%A7%C3%B5es-e-d%C3%BAvidas-fa2263633655)
-> - [Brainstorming](https://www.euax.com.br/2018/09/brainstorming/)
 
 ## Objetivos
 

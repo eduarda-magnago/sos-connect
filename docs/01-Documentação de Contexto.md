@@ -21,10 +21,10 @@ O objetivo geral é desenvolver uma solução tecnológica que centralize a gest
 
 Objetivos específicos:
 
-* Centralizar a Informação de Abrigos: Disponibilizar um mecanismo que permita a visualização em tempo real de pontos de apoio, incluindo capacidades, serviços oferecidos e disponibilidade de vagas.
-* Sincronizar Demandas de Insumos: Estabelecer um fluxo de atualização para que instituições possam registrar necessidades críticas, garantindo que doações sejam direcionadas para onde há falta real.
-* Agilizar Alertas e Comunicação: Implementar funcionalidades para o reporte de novas situações de risco e canais de diálogo entre a população afetada e as instituições voluntárias.
-* Fomentar a Colaboração Institucional: Facilitar a troca de recursos e informações entre diferentes centros de apoio para equilibrar estoques e esforços regionais.
+* **Centralizar a Informação de Abrigos:** Disponibilizar um mecanismo que permita a visualização em tempo real de pontos de apoio, incluindo capacidades, serviços oferecidos e disponibilidade de vagas.
+* **Sincronizar Demandas de Insumos:** Estabelecer um fluxo de atualização para que instituições possam registrar necessidades críticas, garantindo que doações sejam direcionadas para onde há falta real.
+* **Agilizar Alertas e Comunicação:** Implementar funcionalidades para o reporte de novas situações de risco e canais de diálogo entre a população afetada e as instituições voluntárias.
+* **Fomentar a Colaboração Institucional:** Facilitar a troca de recursos e informações entre diferentes centros de apoio para equilibrar estoques e esforços regionais.
 
 ## Justificativa
 

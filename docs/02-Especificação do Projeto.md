@@ -17,22 +17,19 @@ Apresente uma visão geral do que será abordado nesta parte do documento, enume
 
 ## Histórias de Usuários
 
-Com base na análise das personas forma identificadas as seguintes histórias de usuários:
-
-|EU COMO... `PERSONA`| QUERO/PRECISO ... `FUNCIONALIDADE` |PARA ... `MOTIVO/VALOR`                 |
+ | EU COMO ... `PERSONA` | QUERO/PRECISO ... `FUNCIONALIDADE` | PARA ... `MOTIVO/VALOR`                 |
 |--------------------|------------------------------------|----------------------------------------|
-|Usuário do sistema  | Registrar minhas tarefas           | Não esquecer de fazê-las               |
-|Administrador       | Alterar permissões                 | Permitir que possam administrar contas |
-
-Apresente aqui as histórias de usuário que são relevantes para o projeto de sua solução. As Histórias de Usuário consistem em uma ferramenta poderosa para a compreensão e elicitação dos requisitos funcionais e não funcionais da sua aplicação. Se possível, agrupe as histórias de usuário por contexto, para facilitar consultas recorrentes à essa parte do documento.
-
-> **Links Úteis**:
-> - [Histórias de usuários com exemplos e template](https://www.atlassian.com/br/agile/project-management/user-stories)
-> - [Como escrever boas histórias de usuário (User Stories)](https://medium.com/vertice/como-escrever-boas-users-stories-hist%C3%B3rias-de-usu%C3%A1rios-b29c75043fac)
-> - [User Stories: requisitos que humanos entendem](https://www.luiztools.com.br/post/user-stories-descricao-de-requisitos-que-humanos-entendem/)
-> - [Histórias de Usuários: mais exemplos](https://www.reqview.com/doc/user-stories-example.html)
-> - [9 Common User Story Mistakes](https://airfocus.com/blog/user-story-mistakes/)
-
+| Vítima | Visualizar abrigos em um mapa interativo |  Encontrar o local de apoio mais próximo de onde estou            |
+| Vítima  | Consultar informações detalhadas do abrigo | Saber a capacidade e serviços (como banheiros ou comida) antes de me deslocar |
+| Vítima  | Iniciar uma conversa com uma instituição | Tirar dúvidas urgentes sobre disponibilidade ou itens necessários |
+| Vítima  | Reportar uma nova situação de emergência | Alertar outros usuários e autoridades sobre riscos iminentes |
+| Instituição  | Cadastrar meu abrigo ou centro de apoio | Tornar o local visível para quem precisa e para doadores |
+| Instituição |  Registrar necessidades de doações (alimentos, água) | Informar à comunidade o que é prioritário no momento | 
+| Instituição | Atualizar o status das necessidades (atendida/pendente) | Garantir que as doações sejam direcionadas para onde ainda há falta | 
+| Instituição | Trocar recursos com outras instituições | Otimizar o estoque regional através da colaboração entre abrigos |
+| Voluntário | Me candidatar para missões de ajuda | Colocar meu tempo e habilidades à disposição das instituições | 
+| Doador | Visualizar pedidos de doação registrados | Saber exatamente quais itens são necessários em cada local | 
+| Usuário | Compartilhar informações em redes sociais | Aumentar o alcance das campanhas e mobilizar mais pessoas |
 ## Requisitos
 
 As tabelas a seguir apresentam os requisitos funcionais e não funcionais que definem o escopo da solução proposta.

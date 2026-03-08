@@ -33,14 +33,17 @@ Diante do aumento da frequência e intensidade de desastres naturais, torna-se f
 Portanto, torna-se evidente a necessidade de mecanismos que facilitem a mobilização rápida de ajuda humanitária e a coordenação entre diferentes atores envolvidos na resposta emergencial. Assim, o desenvolvimento de uma aplicação web e mobile para gestão e comunicação em situações de calamidade pode melhorar a organização das ações de ajuda, conectando vítimas, voluntários, organizações e autoridades e facilitando a divulgação de necessidades e recursos.
 
 ## Público-Alvo
+O público-alvo deste aplicativo compreende os agentes envolvidos na resposta imediata e na recuperação pós-desastre. O foco reside na eficiência da comunicação e na precisão da logística de doações e resgates.
 
-Descreva quem serão as pessoas que usarão a sua aplicação indicando os diferentes perfis. O objetivo aqui não é definir quem serão os clientes ou quais serão os papéis dos usuários na aplicação. A ideia é, dentro do possível, conhecer um pouco mais sobre o perfil dos usuários: conhecimentos prévios, relação com a tecnologia, relações
-hierárquicas, etc.
+Perfis de Usuários:
+Vítimas e Pessoas em Áreas de Risco: Indivíduos que necessitam de auxílio imediato (resgate, abrigo, mantimentos).
 
-Adicione informações sobre o público-alvo por meio de uma descrição textual, diagramas de personas e mapa de stakeholders.
+Necessidade: Interface de baixo consumo de bateria e que funcione bem em condições de rede instável, permitindo sinalizar necessidades específicas (ex: "preciso de água" ou "tenho alguém ferido").
 
-> **Links Úteis**:
-> - [Público-alvo](https://blog.hotmart.com/pt-br/publico-alvo/)
-> - [Como definir o público alvo](https://exame.com/pme/5-dicas-essenciais-para-definir-o-publico-alvo-do-seu-negocio/)
-> - [Público-alvo: o que é, tipos, como definir seu público e exemplos](https://klickpages.com.br/blog/publico-alvo-o-que-e/)
-> - [Qual a diferença entre público-alvo e persona?](https://rockcontent.com/blog/diferenca-publico-alvo-e-persona/)
+Voluntários e Gestores de ONGs: Pessoas e organizações que atuam na linha de frente da triagem e distribuição.
+
+Necessidade: Painel de controle para gerenciar inventário de doações e mapear "manchas" de necessidade em tempo real, evitando que um abrigo receba excesso de um item enquanto outro fica desassistido.
+
+Doadores (Sociedade Civil): Indivíduos que desejam ajudar, mas não sabem onde a necessidade é mais urgente.
+
+Necessidade: Transparência e direcionamento. O usuário quer saber que seu quilo de alimento ou valor em dinheiro foi para um local que realmente precisava daquele item específico naquele momento.

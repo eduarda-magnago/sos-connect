@@ -58,6 +58,7 @@ Exemplificação: A equipe utiliza metodologias ágeis, tendo escolhido o Scrum 
 - `Done`: Tarefas finalizadas, aprovadas e entregues.
 
 
+<img width="1916" height="878" alt="brave_screenshot_github com" src="https://github.com/user-attachments/assets/40dad418-0888-499a-bb76-0d80965c2a83" />
 
 
 ### Processo

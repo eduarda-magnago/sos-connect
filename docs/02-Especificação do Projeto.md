@@ -59,8 +59,8 @@ Para a definição da prioridade foi utilizada a técnica ***MoSCoW***, que clas
 |RF-011| Permitir envio de notificações para informar novas missões ou necessidades urgentes | ALTA | NOME |
 |RF-012| Permitir que administradores validem instituições cadastradas na plataforma   | ALTA | NOME |
 |RF-013| Permitir que usuários compartilhem abrigos, pedidos de doação ou missões de ajuda em redes sociais   | ALTA | NOME |
-
-
+|RF-014| Permitir que instituições atualizem o status do abrigo para controle de fluxo.  | ALTA | NOME |
+|RF-015| Permitir o registro e atualização de vítimas entre os estados PENDENTE, EM ATENDIMENTO e RESOLVIDO, otimizando a fila de ajuda.   | ALTA | NOME |
 
 ### Requisitos não Funcionais
 
@@ -72,7 +72,7 @@ Para a definição da prioridade foi utilizada a técnica ***MoSCoW***, que clas
 |RNF-004| A interface do sistema deve ser simples e intuitiva para facilitar o uso em situações de crise |  ALTA | 
 |RNF-005| O sistema deve permitir integração com serviços de geolocalização para exibir abrigos próximos ao usuário | MÉDIA | 
 |RNF-006| O sistema deve estar disponível 24 horas por dia durante situações de emergência | ALTA | 
-
+|RNF-007| O sistema deve registrar o horário de criação e atualização de todos os registros  para fins de auditoria em situações de crise | ALTA |
 
 
 

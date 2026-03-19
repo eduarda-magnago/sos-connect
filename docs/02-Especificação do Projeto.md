@@ -46,9 +46,10 @@ Para a definição da prioridade foi utilizada a técnica ***MoSCoW***, que clas
 
 |ID    | Descrição do Requisito  | Prioridade | Responsável |
 |------|-----------------------------------------|----|----|
-|RF-001| Permitir que instituições cadastrem abrigos ou centros de apoio | ALTA | Mayara |
-|RF-002| Permitir visualizar abrigos disponíveis em um mapa interativo  | MÉDIA | Mayara |
-|RF-003| Permitir que instituições registrem necessidades de doações (água, alimentos, medicamentos etc.) | ALTA | NOME|
+|RF-001| Permitir o cadastro de unidades de apoio | ALTA | Mayara |
+|RF-002| Permitir visualizar unidades de apoio disponíveis em um mapa interativo  | MÉDIA | Mayara |
+|RF-003| Permitir visualizar emergências disponíveis em um mapa interativo  | MÉDIA | Mayara |
+|RF-003| Permitir que unidades de apoio registrem necessidades de doações (água, alimentos, medicamentos etc.) | ALTA | NOME|
 |RF-004| Permitir que usuários visualizem pedidos de doação registrados por instituições  | ALTA | NOME |
 |RF-005| Permitir que voluntários se candidatem para realizar missões de ajuda | ALTA | NOME |
 |RF-006| Permitir que instituições atualizem o status de necessidades (atendida, pendente etc.)*   | MÉDIA | NOME |

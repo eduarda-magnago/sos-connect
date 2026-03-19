@@ -49,20 +49,21 @@ Para a definição da prioridade foi utilizada a técnica ***MoSCoW***, que clas
 |RF-001| Permitir o cadastro de unidades de apoio | ALTA | Mayara |
 |RF-002| Permitir visualizar unidades de apoio disponíveis em um mapa interativo  | MÉDIA | Mayara |
 |RF-003| Permitir visualizar emergências disponíveis em um mapa interativo  | MÉDIA | Mayara |
-|RF-003| Permitir que unidades de apoio registrem necessidades de doações  (água, alimentos, medicamentos etc.) | ALTA | NOME|
-|RF-003| Permitir que unidades de apoio registrem missões de ajuda (cozinhar, limpar, etc) | ALTA | NOME|
-|RF-004| Permitir que voluntários visualizem pedidos de doação registrados por unidades de apoio  | ALTA | NOME |
-|RF-005| Permitir que voluntários se candidatem para realizar missões de ajuda | ALTA | NOME |
-|RF-006| Permitir que instituições atualizem o status de necessidades (atendida, pendente etc.)*   | MÉDIA | NOME |
-|RF-007| Permitir que instituições troquem recursos entre si dentro da plataforma | MÉDIA | NOME |
-|RF-008| Permitir que usuários reportem situações de emergência ou novas áreas afetadas   | MÉDIA | NOME |
-|RF-009| Permitir que usuários iniciem conversa ou solicitem contato com um abrigo ou instituição | ALTA | NOME |
-|RF-010| Permitir que usuários consultem informações detalhadas sobre cada abrigo (capacidade, serviços disponíveis, contato)  | ALTA | NOME |
-|RF-011| Permitir envio de notificações para informar novas missões ou necessidades urgentes | ALTA | NOME |
-|RF-012| Permitir que administradores validem instituições cadastradas na plataforma   | ALTA | NOME |
-|RF-013| Permitir que usuários compartilhem abrigos, pedidos de doação ou missões de ajuda em redes sociais   | ALTA | NOME |
-|RF-014| Permitir que instituições atualizem o status do abrigo para controle de fluxo.  | ALTA | NOME |
-|RF-015| Permitir o registro e atualização de vítimas entre os estados PENDENTE, EM ATENDIMENTO e RESOLVIDO, otimizando a fila de ajuda.   | ALTA | NOME |
+|RF-004| Permitir que unidades de apoio registrem necessidades de doações  (água, alimentos, medicamentos etc.) | ALTA | NOME|
+|RF-005| Permitir que unidades de apoio registrem missões de ajuda (cozinhar, limpar, etc) | ALTA | NOME|
+|RF-006| Permitir que voluntários visualizem pedidos de doação registrados por unidades de apoio  | ALTA | NOME |
+|RF-007| Permitir que voluntários se candidatem para realizar missões de ajuda | ALTA | NOME |
+|RF-008| Permitir que unidades de apoio atualizem o status de necessidades (atendida, pendente etc.)*   | MÉDIA | NOME |
+|RF-009| Permitir que vítimas e voluntários consultem informações detalhadas sobre cada unidade de apoio (capacidade, serviços disponíveis, contato)  | ALTA | NOME |
+|RF-010| Permitir envio de notificações para informar novas missões ou necessidades urgentes | ALTA | NOME |
+|RF-011| Permitir que administradores validem instituições cadastradas na plataforma   | ALTA | NOME |
+|RF-012| Permitir que usuários compartilhem abrigos, pedidos de doação ou missões de ajuda em redes sociais   | ALTA | NOME |
+|RF-013| Permitir que instituições atualizem o status do abrigo para controle de fluxo.  | ALTA | NOME |
+|RF-014| Permitir o registro e atualização de vítimas entre os estados PENDENTE, EM ATENDIMENTO e RESOLVIDO, otimizando a fila de ajuda.   | ALTA
+| NOME |
+|RF-008| Permitir que usuários reportem situações de emergência e direciona o usuário para página certa  | MÉDIA | NOME |
+|RF-009| Permitir que usuários iniciem conversa ou solicitem contato com uma unidade de apoio | ALTA | NOME |
+
 
 ### Requisitos não Funcionais
 

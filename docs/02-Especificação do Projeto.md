@@ -49,8 +49,9 @@ Para a definição da prioridade foi utilizada a técnica ***MoSCoW***, que clas
 |RF-001| Permitir o cadastro de unidades de apoio | ALTA | Mayara |
 |RF-002| Permitir visualizar unidades de apoio disponíveis em um mapa interativo  | MÉDIA | Mayara |
 |RF-003| Permitir visualizar emergências disponíveis em um mapa interativo  | MÉDIA | Mayara |
-|RF-003| Permitir que unidades de apoio registrem necessidades de doações (água, alimentos, medicamentos etc.) | ALTA | NOME|
-|RF-004| Permitir que usuários visualizem pedidos de doação registrados por instituições  | ALTA | NOME |
+|RF-003| Permitir que unidades de apoio registrem necessidades de doações  (água, alimentos, medicamentos etc.) | ALTA | NOME|
+|RF-003| Permitir que unidades de apoio registrem missões de ajuda (cozinhar, limpar, etc) | ALTA | NOME|
+|RF-004| Permitir que voluntários visualizem pedidos de doação registrados por unidades de apoio  | ALTA | NOME |
 |RF-005| Permitir que voluntários se candidatem para realizar missões de ajuda | ALTA | NOME |
 |RF-006| Permitir que instituições atualizem o status de necessidades (atendida, pendente etc.)*   | MÉDIA | NOME |
 |RF-007| Permitir que instituições troquem recursos entre si dentro da plataforma | MÉDIA | NOME |

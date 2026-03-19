@@ -55,15 +55,11 @@ Para a definição da prioridade foi utilizada a técnica ***MoSCoW***, que clas
 |RF-007| Permitir que voluntários se candidatem para realizar missões de ajuda | ALTA | NOME |
 |RF-008| Permitir que unidades de apoio atualizem o status de necessidades (atendida, pendente etc.)*   | MÉDIA | NOME |
 |RF-009| Permitir que vítimas e voluntários consultem informações detalhadas sobre cada unidade de apoio (capacidade, serviços disponíveis, contato)  | ALTA | NOME |
-|RF-010| Permitir envio de notificações para informar novas missões ou necessidades urgentes | ALTA | NOME |
-|RF-011| Permitir que administradores validem instituições cadastradas na plataforma   | ALTA | NOME |
-|RF-012| Permitir que usuários compartilhem abrigos, pedidos de doação ou missões de ajuda em redes sociais   | ALTA | NOME |
-|RF-013| Permitir que instituições atualizem o status do abrigo para controle de fluxo.  | ALTA | NOME |
-|RF-014| Permitir o registro e atualização de vítimas entre os estados PENDENTE, EM ATENDIMENTO e RESOLVIDO, otimizando a fila de ajuda.   | ALTA
-| NOME |
-|RF-008| Permitir que usuários reportem situações de emergência e direciona o usuário para página certa  | MÉDIA | NOME |
-|RF-009| Permitir que usuários iniciem conversa ou solicitem contato com uma unidade de apoio | ALTA | NOME |
-
+|RF-010| Permitir envio de notificações para informar voluntários de novas necessidades urgentes | ALTA | NOME |
+|RF-011| Permitir que administradores validem unidades de apoio cadastradas na plataforma   | ALTA | NOME |
+|RF-012| Permitir que usuários compartilhem unidades de apoio, pedidos de ajuda em redes sociais   | ALTA | NOME |
+|RF-013| Permitir que unidades de apoio atualizem o status do abrigo para controle de fluxo.  | ALTA | NOME |
+|RF-014| Permitir que vítima reporte situações de emergência individual e seja redirecionada para o conteúdo adequado  | MÉDIA | NOME |
 
 ### Requisitos não Funcionais
 

@@ -35,10 +35,12 @@ Estrutura do Documento
 ```Json
 {
     "_id": "ObjectId('5f7e1bbf9b2a4f1a9c38b9a1')",
-    "name": "John Doe",
-    "email": "john.doe@example.com",
+    "name": " Maria Luíza",
+    "email": "MariaLuiza.@example.com",
     "passwordHash": "hash_da_senha",
-    "roles": ["admin", "user"],
+    "roles": ["admin", "victim", "volunteer", "support_units"],
+    "skills":  [],
+    "fcm_token": "ksknciwncie...",
     "createdAt": "2024-08-29T10:00:00Z",
     "updatedAt": "2024-08-29T12:00:00Z"
 }
@@ -50,96 +52,232 @@ Estrutura do Documento
 > - <strong>email:</strong> Endereço de email do usuário.
 > - <strong>passwordHash:</strong> Hash da senha do usuário.
 > - <strong>roles:</strong> Lista de papéis atribuídos ao usuário (por exemplo, admin, user).
+> - <strong>fcm_token:</strong> Token do dispositivo para envio de notificações push via Firebase. 
 > - <strong>createdAt:</strong> Data e hora de criação do usuário.
 > - <strong>updatedAt:</strong> Data e hora da última atualização dos dados do usuário.
 
-### Coleção: products
-Armazena as informações dos produtos disponíveis no sistema.
+### Coleção: support_units
+Armazena as informações das unidades de apoio cadastradas na plataforma.
 
 ```Json
 {
-    "_id": "ObjectId('5f7e1ccf9b2a4f1a9c38b9a2')",
-    "name": "Produto Exemplo",
-    "description": "Descrição detalhada do produto.",
-    "price": 99.99,
-    "category": "Categoria Exemplo",
-    "stock": 100,
-    "createdAt": "2024-08-29T10:30:00Z",
-    "updatedAt": "2024-08-29T11:30:00Z"
+  "_id": "ObjectId('unt001')",
+  "support_unit_user_id": "ObjectId('usr003')",
+  "name": "Abrigo Centro",
+  "CNPJ": "12.345.678/0001-99",
+  "description": "Centro de apoio a vítimas de desastres naturais",
+  "contact": {
+    "email": "ong@email.com",
+    "phone": "(85) 99999-0000"
+  },
+  "location": {
+    "lat": -3.7172,
+    "lng": -38.5433
+  },
+  "capacity": 150,
+  "current_occupancy": 87,
+  "services_available": ["água", "alimentação", "médico"],
+  "status": "open",
+  "validated": true,
+  "createdAt": "2025-02-15T10:00:00Z",
+  "updatedAt": "2025-03-05T10:00:00Z"
 }
 ```
 
 #### Descrição dos Campos
-> - <strong>_id:</strong> Identificador único do usuário gerado automaticamente pelo MongoDB.
-> - <strong>name:</strong> Nome completo do usuário.
-> - <strong>email:</strong> Endereço de email do usuário.
-> - <strong>passwordHash:</strong> Hash da senha do usuário.
-> - <strong>roles:</strong> Lista de papéis atribuídos ao usuário (por exemplo, admin, user).
-> - <strong>createdAt:</strong> Data e hora de criação do usuário.
-> - <strong>updatedAt:</strong> Data e hora da última atualização dos dados do usuário.
+> - <strong>_id:</strong> Identificador único da unidade de apoio gerado automaticamente pelo MongoDB.
+> - <strong>support_unit_user_id:</strong> Referência ao usuário com role support_unit responsável pela unidade.
+> - <strong>name:</strong> Nome da unidade de apoio.
+> - <strong>CNPJ:</strong> CNPJ da organização responsável pela unidade.
+> - <strong>description:</strong> Descrição geral da unidade de apoio.
+> - <strong>contact:</strong> Objeto com informações de contato da unidade.
+> - <strong>contact.email:</strong> Email de contato da unidade.
+> - <strong>contact.phone:</strong> Telefone de contato da unidade.
+> - <strong>location:</strong> Objeto com as coordenadas geográficas da unidade (índice 2dsphere para busca por proximidade).
+> - <strong>location.lat:</strong> Latitude da unidade.
+> - <strong>location.lng:</strong> Longitude da unidade.
+> - <strong>capacity:</strong> Capacidade máxima de pessoas que a unidade pode abrigar.
+> - <strong>current_occupancy:</strong> Número atual de pessoas na unidade.
+> - <strong>services_available:</strong> Lista de serviços oferecidos pela unidade (ex: "água", "alimentação", "médico").
+> - <strong>status:</strong> Status atual da unidade. Valores possíveis: open, full, closed.
+> - <strong>validated:</strong> Indica se a unidade foi validada pelo admin e está visível no mapa.
+> - <strong>createdAt:</strong> Data e hora de criação da unidade.
+> - <strong>updatedAt:</strong> Data e hora da última atualização dos dados da unidade.
 
-### Coleção: products
-Armazena as informações dos produtos disponíveis no sistema.
+### Coleção: support_unit_validations
+Armazena o histórico de validações das unidades de apoio realizadas pelos administradores.
 
 Estrutura do Documento
 
 ```Json
 {
-    "_id": "ObjectId('5f7e1ccf9b2a4f1a9c38b9a2')",
-    "name": "Produto Exemplo",
-    "description": "Descrição detalhada do produto.",
-    "price": 99.99,
-    "category": "Categoria Exemplo",
-    "stock": 100,
-    "createdAt": "2024-08-29T10:30:00Z",
-    "updatedAt": "2024-08-29T11:30:00Z"
+  "_id": "ObjectId('val001')",
+  "support_unit_id": "ObjectId('unt001')",
+  "reviewed_by": "ObjectId('usr004')",
+  "status": "approved",
+  "rejection_reason": null,
+  "reviewed_at": "2025-02-17T10:00:00Z",
+  "createdAt": "2025-02-15T10:00:00Z",
+  "updatedAt": "2025-02-17T10:00:00Z"
 }
 ```
 
 #### Descrição dos Campos
-> - <strong>_id:</strong> Identificador único do produto gerado automaticamente pelo MongoDB.
-> - <strong>name:</strong> Nome do produto.
-> - <strong>description:</strong> Descrição detalhada do produto.
-> - <strong>price:</strong> Preço do produto.
-> - <strong>category:</strong> Categoria à qual o produto pertence.
-> - <strong>stock:</strong> Quantidade de produtos em estoque.
-> - <strong>createdAt:</strong> Data e hora de criação do produto.
-> - <strong>updatedAt:</strong> Data e hora da última atualização dos dados do produto.
+> - <strong>_id:</strong> Identificador único da validação gerado automaticamente pelo MongoDB.
+> - <strong>support_unit_id:</strong> Referência à unidade de apoio que está sendo validada.
+> - <strong>reviewed_by:</strong> Referência ao usuário admin que realizou a análise. Nulo enquanto pendente.
+> - <strong>status:</strong> Status da validação. Valores possíveis: pending, approved, rejected.
+> - <strong>rejection_reason:</strong> Motivo da rejeição, preenchido apenas quando o status é rejected.
+> - <strong>reviewed_at:</strong> Data e hora em que a análise foi realizada. Nulo enquanto pendente.
+> - <strong>createdAt:</strong> Data e hora de criação do registro de validação.
+> - <strong>updatedAt:</strong> Data e hora da última atualização do registro.
 
-### Coleção: orders
-Armazena as informações dos pedidos feitos pelos usuários.
+### Coleção: donation_needs
+Armazena as necessidades de doação registradas pelas unidades de apoio.
 
 Estrutura do Documento
 
 ```Json
 {
-    "_id": "ObjectId('5f7e1ddf9b2a4f1a9c38b9a3')",
-    "userId": "ObjectId('5f7e1bbf9b2a4f1a9c38b9a1')",
-    "products": [
-        {
-            "productId": "ObjectId('5f7e1ccf9b2a4f1a9c38b9a2')",
-            "quantity": 2,
-            "price": 99.99
-        }
-    ],
-    "totalPrice": 199.98,
-    "status": "pending",
-    "createdAt": "2024-08-29T11:00:00Z",
-    "updatedAt": "2024-08-29T11:30:00Z"
+  "_id": "ObjectId('don001')",
+  "support_unit_id": "ObjectId('unt001')",
+  "item_name": "Água mineral",
+  "quantity_needed": 200,
+  "quantity_received": 45,
+  "priority": "critical",
+  "status": "partially_fulfilled",
+  "createdAt": "2025-03-05T10:00:00Z",
+  "updatedAt": "2025-03-08T10:00:00Z"
 }
 ```
 
 #### Descrição dos Campos
-> - <strong>_id:</strong> Identificador único do pedido gerado automaticamente pelo MongoDB.
-> - <strong>userId:</strong> Referência ao identificador do usuário que fez o pedido.
-> - <strong>products:</strong> Lista de produtos incluídos no pedido, cada um com:
-> - <strong>productId:</strong> Identificador do produto.
-> - <strong>quantity:</strong> Quantidade do produto pedido.
-> - <strong>price:</strong> Preço unitário do produto no momento do pedido.
-> - <strong>totalPrice:</strong> Preço total do pedido (soma de todos os itens).
-> - <strong>status:</strong> Status atual do pedido (por exemplo, pending, shipped, delivered).
-> - <strong>createdAt:</strong> Data e hora de criação do pedido.
-> - <strong>updatedAt:</strong> Data e hora da última atualização dos dados do pedido.
+> - <strong>_id:</strong> Identificador único da necessidade de doação gerado automaticamente pelo MongoDB.
+> - <strong>support_unit_id:</strong> Referência à unidade de apoio que registrou a necessidade.
+> - <strong>item_name:</strong> Nome do item necessário (ex: "Água mineral", "Cobertores", "Medicamentos").
+> - <strong>quantity_needed:</strong> Quantidade total do item necessário.
+> - <strong>quantity_received:</strong> Quantidade já recebida do item.
+> - <strong>priority:</strong> Nível de prioridade da necessidade. Valores possíveis: low, medium, high, critical.
+> - <strong>status:</strong> Status atual da necessidade. Valores possíveis: pending, partially_fulfilled, fulfilled, cancelled.
+> - <strong>createdAt:</strong> Data e hora de criação da necessidade.
+> - <strong>updatedAt:</strong> Data e hora da última atualização da necessidade.
+
+### Coleção: missions
+Armazena as missões de ajuda criadas pelas unidades de apoio.
+
+Estrutura do Documento
+
+```Json
+{
+  "_id": "ObjectId('mis001')",
+  "support_unit_id": "ObjectId('unt001')",
+  "title": "Voluntários eletricistas ",
+  "description": "Precisamos de uma pessoas com conhecimentos em manuntenção eletrica. ",
+  "status": "open",
+  "required_skills": ["eletricistas", "manuntenção eletrica"],
+  "createdAt": "2025-03-05T10:00:00Z",
+  "updatedAt": "2025-03-05T10:00:00Z"
+}
+```
+
+#### Descrição dos Campos
+> - <strong>_id:</strong> Identificador único da missão gerado automaticamente pelo MongoDB.
+> - <strong>support_unit_id:</strong> Referência à unidade de apoio que criou a missão.
+> - <strong>title:</strong> Título da missão.
+> - <strong>description:</strong> Descrição detalhada da missão.
+> - <strong>status:</strong> Status atual da missão. Valores possíveis: open, in_progress, completed, cancelled.
+> - <strong>required_skills:</strong> Lista de habilidades necessárias para realizar a missão (usada para filtrar voluntários compatíveis).
+> - <strong>createdAt:</strong> Data e hora de criação da missão.
+> - <strong>updatedAt:</strong> Data e hora da última atualização da missão.
+
+### Coleção: mission_volunteers
+Armazena as candidaturas de voluntários às missões de ajuda.
+
+Estrutura do Documento
+
+```Json
+{
+  "_id": "ObjectId('mv001')",
+  "mission_id": "ObjectId('mis001')",
+  "user_id": "ObjectId('usr002')",
+  "status": "approved",
+  "createdAt": "2025-03-06T10:00:00Z",
+  "updatedAt": "2025-03-07T10:00:00Z"
+}
+```
+
+#### Descrição dos Campos
+> - <strong>_id:</strong> Identificador único da candidatura gerado automaticamente pelo MongoDB.
+> - <strong>mission_id:</strong> Referência à missão para a qual o voluntário se candidatou.
+> - <strong>user_id:</strong> Referência ao usuário voluntário que se candidatou.
+> - <strong>status:</strong> Status da candidatura. Valores possíveis: pending, approved, rejected, completed, withdrawn.
+> - <strong>createdAt:</strong> Data e hora de criação da candidatura.
+> - <strong>updatedAt:</strong> Data e hora da última atualização da candidatura.
+
+
+
+### Coleção: notifications
+Armazena o histórico de notificações enviadas aos usuários da plataforma.
+
+Estrutura do Documento
+
+```Json
+{
+  "_id": "ObjectId('not001')",
+  "user_id": "ObjectId('usr002')",
+  "content": "Sua candidatura para 'Voluntário  eletricista' foi aprovada!",
+  "type": "mission_approved",
+  "read": false,
+  "ref_id": "ObjectId('mv001')",
+  "ref_type": "MissionVolunteer",
+  "createdAt": "2025-03-07T10:00:00Z",
+  "updatedAt": "2025-03-07T10:00:00Z"
+}
+```
+
+#### Descrição dos Campos
+> - <strong>_id:</strong> Identificador único da notificação gerado automaticamente pelo MongoDB.
+> - <strong>user_id:</strong> Referência ao usuário que recebe a notificação.
+> - <strong>content:</strong> Texto da notificação exibido ao usuário.
+> - <strong>type:</strong> Tipo da notificação. Valores possíveis: urgent_donation, mission_approved, mission_rejected, new_mission, unit_validated, certificate_issued.
+> - <strong>read:</strong> Indica se o usuário já leu a notificação.
+> - <strong>ref_id:</strong> Referência polimórfica ao documento que originou a notificação (ex: mission_id, certificate_id).
+> - <strong>ref_type:</strong> Tipo do documento referenciado (ex: Mission, MissionVolunteer, Certificate).
+> - <strong>createdAt:</strong> Data e hora de criação da notificação.
+> - <strong>updatedAt:</strong> Data e hora da última atualização da notificação.
+
+### Coleção: certificates
+Armazena os certificados de participação emitidos pela plataforma após confirmação da unidade de apoio.
+
+Estrutura do Documento
+
+```Json
+{
+  "_id": "ObjectId('cer001')",
+  "user_id": "ObjectId('usr002')",
+  "mission_id": "ObjectId('mis001')",
+  "support_unit_id": "ObjectId('unt001')",
+  "issued_by": "ObjectId('usr003')",
+  "hours": 8,
+  "certificate_code": "CERT-2025-A3KP9X",
+  "issued_at": "2025-03-10T10:00:00Z",
+  "createdAt": "2025-03-10T10:00:00Z",
+  "updatedAt": "2025-03-10T10:00:00Z"
+}
+```
+
+#### Descrição dos Campos
+> - <strong>_id:</strong> Identificador único do certificado gerado automaticamente pelo MongoDB.
+> - <strong>user_id:</strong> Referência ao voluntário que recebe o certificado.
+> - <strong>mission_id:</strong> Referência à missão concluída pelo voluntário.
+> - <strong>support_unit_id:</strong> Referência à unidade de apoio onde a missão foi realizada.
+> - <strong>issued_by:</strong> Referência ao usuário com role support_unit que confirmou a participação do voluntário.
+> - <strong>hours:</strong> Quantidade de horas trabalhadas confirmadas pela unidade de apoio.
+> - <strong>certificate_code:</strong> Código único de verificação do certificado (ex: CERT-2025-A3KP9X). Gerado pela plataforma.
+> - <strong>issued_at:</strong> Data e hora em que o certificado foi emitido pela plataforma.
+> - <strong>createdAt:</strong> Data e hora de criação do registro.
+> - <strong>updatedAt:</strong> Data e hora da última atualização do registro.
+
 
 ### Boas Práticas
 

@@ -48,7 +48,7 @@ Para a definição da prioridade foi utilizada a técnica ***MoSCoW***, que clas
 |------|-----------------------------------------|----|----|
 |RF-001| Permitir o cadastro de unidades de apoio | ALTA | Mayara |
 |RF-002| Permitir visualizar unidades de apoio disponíveis em um mapa interativo  | MÉDIA | Mayara |
-|RF-003| Permitir visualizar emergências disponíveis em um mapa interativo  | MÉDIA | Mayara |
+|RF-003| Permitir que vítimas e voluntários filtrem unidades de apoio por tipo de serviço, status, capacidade disponível e raio de distância  | MÉDIA | NOME |
 |RF-004| Permitir que unidades de apoio registrem necessidades de doações  (água, alimentos, medicamentos etc.) | ALTA | NOME|
 |RF-005| Permitir que unidades de apoio registrem missões de ajuda (cozinhar, limpar, etc) | ALTA | NOME|
 |RF-006| Permitir que voluntários visualizem pedidos de doação registrados por unidades de apoio  | ALTA | NOME |
@@ -59,7 +59,8 @@ Para a definição da prioridade foi utilizada a técnica ***MoSCoW***, que clas
 |RF-011| Permitir que administradores validem unidades de apoio cadastradas na plataforma   | ALTA | NOME |
 |RF-012| Permitir que usuários compartilhem unidades de apoio, pedidos de ajuda em redes sociais   | ALTA | NOME |
 |RF-013| Permitir que unidades de apoio atualizem o status do abrigo para controle de fluxo.  | ALTA | NOME |
-|RF-014| Permitir que vítima reporte situações de emergência individual e seja redirecionada para o conteúdo adequado  | MÉDIA | NOME |
+|RF-014|  o gestor confirma a participação do voluntário. Essa ação dispara a plataforma.  | MÉDIA | NOME |
+|RF-015|  a plataforma gera o certificado automaticamente e o voluntário faz o download. | MÉDIA | NOME |
 
 ### Requisitos não Funcionais
 

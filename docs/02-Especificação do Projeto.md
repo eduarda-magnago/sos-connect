@@ -48,9 +48,9 @@ Para a definição da prioridade foi utilizada a técnica ***MoSCoW***, que clas
 |------|-----------------------------------------|----|----|
 |RF-001| Permitir o cadastro de unidades de apoio | ALTA | Mayara |
 |RF-002| Permitir visualizar unidades de apoio disponíveis em um mapa interativo  | MÉDIA | Mayara |
-|RF-003| Permitir que vítimas e voluntários filtrem unidades de apoio por tipo de serviço, status, capacidade disponível e raio de distância  | MÉDIA | NOME |
+|RF-003| Permitir que vítimas e voluntários filtrem unidades de apoio por tipo de serviço, status, capacidade disponível e raio de distância  | Carolina | NOME |
 |RF-004| Permitir que unidades de apoio registrem necessidades de doações  (água, alimentos, medicamentos etc.) | ALTA | MARESSA|
-|RF-005| Permitir que unidades de apoio registrem missões de ajuda (cozinhar, limpar, etc) | ALTA | NOME|
+|RF-005| Permitir que unidades de apoio registrem missões de ajuda (cozinhar, limpar, etc) | ALTA | Carolina|
 |RF-006| Permitir que voluntários visualizem pedidos de doação registrados por unidades de apoio  | ALTA | NOME |
 |RF-007| Permitir que voluntários se candidatem para realizar missões de ajuda | ALTA | NOME |
 |RF-008| Permitir que unidades de apoio atualizem o status de necessidades (atendida, pendente etc.)*   | MÉDIA | MARESSA |

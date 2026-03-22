@@ -54,7 +54,7 @@ Para a definição da prioridade foi utilizada a técnica ***MoSCoW***, que clas
 |RF-006| Permitir que voluntários visualizem pedidos de doação registrados por unidades de apoio  | ALTA | Eduarda |
 |RF-007| Permitir que voluntários se candidatem para realizar missões de ajuda | ALTA | NOME |
 |RF-008| Permitir que unidades de apoio atualizem o status de necessidades (atendida, pendente etc.)*   | MÉDIA | MARESSA |
-|RF-009| Permitir que vítimas e voluntários consultem informações detalhadas sobre cada unidade de apoio (capacidade, serviços disponíveis, contato)  | ALTA | NOME |
+|RF-009| Permitir que vítimas e voluntários consultem informações detalhadas sobre cada unidade de apoio (capacidade, serviços disponíveis, contato)  | ALTA | Eduarda |
 |RF-010| Permitir envio de notificações para informar voluntários de novas necessidades urgentes | ALTA | NOME |
 |RF-011| Permitir que administradores validem unidades de apoio cadastradas na plataforma   | ALTA | NOME |
 |RF-012| Permitir que usuários compartilhem unidades de apoio, pedidos de ajuda em redes sociais   | ALTA | NOME |

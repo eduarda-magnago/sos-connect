@@ -56,9 +56,9 @@ Para a definição da prioridade foi utilizada a técnica ***MoSCoW***, que clas
 |RF-008| Permitir que unidades de apoio atualizem o status de necessidades (atendida, pendente etc.)*   | MÉDIA | MARESSA |
 |RF-009| Permitir que vítimas e voluntários consultem informações detalhadas sobre cada unidade de apoio (capacidade, serviços disponíveis, contato)  | ALTA | Eduarda |
 |RF-010| Permitir envio de notificações para informar voluntários de novas necessidades urgentes | ALTA | NOME |
-|RF-011| Permitir que administradores validem unidades de apoio cadastradas na plataforma   | ALTA | NOME |
+|RF-011| Permitir que administradores validem unidades de apoio cadastradas na plataforma   | ALTA | Eryc |
 |RF-012| Permitir que usuários compartilhem unidades de apoio, pedidos de ajuda em redes sociais   | ALTA | NOME |
-|RF-013| Permitir que unidades de apoio atualizem o status do abrigo para controle de fluxo.  | ALTA | NOME |
+|RF-013| Permitir que unidades de apoio atualizem o status do abrigo para controle de fluxo.  | ALTA | Eryc |
 |RF-014|  o gestor confirma a participação do voluntário. Essa ação dispara a plataforma.  | MÉDIA | NOME |
 |RF-015|  a plataforma gera o certificado automaticamente e o voluntário faz o download. | MÉDIA | NOME |
 

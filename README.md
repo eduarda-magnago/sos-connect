@@ -1,4 +1,4 @@
-# TÍTULO DO PROJETO
+# SOS CONNECT
 
 `Análise e Desenvolvimento de Sistemas - PUC Minas`
 

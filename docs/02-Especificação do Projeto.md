@@ -88,8 +88,7 @@ O projeto está restrito pelos itens apresentados na tabela a seguir.
 
 ## Diagrama de Casos de Uso
 
-<img width="1412" height="1386" alt="diagrama_caso_uso" src="https://github.com/user-attachments/assets/e80efeac-1eb5-45cd-a8d9-9deebb88d59e" />
-
+![diagrama_atua](https://github.com/user-attachments/assets/a71ab890-4ceb-455d-b980-040cce841f55)
 
 
 # Gerenciamento de Projeto

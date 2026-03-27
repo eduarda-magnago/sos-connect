@@ -16,15 +16,19 @@ import { SupportUnitsService } from './support-units.service';
 import { CreateSupportUnitDto } from './dto/create-support-unit.dto';
 import { UpdateSupportUnitDto } from './dto/update-support-unit.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../../common/guards/roles.guard';
+import { Roles } from '../../common/decorators/roles.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import type { UserDocument } from '../users/schemas/user.schema';
+import { UserRole } from '../users/schemas/user.schema';
 
 @Controller('support-units')
 export class SupportUnitsController {
   constructor(private readonly supportUnitsService: SupportUnitsService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.SUPPORT_UNIT)
   @HttpCode(HttpStatus.CREATED)
   create(
     @Body() createDto: CreateSupportUnitDto,
@@ -73,20 +77,14 @@ export class SupportUnitsController {
 
   @Patch(':id/validate')
   @UseGuards(JwtAuthGuard)
-  validate(
-    @Param('id') id: string,
-    @Body('approved') approved: boolean,
-  ) {
+  validate(@Param('id') id: string, @Body('approved') approved: boolean) {
     return this.supportUnitsService.validate(id, approved);
   }
-  
-   @Delete(':id')
-   @UseGuards(JwtAuthGuard)
-    @HttpCode(HttpStatus.NO_CONTENT)
-    remove(
-    @Param('id') id: string,
-    @CurrentUser() user: UserDocument,
- ) {
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(@Param('id') id: string, @CurrentUser() user: UserDocument) {
     return this.supportUnitsService.remove(id, user._id.toString());
   }
 }

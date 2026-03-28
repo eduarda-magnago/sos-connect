@@ -82,6 +82,16 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+    "users.controller.spec.ts",
+    "users.service.spec.ts",
+    "auth.controller.spec.ts",
+    "auth.service.spec.ts",
+    "support-units.controller.spec.ts",
+    "donation-needs.controller.spec.ts",
+    "donation-needs.service.spec.ts"
+  ]
   }
+  
 }

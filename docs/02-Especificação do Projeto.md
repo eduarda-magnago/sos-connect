@@ -59,8 +59,8 @@ Para a definição da prioridade foi utilizada a técnica ***MoSCoW***, que clas
 |RF-011| Permitir que administradores validem unidades de apoio cadastradas na plataforma   | ALTA | Eryc |
 |RF-012| Permitir que usuários compartilhem unidades de apoio, pedidos de ajuda em redes sociais   | ALTA | Lucy |
 |RF-013| Permitir que unidades de apoio atualizem o status do abrigo para controle de fluxo.  | ALTA | Eryc |
-|RF-014|  o gestor confirma a participação do voluntário. Essa ação dispara a plataforma.  | MÉDIA | NOME |
-|RF-015|  a plataforma gera o certificado automaticamente e o voluntário faz o download. | MÉDIA | NOME |
+|RF-014|  o gestor confirma a participação do voluntário. Essa ação dispara a plataforma.  | MÉDIA | Igor |
+|RF-015|  a plataforma gera o certificado automaticamente e o voluntário faz o download. | MÉDIA | Igor |
 
 ### Requisitos não Funcionais
 

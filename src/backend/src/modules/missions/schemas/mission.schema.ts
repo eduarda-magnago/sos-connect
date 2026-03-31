@@ -11,14 +11,14 @@ export enum MissionStatus {
 }
 
 export enum MissionCategory {
-  COOKING = 'cooking',
-  CLEANING = 'cleaning',
-  MEDICAL = 'medical',
-  TRANSPORT = 'transport',
-  CHILDCARE = 'childcare',
-  CONSTRUCTION = 'construction',
-  DISTRIBUTION = 'distribution',
-  OTHER = 'other',
+  COZINHA = 'cozinha',
+  LIMPEZA = 'limpeza',
+  MEDICO = 'medico',
+  TRANSPORTE = 'transporte',
+  CUIDADO_INFANTIL = 'cuidado_infantil',
+  CONSTRUCAO = 'construcao',
+  DISTRIBUICAO = 'distribuicao',
+  OUTRO = 'outro',
 }
 
 @Schema({

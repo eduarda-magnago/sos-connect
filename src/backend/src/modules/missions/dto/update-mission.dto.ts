@@ -4,6 +4,8 @@ import {
   IsOptional,
   IsEnum,
   IsDateString,
+  IsArray,
+  IsMongoId,
   Min,
 } from 'class-validator';
 import { MissionCategory, MissionStatus } from '../schemas/mission.schema';
@@ -29,6 +31,11 @@ export class UpdateMissionDto {
   @Min(1)
   @IsOptional()
   volunteers_needed?: number;
+
+  @IsArray()
+  @IsMongoId({ each: true })
+  @IsOptional()
+  volunteer_ids?: string[];
 
   @IsDateString()
   @IsOptional()

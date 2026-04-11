@@ -39,9 +39,9 @@ export class DonationNeedsService {
     return donation.save();
   }
 
-  async findAll(): Promise<DonationNeedDocument[]> {
+  /*async findAll(): Promise<DonationNeedDocument[]> {
     return this.donationNeedModel.find().exec();
-  }
+  }*/
 
   async findOne(id: string): Promise<DonationNeedDocument> {
     const donation = await this.donationNeedModel.findById(id).exec();
@@ -94,5 +94,19 @@ export class DonationNeedsService {
 
     await this.donationNeedModel.findByIdAndDelete(id).exec();
   }
+
+  //achar doaçoes por unidade de apoio
+  async findAll(filters?: {
+    support_unit_id?: string;
+  }): Promise<DonationNeedDocument[]> {
+    const query: Record<string, unknown> = {};
+
+    if (filters?.support_unit_id) {
+      query.support_unit_id = filters.support_unit_id;
+    }
+    
+    return this.donationNeedModel.find(query).sort({ date: 1 }).exec();
+  }
 }
+
 

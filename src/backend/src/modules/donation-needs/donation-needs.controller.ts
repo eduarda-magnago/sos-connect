@@ -9,6 +9,7 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { DonationNeedsService } from './donation-needs.service';
 import { CreateDonationNeedDto } from './dto/create-donation-need.dto';
@@ -34,10 +35,10 @@ export class DonationNeedsController {
   }
 
   // GET /api/donation-needs
-  @Get('donation-needs')
+  /*@Get('donation-needs')
   findAll() {
     return this.donationNeedsService.findAll();
-  }
+  }*/
 
   // GET /api/donation-needs/:id
   @Get('donation-needs/:id')
@@ -66,4 +67,14 @@ export class DonationNeedsController {
   ) {
     return this.donationNeedsService.remove(id, user._id.toString());
   }
+  
+//achar doações por unidade de apoio
+  @Get('donation-needs')
+    findAll(
+      @Query('support_unit_id') supportUnitId?: string,
+    ) {
+      return this.donationNeedsService.findAll({
+        support_unit_id: supportUnitId,
+      });
+    }
 }

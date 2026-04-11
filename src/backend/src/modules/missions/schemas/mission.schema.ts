@@ -50,6 +50,9 @@ export class Mission {
   @Prop({ required: true, min: 1 })
   volunteers_needed: number;
 
+  @Prop({ type: [Types.ObjectId], ref: 'User', default: [] })
+  volunteer_ids: Types.ObjectId[];
+
   @Prop({ required: true })
   date: Date;
 }

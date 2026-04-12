@@ -1,6 +1,5 @@
 # Documentação do Projeto de Trabalho em Equipe
 
-Este é um exemplo de documento para a documentação das etapas e contribuição de cada membro. É importante salientar que todos os membros devem participar ativamente em todas as etapas e, nas etapas de desenvolvimento é impressindível que todos tenham atividades de desenvolvimento. <strong>Este arquivo deve refletir a execução das tarefas de cada aluno por etapa e estar em consonância com as ferramentas de gestão de tempo utilizadas pelo grupo, contando principalmente o tempo de início e termino de cada tarefa.</strong>
 
 ## Visão Geral
 
@@ -14,15 +13,17 @@ Coletar e documentar todos os requisitos necessários para o desenvolvimento do 
 
 ### Tarefas
 
-- **Reunião com stakeholders**: Realizar reuniões com as partes interessadas para entender as necessidades e expectativas.
+- **Reunião de definição de projeto**: Realizar reuniões para definir tema principal da aplicação.
 - **Levantamento de requisitos**: Documentar os requisitos funcionais e não funcionais do projeto.
 - **Análise de viabilidade**: Avaliar a viabilidade técnica e econômica do projeto.
+- **Editar/Adaptar documentação**: Estruturar Documentação para o projeto em questão. Definir contexto, Especificações e Arquitetura.
 
 ### Responsáveis
 
 - **Analista de Requisitos**: Mayara de Oliveira
 - **Gerente de Projeto**: Eduarda Azeredo (PO) e Carolina Longhini (Scrum Master) 
-
+- **Equipe de Desenvolvimento (Documentação)**: Carolina Longhini , Eduarda Azeredo, Eryc Lisboa, Igor Gabriel, Lucy Elaine, Maressa Társis e Mayara de Oliveira
+  
 ### Prazo
 
 - **Data de conclusão**: 2026-03-08
@@ -43,8 +44,8 @@ Desenvolver a lógica de negócio e os serviços de backend do projeto.
 
 ### Responsáveis
 
-- **Desenvolvedor Backend**: Carolina Longhini , Eduarda Azeredo, Eryc Lisboa, Igor Gabriel, Lucy Elaine, Maressa Társis e Mayara de Oliveira
-- **Engenheiro de Dados**: Mayara de Oliveira 
+- **Desenvolvedor Backend**: Carolina Longhini , Eduarda Azeredo, Eryc Lisboa, Igor Gabriel, Lucy Elaine, Maressa Társis e Mayara de Oliveira.
+- **Engenheiro de Dados**: Mayara de Oliveira .
 
 ### Prazo
 

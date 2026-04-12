@@ -281,9 +281,62 @@ Estrutura do Documento
 
 ## Tecnologias Utilizadas
 
-Descreva aqui qual(is) tecnologias você vai usar para resolver o seu problema, ou seja, implementar a sua solução. Liste todas as tecnologias envolvidas, linguagens a serem utilizadas, serviços web, frameworks, bibliotecas, IDEs de desenvolvimento, e ferramentas.
+#### Aqui está a descrição das tecnologias e o diagrama de arquitetura do **SOS Connect**:
 
-Apresente também uma figura explicando como as tecnologias estão relacionadas ou como uma interação do usuário com o sistema vai ser conduzida, por onde ela passa até retornar uma resposta ao usuário.
+| Categoria              | Tecnologia                         | Descrição |
+|----------------------|------------------------------------|----------|
+| Linguagem            | TypeScript                         | Utilizada no backend e frontend, garantindo tipagem estática e menos erros em tempo de execução. |
+| Backend              | NestJS + Node.js                   | Framework modular e escalável que segue princípios SOLID, com arquitetura baseada em módulos (users, auth, missions, etc). |
+| Banco de Dados       | MongoDB Atlas                      | Banco NoSQL na nuvem com suporte a índices geoespaciais (2dsphere) para buscas por proximidade. |
+| ODM                  | Mongoose                           | Mapeia documentos do MongoDB para classes TypeScript com validação de schema. |
+| Autenticação         | JWT + Passport.js                  | Autenticação stateless com envio de token no header `Authorization: Bearer`. |
+| Segurança de Senha   | bcrypt                             | Geração de hash seguro para senhas (sem armazenamento em texto puro). |
+| Notificações         | Firebase Cloud Messaging (FCM)     | Serviço para envio de notificações push em dispositivos mobile e web. |
+| Geração de PDFs      | PDFKit                             | Criação de certificados em PDF diretamente no backend. |
+| Validação de Dados   | class-validator + class-transformer| Validação automática via decorators nos DTOs. |
+| Testes               | Jest                               | Framework de testes unitários integrado ao NestJS. |
+| IDE                  | VS Code                            | Ambiente de desenvolvimento com extensões para TypeScript e REST Client. |
+| Versionamento        | Git + GitHub                       | Controle de versão com organização por branches de features. |
+| Teste de API         | Insomnia                           | Ferramenta para testar endpoints da API. |
+
+## Diagrama de Fluxo da Requisição
+
+<img width="3794" height="3686" alt="Untitled-2026-04-11-1259" src="https://github.com/user-attachments/assets/2ac79778-dab4-496c-9f91-b502b438ea61" />
+
+O diagrama representa o fluxo completo de uma requisição dentro do **SOS Connect**, desde a interação do usuário até a resposta final da API.
+
+1. **Cliente (Web ou Mobile)**  
+   O usuário inicia uma ação através da interface da aplicação.
+
+2. **Entrada na API (NestJS)**  
+   A requisição é recebida pelo backend estruturado com NestJS.
+
+3. **Autenticação (Guards JWT)**  
+   Antes de qualquer processamento, os *Guards* verificam a validade do token JWT enviado no header `Authorization`.  
+   Apenas requisições autenticadas seguem adiante.
+
+4. **Controller (Roteamento)**  
+   O *Controller* identifica a rota correta e direciona a requisição para o método apropriado.
+
+5. **Service (Regra de Negócio)**  
+   O *Service* executa a lógica da aplicação, garantindo separação de responsabilidades e organização do código.
+
+6. **Integrações Externas**
+   Dependendo da operação, o sistema se comunica com:
+   - **MongoDB Atlas** → Persistência e consulta de dados  
+   - **Firebase Cloud Messaging (FCM)** → Envio de notificações push  
+   - **PDFKit** → Geração de certificados em PDF  
+
+7. **Resposta da API**  
+   Após o processamento, a API retorna uma resposta em formato **JSON**, acompanhada do **código HTTP apropriado** (200, 201, 400, 401, etc).
+
+---
+
+Esse fluxo segue a arquitetura em camadas do NestJS, promovendo:
+- Escalabilidade
+- Manutenibilidade
+- Separação clara de responsabilidades (SRP - SOLID)
+
 
 ## Hospedagem
 

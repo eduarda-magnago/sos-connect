@@ -48,6 +48,7 @@ export class SupportUnitsService {
     lat?: number;
     lng?: number;
     radius?: number;
+    minAvailableCapacity?: number;
   }): Promise<SupportUnitDocument[]> {
     const query: any = { validated: true };
 
@@ -57,6 +58,15 @@ export class SupportUnitsService {
 
     if (filters?.services && filters.services.length > 0) {
       query.services_available = { $in: filters.services };
+    }
+
+    if (filters?.minAvailableCapacity !== undefined) {
+      query.$expr = {
+        $gte: [
+          { $subtract: ['$capacity', '$current_occupancy'] },
+          filters.minAvailableCapacity,
+        ],
+      };
     }
 
     if (filters?.lat && filters?.lng) {

@@ -15,46 +15,213 @@ Testes unitários ajudam a:
 
 ## Configuração do Ambiente
 
-Para começar a escrever testes unitários em um projeto backend utilizando C#, siga os passos abaixo:
+Para escrever testes unitários neste projeto backend (NestJS + TypeScript), siga os passos abaixo:
 
-1. **Instale o .NET SDK**: Certifique-se de ter o [.NET SDK](https://dotnet.microsoft.com/download) instalado.
+**1. Instale o Node.js** — o projeto usa Node com `npm`. Certifique-se de ter o Node.js instalado.
 
-2. **Crie um projeto de testes**: No terminal, navegue até o diretório do seu projeto e execute o seguinte comando para criar um projeto de testes usando xUnit (um framework popular de testes unitários para .NET):
+**2. Instale as dependências do projeto** — no diretório `src/backend/`, execute:
 
-    ```bash
-    dotnet new xunit -o tests
-    ```
+```bash
+npm install
+```
 
-3. **Adicione uma referência ao seu projeto principal**: No diretório do projeto de testes, adicione uma referência ao seu projeto principal:
+Isso já instala o **Jest** (framework de testes), **ts-jest** (transformador TypeScript), **@nestjs/testing** (utilitários de injeção de dependência do Nest) e **@types/jest** — todos declarados em `devDependencies` do `package.json`.
 
-    ```bash
-    dotnet add reference ../src/MyProject.csproj
-    ```
+**3. Configuração do Jest** — o Jest é configurado diretamente no `package.json` do backend (`src/backend/package.json`), na chave `"jest"`:
 
-4. **Organize sua estrutura de diretórios**: Uma estrutura comum de projeto é a seguinte:
+```json
+"jest": {
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": "src",
+  "testRegex": ".*\\.spec\\.ts$",
+  "transform": { "^.+\\.(t|j)s$": "ts-jest" },
+  "collectCoverageFrom": ["**/*.(t|j)s"],
+  "coverageDirectory": "../coverage",
+  "testEnvironment": "node",
+  "testPathIgnorePatterns": [
+    "users.controller.spec.ts",
+    "users.service.spec.ts",
+    "auth.controller.spec.ts",
+    "auth.service.spec.ts",
+    "support-units.controller.spec.ts",
+    "donation-needs.controller.spec.ts"
+  ]
+}
+```
 
-    ```
-    MyProject/
-    ├── src/
-    │   └── MyProject.cs
-    └── tests/
-        └── MyProject.Tests.cs
-    ```
+Pontos-chave:
+
+- `rootDir: "src"` — Jest procura testes dentro de `src/`.
+- `testRegex: ".*\\.spec\\.ts$"` — arquivos terminados em `.spec.ts` são considerados testes, **exceto** os listados em `testPathIgnorePatterns`, que ficam temporariamente fora da execução de `npm test`.
+- `transform` com `ts-jest` — permite escrever os testes diretamente em TypeScript, sem etapa manual de build.
+- `collectCoverageFrom` + `coverageDirectory` — definem o escopo do relatório de cobertura (`npm run test:cov`), gerado em `src/backend/coverage/`.
+
+**4. Estrutura de diretórios** — os arquivos de teste ficam colocalizados ao lado do código que testam, seguindo o padrão NestJS:
+
+```
+src/backend/
+└── src/
+    └── modules/
+        └── missions/
+            ├── missions.service.ts        # código
+            ├── missions.service.spec.ts   # teste unitário
+            ├── missions.controller.ts
+            └── missions.controller.spec.ts
+```
+
+**5. Scripts disponíveis** — definidos em `package.json`:
+
+```bash
+npm test              # roda todos os testes unitários
+npm run test:watch    # modo watch (reexecuta ao salvar)
+npm run test:cov      # gera relatório de cobertura
+npm run test:e2e      # testes end-to-end (config separada em test/jest-e2e.json)
+```
 
 ## Exemplo de Teste Unitário
 
-Aqui está um exemplo simples de um teste unitário em C# usando xUnit. Vamos supor que temos um método na classe `Calculator` que soma dois números.
+Como o projeto usa NestJS com Mongoose, os testes isolam a classe sob teste mockando os models do MongoDB via `getModelToken`, em vez de acessar um banco real. Veja um exemplo do `MissionsService`, que depende de dois models (`Mission` e `SupportUnit`) e aplica regras de permissão baseadas no dono da unidade de apoio:
 
-```csharp
-// src/MyProject.cs
+```typescript
+// src/modules/missions/missions.service.spec.ts
+import { Test, TestingModule } from '@nestjs/testing';
+import { getModelToken } from '@nestjs/mongoose';
+import { NotFoundException, ForbiddenException } from '@nestjs/common';
+import { MissionsService } from './missions.service';
+import { Mission } from './schemas/mission.schema';
+import { SupportUnit } from '../support-units/schemas/support-unit.schema';
 
-namespace MyProject
-{
-    public class Calculator
-    {
-        public int Add(int a, int b)
+// Simula uma unidade de apoio vinda do banco
+const mockUnit = {
+  _id: 'unt001',
+  support_unit_user_id: { toString: () => 'usr001' },
+};
+
+// Simula uma missão
+const mockMission = {
+  _id: 'mis001',
+  support_unit_id: 'unt001',
+  title: 'Distribuir alimentos',
+  description: 'Distribuir cestas básicas para famílias afetadas',
+  category: 'distribuicao',
+  status: 'pending',
+  volunteers_needed: 10,
+  date: new Date('2026-05-01'),
+  save: jest.fn().mockResolvedValue(this),
+};
+
+// Mock do Model Mission — usa jest.fn() como construtor
+// para simular `new this.missionModel(...)` dentro do service
+const mockMissionModel = jest.fn().mockImplementation(() => ({
+  save: jest.fn().mockResolvedValue(mockMission),
+}));
+Object.assign(mockMissionModel, {
+  find: jest.fn(),
+  findById: jest.fn(),
+  findByIdAndUpdate: jest.fn(),
+  findByIdAndDelete: jest.fn(),
+});
+
+// Mock do Model SupportUnit — usado para checar o dono da unidade
+const mockSupportUnitModel = {
+  findById: jest.fn(),
+};
+
+describe('MissionsService', () => {
+  let service: MissionsService;
+
+  // Antes de cada teste, monta o módulo do Nest injetando
+  // os mocks no lugar dos models reais
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        MissionsService,
         {
-            return a + b;
-        }
-    }
-}
+          provide: getModelToken(Mission.name),
+          useValue: mockMissionModel,
+        },
+        {
+          provide: getModelToken(SupportUnit.name),
+          useValue: mockSupportUnitModel,
+        },
+      ],
+    }).compile();
+
+    service = module.get<MissionsService>(MissionsService);
+  });
+
+  afterEach(() => jest.clearAllMocks());
+
+  describe('create', () => {
+    const createDto = {
+      support_unit_id: 'unt001',
+      title: 'Distribuir alimentos',
+      description: 'Distribuir cestas básicas para famílias afetadas',
+      category: 'distribuicao' as any,
+      volunteers_needed: 10,
+      date: '2026-05-01',
+    };
+
+    it('deve criar uma missão quando usuário é dono da unidade', async () => {
+      mockSupportUnitModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(mockUnit),
+      });
+
+      const result = await service.create(createDto, 'usr001');
+
+      expect(result).toEqual(mockMission);
+      expect(mockSupportUnitModel.findById).toHaveBeenCalledWith('unt001');
+    });
+
+    it('deve lançar NotFoundException quando unidade não encontrada', async () => {
+      mockSupportUnitModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(null),
+      });
+
+      await expect(service.create(createDto, 'usr001'))
+        .rejects.toThrow(NotFoundException);
+    });
+
+    it('deve lançar ForbiddenException quando usuário não é dono da unidade', async () => {
+      mockSupportUnitModel.findById.mockReturnValue({
+        exec: jest.fn().mockResolvedValue(mockUnit),
+      });
+
+      await expect(service.create(createDto, 'outro-usuario'))
+        .rejects.toThrow(ForbiddenException);
+    });
+  });
+
+  describe('findAll', () => {
+    it('deve aplicar múltiplos filtros', async () => {
+      (mockMissionModel.find as jest.Mock).mockReturnValue({
+        sort: jest.fn().mockReturnValue({
+          exec: jest.fn().mockResolvedValue([mockMission]),
+        }),
+      });
+
+      const result = await service.findAll({
+        support_unit_id: 'unt001',
+        status: 'pending',
+        category: 'distribuicao',
+      });
+
+      expect(result).toEqual([mockMission]);
+      expect(mockMissionModel.find).toHaveBeenCalledWith({
+        support_unit_id: 'unt001',
+        status: 'pending',
+        category: 'distribuicao',
+      });
+    });
+  });
+});
+```
+
+Pontos a observar nesse exemplo:
+
+- **Dois models mockados simultaneamente** — `MissionsService` depende de `Mission` e `SupportUnit`; ambos são injetados via `getModelToken(...)` no `TestingModule`.
+- **Mock do construtor do Model** — como o service faz `new this.missionModel(dto)`, o mock é criado como `jest.fn().mockImplementation(...)` e os métodos estáticos (`find`, `findById`, etc.) são anexados com `Object.assign`.
+- **Encadeamento de métodos Mongoose** — chamadas como `find().sort().exec()` são simuladas retornando objetos com os métodos seguintes (`sort` → `exec`).
+- **Regra de permissão testada isoladamente** — casos de sucesso, `NotFoundException` e `ForbiddenException` são cobertos em blocos `it` separados.
+
+O arquivo completo, com os testes de `findOne`, `update` e `remove`, está em `src/backend/src/modules/missions/missions.service.spec.ts`.

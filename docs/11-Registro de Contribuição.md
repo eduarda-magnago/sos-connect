@@ -20,12 +20,12 @@ Coletar e documentar todos os requisitos necessários para o desenvolvimento do 
 
 ### Responsáveis
 
-- **Analista de Requisitos**: Nome do analista
-- **Gerente de Projeto**: Nome do gerente
+- **Analista de Requisitos**: Mayara de Oliveira
+- **Gerente de Projeto**: Eduarda Azeredo (PO) e Carolina Longhini (Scrum Master) 
 
 ### Prazo
 
-- **Data de conclusão**: YYYY-MM-DD
+- **Data de conclusão**: 2026-03-08
 
 ---
 
@@ -43,12 +43,12 @@ Desenvolver a lógica de negócio e os serviços de backend do projeto.
 
 ### Responsáveis
 
-- **Desenvolvedor Backend**: Nome do desenvolvedor
-- **Engenheiro de Dados**: Nome do engenheiro
+- **Desenvolvedor Backend**: Carolina Longhini , Eduarda Azeredo, Eryc Lisboa, Igor Gabriel, Lucy Elaine, Maressa Társis e Mayara de Oliveira
+- **Engenheiro de Dados**: Mayara de Oliveira 
 
 ### Prazo
 
-- **Data de conclusão**: YYYY-MM-DD
+- **Data de conclusão**: 2026-04-12
 
 ---
 
@@ -66,12 +66,12 @@ Desenvolver a interface web do projeto, garantindo uma experiência de usuário 
 
 ### Responsáveis
 
-- **Desenvolvedor Frontend**: Nome do desenvolvedor
-- **Designer UI/UX**: Nome do designer
+- **Desenvolvedor Frontend**:  Carolina Longhini , Eduarda Azeredo, Eryc Lisboa, Igor Gabriel, Lucy Elaine, Maressa Társis e Mayara de Oliveira
+- **Designer UI/UX**: A definir 
 
 ### Prazo
 
-- **Data de conclusão**: YYYY-MM-DD
+- **Data de conclusão**: 2026-05-10
 
 ---
 
@@ -89,12 +89,12 @@ Desenvolver a aplicação mobile do projeto, adaptando as funcionalidades para d
 
 ### Responsáveis
 
-- **Desenvolvedor Mobile**: Nome do desenvolvedor
-- **QA Mobile**: Nome do engenheiro de qualidade
+- **Desenvolvedor Mobile**: A Definir
+- **QA Mobile**: A Definir
 
 ### Prazo
 
-- **Data de conclusão**: YYYY-MM-DD
+- **Data de conclusão**: 2026-05-31
 
 ---
 
@@ -112,12 +112,12 @@ Garantir que a solução desenvolvida esteja pronta para produção e apresentar
 
 ### Responsáveis
 
-- **Líder de Homologação**: Nome do líder
-- **Gerente de Projeto**: Nome do gerente
+- **Líder de Homologação**: A Definir 
+- **Gerente de Projeto**: A Definir
 
 ### Prazo
 
-- **Data de conclusão**: YYYY-MM-DD
+- **Data de conclusão**: 2026-06-21
 
 ---
 
@@ -125,13 +125,14 @@ Garantir que a solução desenvolvida esteja pronta para produção e apresentar
 
 ### Ferramentas de Comunicação
 
-- **Slack**: Para comunicação diária e rápida.
-- **Trello**: Para gerenciamento de tarefas e acompanhamento do progresso.
+- **Whatsapp**: Para comunicação diária e rápida.
+- **Projects Github**: Para gerenciamento de tarefas e acompanhamento do progresso.
 - **GitHub**: Para versionamento de código e revisão de pull requests.
+- **Teams**: Para reuniões.
 
 ### Reuniões Regulares
 
-- **Reunião semanal**: Toda segunda-feira às 10h.
+- **Reunião semanal**: Toda Quinta-feira às 18:00.
 - **Reunião de revisão**: Ao final de cada etapa para revisar o progresso e ajustar o plano.
 
 ---

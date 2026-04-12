@@ -44,7 +44,8 @@ Isso já instala o **Jest** (framework de testes), **ts-jest** (transformador Ty
     "auth.controller.spec.ts",
     "auth.service.spec.ts",
     "support-units.controller.spec.ts",
-    "donation-needs.controller.spec.ts"
+    "donation-needs.controller.spec.ts",
+    "mission.controller.spec.ts"
   ]
 }
 ```

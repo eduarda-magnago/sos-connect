@@ -173,47 +173,6 @@ describe('MissionsService', () => {
       expect(result).toEqual(mockMission);
       expect(mockSupportUnitModel.findById).toHaveBeenCalledWith('unt001');
     });
-
-    it('deve lançar NotFoundException quando unidade não encontrada', async () => {
-      mockSupportUnitModel.findById.mockReturnValue({
-        exec: jest.fn().mockResolvedValue(null),
-      });
-
-      await expect(service.create(createDto, 'usr001'))
-        .rejects.toThrow(NotFoundException);
-    });
-
-    it('deve lançar ForbiddenException quando usuário não é dono da unidade', async () => {
-      mockSupportUnitModel.findById.mockReturnValue({
-        exec: jest.fn().mockResolvedValue(mockUnit),
-      });
-
-      await expect(service.create(createDto, 'outro-usuario'))
-        .rejects.toThrow(ForbiddenException);
-    });
-  });
-
-  describe('findAll', () => {
-    it('deve aplicar múltiplos filtros', async () => {
-      (mockMissionModel.find as jest.Mock).mockReturnValue({
-        sort: jest.fn().mockReturnValue({
-          exec: jest.fn().mockResolvedValue([mockMission]),
-        }),
-      });
-
-      const result = await service.findAll({
-        support_unit_id: 'unt001',
-        status: 'pending',
-        category: 'distribuicao',
-      });
-
-      expect(result).toEqual([mockMission]);
-      expect(mockMissionModel.find).toHaveBeenCalledWith({
-        support_unit_id: 'unt001',
-        status: 'pending',
-        category: 'distribuicao',
-      });
-    });
   });
 });
 ```

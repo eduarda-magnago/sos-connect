@@ -44,6 +44,7 @@ export class SupportUnitsController {
     @Query('lat') lat?: string,
     @Query('lng') lng?: string,
     @Query('radius') radius?: string,
+    @Query('minAvailableCapacity') minAvailableCapacity?: string,
   ) {
     return this.supportUnitsService.findAll({
       status,
@@ -51,6 +52,10 @@ export class SupportUnitsController {
       lat: lat ? parseFloat(lat) : undefined,
       lng: lng ? parseFloat(lng) : undefined,
       radius: radius ? parseInt(radius) : undefined,
+      minAvailableCapacity:
+        minAvailableCapacity !== undefined
+          ? parseInt(minAvailableCapacity)
+          : undefined,
     });
   }
 

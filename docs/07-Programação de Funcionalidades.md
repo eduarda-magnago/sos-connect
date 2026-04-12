@@ -2,8 +2,8 @@
 
 |ID    | Descrição do Requisito  | Artefatos produzidos | Aluno(a) responsável |
 |------|-----------------------------------------|----|----|
-|RF-001| Permitir o cadastro de unidades de apoio. | - | Mayara |
-|RF-002| Permitir visualizar unidades de apoio disponíveis em um mapa interativo. | - | Mayara |
+|RF-001| Permitir o cadastro de unidades de apoio. | <img width="692" height="468" alt="Captura de tela 2026-04-12 125328" src="https://github.com/user-attachments/assets/31a8425d-3180-4a75-822b-8e47d647b2c4" /> | Mayara |
+|RF-002| Permitir visualizar unidades de apoio disponíveis em um mapa interativo. | <img width="565" height="514" alt="Captura de tela 2026-04-12 125529" src="https://github.com/user-attachments/assets/47f1a755-ca55-4bd3-ab00-5986ed460a87" /> | Mayara |
 |RF-003| Permitir que vítimas e voluntários filtrem unidades de apoio por tipo de serviço, status, capacidade disponível e raio de distância. | - | Carolina |
 |RF-004| Permitir que unidades de apoio registrem necessidades de doações (água, alimentos, medicamentos etc). | - | Maressa |
 |RF-005| Permitir que unidades de apoio registrem missões de ajuda (cozinhar, limpar, etc). | - | Carolina |

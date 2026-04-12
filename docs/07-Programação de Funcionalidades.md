@@ -16,4 +16,4 @@
 |RF-012| Permitir que usuários compartilhem unidades de apoio, pedidos de ajuda em redes sociais. | - | Lucy |
 |RF-013| Permitir que unidades de apoio atualizem o status do abrigo para controle de fluxo. | - | Eryc |
 |RF-014| O gestor confirma a participação do voluntário. Essa ação dispara a plataforma. | - | Igor |
-|RF-015| A plataforma gera o certificado automaticamente e o voluntário faz o download. | - | Igor |
+|RF-015| A plataforma gera o certificado automaticamente e o voluntário faz o download. | <img width="778" height="714" alt="Captura de Tela 2026-04-12 às 16 20 24" src="https://github.com/user-attachments/assets/8e04479b-b3d2-4074-8ce4-99932b8c7673" /> | Igor |

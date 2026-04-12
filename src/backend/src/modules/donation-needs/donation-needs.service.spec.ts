@@ -84,9 +84,11 @@ describe('DonationNeedsService', () => {
 
   describe('findAll', () => {
     it('deve retornar todas as doações', async () => {
-      // Simula retorno do banco
+      // Simula retorno do banco com suporte a .sort().exec()
       mockDonationModel.find.mockReturnValue({
-        exec: jest.fn().mockResolvedValue([mockDonation]),
+        sort: jest.fn().mockReturnValue({
+          exec: jest.fn().mockResolvedValue([mockDonation]),
+        }),
       });
 
       const result = await service.findAll();

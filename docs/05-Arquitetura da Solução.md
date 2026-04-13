@@ -330,24 +330,49 @@ O diagrama representa o fluxo completo de uma requisição dentro do **SOS Conne
 7. **Resposta da API**  
    Após o processamento, a API retorna uma resposta em formato **JSON**, acompanhada do **código HTTP apropriado** (200, 201, 400, 401, etc).
 
----
-
 Esse fluxo segue a arquitetura em camadas do NestJS, promovendo:
 - Escalabilidade
 - Manutenibilidade
 - Separação clara de responsabilidades (SRP - SOLID)
 
+---
 
-## Hospedagem
+## Hospedagem 
 
-Explique como a hospedagem e o lançamento da plataforma foi feita.
+A API foi hospedada utilizando a plataforma Render, com integração direta ao GitHub para deploy automático (CI/CD).
 
-> **Links Úteis**:
->
-> - [Website com GitHub Pages](https://pages.github.com/)
-> - [Programação colaborativa com Repl.it](https://repl.it/)
-> - [Getting Started with Heroku](https://devcenter.heroku.com/start)
-> - [Publicando Seu Site No Heroku](http://pythonclub.com.br/publicando-seu-hello-world-no-heroku.html)
+### Etapas do Deploy
+
+* Criação do arquivo `.env.example` com as variáveis de ambiente necessárias
+* Conexão do repositório ao Render
+* Configuração do serviço:
+
+  * Runtime: Node.js
+  * Diretório: `src/backend`
+  * Build: `npm install && npm run build`
+  * Start: `npm run start:prod`
+* Definição das variáveis de ambiente na plataforma (`MONGODB_URI`, `JWT_SECRET`, etc.)
+
+### Acesso
+
+A aplicação está disponível em:
+
+```
+https://sos-connect-api.onrender.com
+```
+
+Exemplos de endpoints:
+
+* `GET /api/users`
+* `POST /api/auth/login`
+
+### Deploy Contínuo
+
+A cada `git push` na branch `main`, o Render realiza automaticamente um novo build e deploy da aplicação.
+
+### Observação
+
+O plano gratuito pode causar hibernação após períodos de inatividade, resultando em um tempo inicial de resposta mais lento.
 
 ## Qualidade de Software
 

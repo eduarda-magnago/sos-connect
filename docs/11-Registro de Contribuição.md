@@ -51,7 +51,11 @@ Desenvolver a lógica de negócio e os serviços de backend do projeto.
 
 - **Data de conclusão**: 2026-04-12
 
----
+### Video
+
+https://youtu.be/UenOwfy_DQo
+
+--- 
 
 ## Etapa 3: Desenvolvimento Web
 

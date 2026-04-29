@@ -10,7 +10,7 @@ Os artefatos do projeto são desenvolvidos a partir de diversas plataformas e a 
 | --- | --- | --- |
 |Repositório de código fonte | GitHub | https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2026-1-e4-proj-infra-t4-grupo-dois|
 |Documentos do projeto|GitHub | https://github.com/ICEI-PUC-Minas-PMV-ADS/pmv-ads-2026-1-e4-proj-infra-t4-grupo-dois/tree/main/docs|
-|Projeto de interfaces e Wirefrmaes | X | X |
+|Projeto de interfaces e Wirefrmaes | Figma | X |
 |Gerenciamento do Projeto | GitHub | https://github.com/orgs/ICEI-PUC-Minas-PMV-ADS/projects/2690|
 
 ## Controle de Versão
@@ -58,7 +58,8 @@ Exemplificação: A equipe utiliza metodologias ágeis, tendo escolhido o Scrum 
 - `Done`: Tarefas finalizadas, aprovadas e entregues.
 
 
-<img width="1916" height="878" alt="brave_screenshot_github com" src="https://github.com/user-attachments/assets/40dad418-0888-499a-bb76-0d80965c2a83" />
+<img width="1910" height="861" alt="Captura de tela 2026-04-29 193422" src="https://github.com/user-attachments/assets/2757bfbe-ac0f-440f-a9ac-074417e72e94" />
+
 
 
 ### Processo
@@ -83,7 +84,7 @@ As equipem validam e testam as tarefas entregues. Desenvolvedores testam funcion
   
 Após a equipe confirmar que a tarefa está concluída, testada e aprovada. O Product Owner valida se atende aos requisitos; Scrum Master garante que os critérios de qualidade foram cumpridos.
 
-### Ferramentas
+## Ferramentas
 
 As ferramentas empregadas neste projeto são:
 

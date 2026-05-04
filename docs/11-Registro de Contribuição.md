@@ -44,8 +44,8 @@ Desenvolver a lógica de negócio e os serviços de backend do projeto.
 
 ### Responsáveis
 
-- **Desenvolvedor Backend**: Carolina Longhini, Eduarda Azeredo, Eryc Lisboa, Igor Gabriel, Lucy Elaine, Maressa Társis e Mayara de Oliveira.
-- **Engenheiro de Dados**: Mayara de Oliveira.
+- **Desenvolvedor Backend**: Carolina Longhini, Eduarda Azeredo, Eryc Lisboa, Igor Gabriel, Lucy Elaine, Maressa Társis e Mayara de Oliveira
+- **Engenheiro de Dados**: Mayara de Oliveira
 
 ### Prazo
 

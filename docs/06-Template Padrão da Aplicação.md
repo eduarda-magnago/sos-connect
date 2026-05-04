@@ -21,6 +21,8 @@ https://www.figma.com/design/tSrpKQY5al3Q2OwGXCyA9P/Sos-connect-2?node-id=0-1&p=
 
 ## Protótipo de Alta Fidelidade
 
+O protótipo de alta fidelidade foi realizado no Figma. Veja abaixo algumas telas que foram produzidas para a interface dessa aplicação. 
+
 ### Login
 <img width="766" height="526" alt="image" src="https://github.com/user-attachments/assets/ec6397ce-6485-4b2a-89d6-c1a5069ada37" />
 

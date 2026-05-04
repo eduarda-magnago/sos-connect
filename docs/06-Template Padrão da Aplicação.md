@@ -21,7 +21,13 @@ https://www.figma.com/design/tSrpKQY5al3Q2OwGXCyA9P/Sos-connect-2?node-id=0-1&p=
 
 ## Protótipo de Alta Fidelidade
 
-### Telas na Visão de "Voluntário" - Desktop
+### Login
+<img width="766" height="526" alt="image" src="https://github.com/user-attachments/assets/ec6397ce-6485-4b2a-89d6-c1a5069ada37" />
+
+### Cadastro
+<img width="763" height="525" alt="image" src="https://github.com/user-attachments/assets/3171b167-fa07-4d5b-9bd7-4d646739a7c4" />
+
+## Telas na Visão de "Voluntário" - Desktop
 
 ### Home
 <img width="766" height="454" alt="image" src="https://github.com/user-attachments/assets/b54efde4-0524-46b6-b780-c70c1aa226c8" />

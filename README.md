@@ -14,6 +14,7 @@ A plataforma será acessível por dispositivos web e mobile e terá como objetiv
 
 * Carolina Longhini
 * Eduarda Azeredo Magnago
+* Eryc Lisboa Silva
 * Igor Gabriel Cardoso
 * Lucy Elaine Quispe Suxo
 * Maressa Tarsis Rodrigues Silva

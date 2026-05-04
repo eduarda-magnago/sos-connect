@@ -72,7 +72,7 @@ Desenvolver a interface web do projeto, garantindo uma experiência de usuário 
 ### Responsáveis
 
 - **Desenvolvedor Frontend**:  Carolina Longhini , Eduarda Azeredo, Eryc Lisboa, Igor Gabriel, Lucy Elaine, Maressa Társis e Mayara de Oliveira
-- **Designer UI/UX**: A definir 
+- **Designer UI/UX**: Eduarda Azeredo
 
 ### Prazo
 

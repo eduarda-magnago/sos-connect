@@ -1,5 +1,58 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap');
+@import "leaflet/dist/leaflet.css";
 
-:root {
+@theme {
+  /* CORES PRINCIPAIS */
+  --color-background: #F8F8F8;
+  --color-foreground: #1A1A1A;
+
+  /* SIDEBAR / NAVBAR */
+  --color-sidebar: #1a2744;
+  --color-sidebar-hover: rgba(255,255,255,0.1);
+  --color-sidebar-active: rgba(255,255,255,0.2);
+
+  /* PRIMÁRIA — botão Criar, Aplicar */
+  --color-primary: #1a2744;
+  --color-primary-foreground: #FFFFFF;
+
+  /* AÇÃO — botão Entrar, Criar conta */
+  --color-action: #EF4444;
+  --color-action-hover: #DC2626;
+  --color-action-foreground: #FFFFFF;
+
+  /* CARDS */
+  --color-card: #FFFFFF;
+  --color-border: #E5E7EB;
+  --color-muted: #6B7280;
+
+  /* STATUS */
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  --color-danger:  #EF4444;
+
+  /* TIPOGRAFIA */
   --font-sans: 'Roboto', sans-serif;
+}
+
+* {
+  font-family: var(--font-sans);
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Corrige ícone padrão do Leaflet que some no Vite */
+.leaflet-default-icon-path {
+  background-image: url('https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png');
 }

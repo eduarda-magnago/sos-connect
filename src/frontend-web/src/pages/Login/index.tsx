@@ -69,7 +69,7 @@ async function handleLogin(e: React.FormEvent) {
   }
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex ">
       {/* Lado esquerdo */}
       <div className="w-[420px] bg-[#1a2744] text-white p-10  flex-col justify-between hidden md:flex">
         <div className="flex items-center gap-3">

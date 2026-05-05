@@ -29,7 +29,7 @@ export default function AppRoutes() {
         >
           <Route path="/home" element={<Home />} />
           <Route path="/support-units" element={<SupportUnits />} />
-          <Route path="/support-units/new" element={<CreateSupportUnit />} />
+          <Route path="/support-units/new" element={<CreateSupportUnit />} />    
         </Route>
       </Routes>
     </BrowserRouter>

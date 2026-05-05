@@ -11,7 +11,7 @@ export default function Header({ showBack = false }: HeaderProps) {
   const { user } = useAuth()
 
   const roleLabel: Record<string, string> = {
-    victim: 'Vítima',
+    victim: 'Usuário Comum',
     volunteer: 'Voluntário(a)',
     support_unit: 'Instituição',
     admin: 'Administrador',

@@ -7,19 +7,44 @@ import {
   ClipboardText,
   Gear,
   SignOut,
+  Medal,
 } from 'phosphor-react'
 
-const menuItems = [
-  { icon: House, label: 'Dashboard', path: '/home' },
-  { icon: Buildings, label: 'Unidades de Apoio', path: '/support-units' },
-  { icon: Plus, label: 'Criar nova Unidade', path: '/support-units/new' },
-  { icon: ClipboardText, label: 'Candidaturas', path: '/candidatures' },
-]
+interface MenuItem {
+  icon: any
+  label: string
+  path: string
+}
+
+const menuByRole: Record<string, MenuItem[]> = {
+  victim: [
+    { icon: House, label: 'Dashboard', path: '/home' },
+    { icon: Buildings, label: 'Unidades de Apoio', path: '/support-units' },
+  ],
+  volunteer: [
+    { icon: House, label: 'Dashboard', path: '/home' },
+    { icon: Buildings, label: 'Unidades de Apoio', path: '/support-units' },
+    { icon: ClipboardText, label: 'Candidaturas', path: '/candidatures' },
+    { icon: Medal, label: 'Certificados', path: '/certificates' },
+  ],
+  support_unit: [
+    { icon: House, label: 'Dashboard', path: '/home' },
+    { icon: Buildings, label: 'Unidades de Apoio', path: '/support-units' },
+    { icon: Plus, label: 'Criar nova Unidade', path: '/support-units/new' },
+    { icon: ClipboardText, label: 'Candidaturas', path: '/candidatures' },
+  ],
+  admin: [
+    { icon: House, label: 'Dashboard', path: '/home' },
+    { icon: Buildings, label: 'Unidades de Apoio', path: '/support-units' },
+  ],
+}
 
 export default function Sidebar() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { logout } = useAuth()
+  const { logout, user } = useAuth()
+
+  const menuItems = user ? menuByRole[user.role] || [] : []
 
   function handleLogout() {
     logout()

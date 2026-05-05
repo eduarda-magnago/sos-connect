@@ -55,7 +55,7 @@ export default function SupportUnits() {
               <h2 className="text-base font-semibold text-gray-900 mb-4">Minhas de Unidades de Apoio</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {myUnits.map((unit) => (
-                  <UnitCard key={unit._id} unit={unit} isOwner />
+                  <UnitCard key={unit._id} unit={unit} role={user?.role || ''} isOwner />
                 ))}
               </div>
             </section>
@@ -63,10 +63,10 @@ export default function SupportUnits() {
 
           {/* Outras unidades */}
           <section>
-            <h2 className="text-base font-semibold text-gray-900 mb-4">Outras unidades de Apoio</h2>
+            <h2 className="text-base font-semibold text-gray-900 mb-4">Unidades de Apoio</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {otherUnits.map((unit) => (
-                <UnitCard key={unit._id} unit={unit} />
+                <UnitCard key={unit._id} unit={unit} role={user?.role || ''} />
               ))}
             </div>
           </section>

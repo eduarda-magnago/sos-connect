@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import { useAuth } from '../../contexts/AuthContext'
 import api from '../../services/api'
 import Map from '../../components/Map'
+import Candidatures from '../Candidatures'
 
 interface SupportUnit {
   _id: string
@@ -67,7 +67,7 @@ export default function Home() {
       <h1 className="text-xl font-semibold mb-6" style={{ color: 'var(--color-foreground)' }}>
          Encontre ajuda perto de você!
        </h1>
-      
+       
       {/* Mapa */}
       <div
   className="w-full max-w-5xl mx-auto px-4 rounded-2xl overflow-hidden mb-6 shadow-sm"

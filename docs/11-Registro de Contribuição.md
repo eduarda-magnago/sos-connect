@@ -22,7 +22,7 @@ Coletar e documentar todos os requisitos necessários para o desenvolvimento do 
 
 - **Analista de Requisitos**: Mayara de Oliveira
 - **Gerente de Projeto**: Eduarda Azeredo (PO) e Carolina Longhini (Scrum Master) 
-- **Equipe de Desenvolvimento (Documentação)**: Carolina Longhini , Eduarda Azeredo, Eryc Lisboa, Igor Gabriel, Lucy Elaine, Maressa Társis e Mayara de Oliveira
+- **Equipe de Desenvolvimento (Documentação)**: Carolina Longhini, Eduarda Azeredo, Eryc Lisboa, Igor Gabriel, Lucy Elaine, Maressa Társis e Mayara de Oliveira
   
 ### Prazo
 
@@ -44,8 +44,8 @@ Desenvolver a lógica de negócio e os serviços de backend do projeto.
 
 ### Responsáveis
 
-- **Desenvolvedor Backend**: Carolina Longhini , Eduarda Azeredo, Eryc Lisboa, Igor Gabriel, Lucy Elaine, Maressa Társis e Mayara de Oliveira.
-- **Engenheiro de Dados**: Mayara de Oliveira .
+- **Desenvolvedor Backend**: Carolina Longhini, Eduarda Azeredo, Eryc Lisboa, Igor Gabriel, Lucy Elaine, Maressa Társis e Mayara de Oliveira
+- **Engenheiro de Dados**: Mayara de Oliveira
 
 ### Prazo
 
@@ -71,8 +71,8 @@ Desenvolver a interface web do projeto, garantindo uma experiência de usuário 
 
 ### Responsáveis
 
-- **Desenvolvedor Frontend**:  Carolina Longhini , Eduarda Azeredo, Eryc Lisboa, Igor Gabriel, Lucy Elaine, Maressa Társis e Mayara de Oliveira
-- **Designer UI/UX**: A definir 
+- **Desenvolvedor Frontend**:  Carolina Longhini, Eduarda Azeredo, Eryc Lisboa, Igor Gabriel, Lucy Elaine, Maressa Társis e Mayara de Oliveira
+- **Designer UI/UX**: Eduarda Azeredo
 
 ### Prazo
 

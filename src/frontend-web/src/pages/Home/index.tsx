@@ -15,7 +15,6 @@ interface SupportUnit {
 }
 
 export default function Home() {
-  const { user } = useAuth()
 
   const [units, setUnits] = useState<SupportUnit[]>([])
   const [loading, setLoading] = useState(true)

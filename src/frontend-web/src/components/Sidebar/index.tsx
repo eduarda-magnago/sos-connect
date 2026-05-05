@@ -19,7 +19,7 @@ const menuItems = [
 export default function Sidebar() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { user, logout } = useAuth()
+  const { logout } = useAuth()
 
   function handleLogout() {
     logout()
@@ -47,7 +47,7 @@ export default function Sidebar() {
             <button
               key={item.path}
               onClick={() => navigate(item.path)}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors  cursor-pointer ${
                 isActive
                   ? 'bg-white/20 text-white'
                   : 'text-gray-400 to-sidebar-hover hover:text-white'
@@ -61,7 +61,7 @@ export default function Sidebar() {
       </nav>
           {/* Footer */}
       <div className="p-3 space-y-1">
-        <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-400 hover:bg-white/10 hover:text-white transition-colors">
+        <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-400 hover:bg-white/10 hover:text-white transition-colors cursor-pointer">
           <Gear size={18} />
           Configurações
         </button>

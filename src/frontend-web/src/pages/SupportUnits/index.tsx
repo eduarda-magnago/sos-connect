@@ -63,7 +63,7 @@ export default function SupportUnits() {
 
           {/* Outras unidades */}
           <section>
-            <h2 className="text-base font-semibold text-gray-900 mb-4">Outras Unidades de Apoio</h2>
+            <h2 className="text-base font-semibold text-gray-900 mb-4">Unidades de Apoio</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {otherUnits.map((unit) => (
                 <UnitCard key={unit._id} unit={unit} role={user?.role || ''} />

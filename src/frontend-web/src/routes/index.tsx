@@ -6,6 +6,8 @@ import Home from '../pages/Home'
 import SupportUnits from '../pages/SupportUnits'
 import CreateSupportUnit from '../pages/CreateSupportUnit'
 import type { JSX } from 'react'
+import Donations from '../pages/SupportUnits/Donations'
+import Missions from '../pages/SupportUnits/Missions'
 
 function PrivateRoute({ children }: { children: JSX.Element }) {
   const { isAuthenticated } = useAuth()
@@ -29,7 +31,9 @@ export default function AppRoutes() {
         >
           <Route path="/home" element={<Home />} />
           <Route path="/support-units" element={<SupportUnits />} />
-          <Route path="/support-units/new" element={<CreateSupportUnit />} />    
+          <Route path="/support-units/new" element={<CreateSupportUnit />} />  
+          <Route path="/support-units/:id/donations" element={<Donations />} />
+          <Route path="/support-units/:id/missions" element={<Missions />} />  
         </Route>
       </Routes>
     </BrowserRouter>

@@ -31,48 +31,50 @@ export default function UnitCard({ unit, role, isOwner = false }: UnitCardProps)
   const renderButtons = () => {
     if (role === 'volunteer') {
       return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-center mt-auto gap-2">
           <button
             onClick={() => navigate(`/support-units/${unit._id}/donations`)}
-            className="text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors"
+            className="text-xs cursor-pointer border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors"
           >
-            Doação
+            Fazer uma Doação
           </button>
           <button
             onClick={() => navigate(`/support-units/${unit._id}/missions`)}
-            className="text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors"
+            className="text-xs cursor-pointer border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors"
           >
-            Missão
+            Missões de Ajuda
           </button>
         </div>
       )
     } else if (role === 'victim') {
       return (
-        <button
-          onClick={() => navigate(`/support-units/${unit._id}`)}
-          className="mx-auto text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors"
-        >
-          Visualizar
-        </button>
+        <div className="flex justify-center mt-auto">
+          <button
+            onClick={() => navigate(`/support-units/${unit._id}`)}
+            className="cursor-pointer text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors"
+          >
+            Visualizar
+          </button>
+        </div>
       )
     } else if (role === 'support_unit' && isOwner) {
       return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-center mt-auto gap-2">
           <button
             onClick={() => navigate(`/support-units/${unit._id}/donations`)}
-            className="text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors"
+            className="text-xs cursor-pointer border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors"
           >
             Doação
           </button>
           <button
             onClick={() => navigate(`/support-units/${unit._id}/missions`)}
-            className="text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors"
+            className="text-xs cursor-pointer border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors"
           >
             Missão
           </button>
           <button
             onClick={() => navigate(`/support-units/${unit._id}/edit`)}
-            className="ml-auto text-gray-400 hover:text-gray-600"
+            className="ml-auto text-gray-400 hover:text-gray-600 cursor-pointer"
           >
             <PencilSimple size={18} color='gray' />
           </button>
@@ -80,26 +82,28 @@ export default function UnitCard({ unit, role, isOwner = false }: UnitCardProps)
       )
     } else if (role === 'support_unit' && !isOwner) {
       return (
-        <button
+        <div className="flex justify-center mt-auto">
+          <button
           onClick={() => navigate(`/support-units/${unit._id}`)}
-          className="mx-auto text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors"
+          className="mx-auto cursor-pointer text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors"
         >
           Visualizar
         </button>
+        </div>  
       )
     } else if (role === 'admin') {
       return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-center mt-auto gap-2">
           <button
             onClick={() => navigate(`/support-units/${unit._id}`)}
-            className="text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors"
+            className="text-xs cursor-pointer border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors"
           >
             Visualizar
           </button>
           {!unit.validated && (
             <button
               onClick={() => {/* approve logic */}}
-              className="text-xs border border-green-200 text-green-600 rounded-lg px-4 py-1.5 hover:bg-green-50 transition-colors"
+              className="text-xs cursor-pointer border border-green-200 text-green-600 rounded-lg px-4 py-1.5 hover:bg-green-50 transition-colors"
             >
               <CheckCircle size={16} />
               Aprovar
@@ -107,7 +111,7 @@ export default function UnitCard({ unit, role, isOwner = false }: UnitCardProps)
           )}
           <button
             onClick={() => {/* delete logic */}}
-            className="text-xs border border-red-200 text-red-600 rounded-lg px-4 py-1.5 hover:bg-red-50 transition-colors"
+            className="text-xs cursor-pointer border border-red-200 text-red-600 rounded-lg px-4 py-1.5 hover:bg-red-50 transition-colors"
           >
           
             Excluir
@@ -122,12 +126,18 @@ export default function UnitCard({ unit, role, isOwner = false }: UnitCardProps)
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 h-full flex flex-col">
       <div className="flex items-center justify-between mb-3">
         <h3 className={`font-semibold text-gray-900 ${isOwner ? '' : 'text-sm'}`}>{unit.name}</h3>
-        <StatusBadge status={unit.status} />
+          <StatusBadge status={unit.status} />
       </div>
 
       <div className="text-xs text-gray-400 space-y-1 mb-4">
-        <p>📍 {addressLoading ? 'Carregando endereço...' : address}</p>
-        <p>👥 Capacidade restante: {unit.capacity - unit.current_occupancy}</p>
+        <div className="flex items-start gap-2">
+          <img src="/icons/location.png" alt="Endereço" className="w-4 h-4 mt-0.5 shrink-0" />
+          <span>{addressLoading ? 'Carregando endereço...' : address}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <img src="/icons/capacity.png" alt="Capacidade" className="w-4 h-4 shrink-0" />
+          <span>Capacidade restante: {unit.capacity - unit.current_occupancy}</span>
+        </div>
       </div>
 
       {renderButtons()}

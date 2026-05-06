@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import UnitModal from '../UnitModal/index'
 import { useNavigate } from 'react-router-dom'
 import { PencilSimple, CheckCircle, Trash } from 'phosphor-react'
 import StatusBadge from '../StatusBadge/index'
@@ -13,6 +15,7 @@ interface SupportUnit {
   location: { coordinates: number[] }
   services_available: string[]
   support_unit_user_id: string
+  contact: { email: string; phone: string }
 }
 
 interface UnitCardProps {
@@ -22,6 +25,7 @@ interface UnitCardProps {
 }
 
 export default function UnitCard({ unit, role, isOwner = false }: UnitCardProps) {
+  const [modalOpen, setModalOpen] = useState(false)
   const navigate = useNavigate()
   const { address, loading: addressLoading } = useReverseGeocode(
     unit.location?.coordinates[1] || 0,
@@ -50,11 +54,12 @@ export default function UnitCard({ unit, role, isOwner = false }: UnitCardProps)
       return (
         <div className="flex justify-center mt-auto">
           <button
-            onClick={() => navigate(`/support-units/${unit._id}`)}
+            onClick={() => setModalOpen(true)} 
             className="cursor-pointer text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors"
           >
             Visualizar
           </button>
+          <UnitModal unit={modalOpen ? unit : null} onClose={() => setModalOpen(false)} />
         </div>
       )
     } else if (role === 'support_unit' && isOwner) {
@@ -84,22 +89,24 @@ export default function UnitCard({ unit, role, isOwner = false }: UnitCardProps)
       return (
         <div className="flex justify-center mt-auto">
           <button
-          onClick={() => navigate(`/support-units/${unit._id}`)}
-          className="mx-auto cursor-pointer text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors"
-        >
-          Visualizar
-        </button>
+            onClick={() => setModalOpen(true)} 
+            className="cursor-pointer text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors"
+          >
+            Visualizar
+          </button>
+          <UnitModal unit={modalOpen ? unit : null} onClose={() => setModalOpen(false)} />
         </div>  
       )
     } else if (role === 'admin') {
       return (
         <div className="flex items-center justify-center mt-auto gap-2">
           <button
-            onClick={() => navigate(`/support-units/${unit._id}`)}
+            onClick={() => setModalOpen(true)}
             className="text-xs cursor-pointer border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors"
           >
             Visualizar
           </button>
+          <UnitModal unit={modalOpen ? unit : null} onClose={() => setModalOpen(false)} />
           {!unit.validated && (
             <button
               onClick={() => {/* approve logic */}}
@@ -113,7 +120,6 @@ export default function UnitCard({ unit, role, isOwner = false }: UnitCardProps)
             onClick={() => {/* delete logic */}}
             className="text-xs cursor-pointer border border-red-200 text-red-600 rounded-lg px-4 py-1.5 hover:bg-red-50 transition-colors"
           >
-          
             Excluir
           </button>
         </div>

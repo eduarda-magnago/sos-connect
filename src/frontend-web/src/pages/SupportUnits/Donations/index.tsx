@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import api from '../../../services/api'
 import { useReverseGeocode } from '../../../utils/geocoding'
+import { useNavigate } from 'react-router-dom'
 
 interface DonationNeed {
   _id: string
@@ -26,6 +27,8 @@ export default function Donations() {
     unit?.location?.coordinates[1] || 0,
     unit?.location?.coordinates[0] || 0
   )
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     async function load() {
@@ -83,8 +86,11 @@ export default function Donations() {
                 className="flex items-center justify-between border border-gray-100 rounded-lg px-4 py-3"
               >
                 <span className="text-sm text-gray-700">{donation.item_name}</span>
-                <button className="text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors cursor-pointer">
-                  Doar
+                <button
+                onClick={() => navigate(`/support-units/${id}/donations/${donation._id}`)}
+                className="text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors cursor-pointer"
+                >
+                Doar
                 </button>
               </div>
             ))}

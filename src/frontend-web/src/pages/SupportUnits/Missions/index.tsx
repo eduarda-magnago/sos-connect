@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import api from '../../../services/api'
 import { useReverseGeocode } from '../../../utils/geocoding'
+import { useNavigate } from 'react-router-dom'
 
 interface Mission {
   _id: string
@@ -29,6 +30,8 @@ export default function Missions() {
     unit?.location?.coordinates[1] || 0,
     unit?.location?.coordinates[0] || 0
   )
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     async function load() {
@@ -89,8 +92,11 @@ export default function Missions() {
                   <span className="text-sm font-medium text-gray-800">{mission.title}</span>
                   <span className="text-xs text-gray-400">{mission.category} · {new Date(mission.date).toLocaleDateString('pt-BR')}</span>
                 </div>
-                <button className="text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors cursor-pointer">
-                  Participar
+                <button
+                    onClick={() => navigate(`/support-units/${id}/missions/${mission._id}`)}
+                    className="text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors cursor-pointer"
+                    >
+                    Participar
                 </button>
               </div>
             ))}

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import UnitModal from '../UnitModal/index'
 import { useNavigate } from 'react-router-dom'
-import { PencilSimple, CheckCircle, Trash } from 'phosphor-react'
+import { PencilSimple, } from 'phosphor-react'
 import StatusBadge from '../StatusBadge/index'
 import { useReverseGeocode } from '../../utils/geocoding'
 
@@ -22,9 +22,11 @@ interface UnitCardProps {
   unit: SupportUnit
   role: string
   isOwner?: boolean
+  onApprove?: (unitId: string) => void
+  onDelete?: (unitId: string) => void
 }
 
-export default function UnitCard({ unit, role, isOwner = false }: UnitCardProps) {
+export default function UnitCard({ unit, role, isOwner = false, onApprove, onDelete }: UnitCardProps) {
   const [modalOpen, setModalOpen] = useState(false)
   const navigate = useNavigate()
   const { address, loading: addressLoading } = useReverseGeocode(
@@ -79,9 +81,10 @@ export default function UnitCard({ unit, role, isOwner = false }: UnitCardProps)
           </button>
           <button
             onClick={() => navigate(`/support-units/${unit._id}/edit`)}
+            title="Editar unidade"
             className="ml-auto text-gray-400 hover:text-gray-600 cursor-pointer"
           >
-            <PencilSimple size={18} color='gray' />
+            <PencilSimple size={18} color="gray" />
           </button>
         </div>
       )
@@ -107,21 +110,24 @@ export default function UnitCard({ unit, role, isOwner = false }: UnitCardProps)
             Visualizar
           </button>
           <UnitModal unit={modalOpen ? unit : null} onClose={() => setModalOpen(false)} />
-          {!unit.validated && (
+          {!unit.validated && onApprove && (
             <button
-              onClick={() => {/* approve logic */}}
+              onClick={() => onApprove(unit._id)}
               className="text-xs cursor-pointer border border-green-200 text-green-600 rounded-lg px-4 py-1.5 hover:bg-green-50 transition-colors"
             >
-              <CheckCircle size={16} />
+          
               Aprovar
             </button>
           )}
-          <button
-            onClick={() => {/* delete logic */}}
-            className="text-xs cursor-pointer border border-red-200 text-red-600 rounded-lg px-4 py-1.5 hover:bg-red-50 transition-colors"
-          >
-            Excluir
-          </button>
+          {onDelete && (
+            <button
+              onClick={() => onDelete(unit._id)}
+              className="text-xs cursor-pointer border border-red-200 text-red-600 rounded-lg px-4 py-1.5 hover:bg-red-50 transition-colors"
+            >
+             
+              Excluir
+            </button>
+          )}
         </div>
       )
     }

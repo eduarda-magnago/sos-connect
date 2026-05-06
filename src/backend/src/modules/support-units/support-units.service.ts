@@ -9,6 +9,7 @@ import { Model } from 'mongoose';
 import { SupportUnit, SupportUnitDocument } from './schemas/support-unit.schema';
 import { CreateSupportUnitDto } from './dto/create-support-unit.dto';
 import { UpdateSupportUnitDto } from './dto/update-support-unit.dto';
+import { UserRole } from '../users/schemas/user.schema';
 
 @Injectable()
 export class SupportUnitsService {
@@ -108,8 +109,16 @@ export class SupportUnitsService {
       );
     }
 
+    const payload: any = { ...updateDto };
+    if (updateDto.location) {
+      payload.location = {
+        type: 'Point',
+        coordinates: [updateDto.location.lng, updateDto.location.lat],
+      };
+    }
+
     const updated = await this.supportUnitModel
-      .findByIdAndUpdate(id, updateDto, { new: true })
+      .findByIdAndUpdate(id, payload, { new: true })
       .exec();
 
     if (!updated) {
@@ -132,10 +141,13 @@ export class SupportUnitsService {
     return this.supportUnitModel.find({ validated: false }).exec();
   }
 
-  async remove(id: string, userId: string): Promise<void> {
+  async remove(id: string, userId: string, userRole: UserRole): Promise<void> {
     const unit = await this.findOne(id);
 
-    if (unit.support_unit_user_id.toString() !== userId) {
+    if (
+      unit.support_unit_user_id.toString() !== userId &&
+      userRole !== UserRole.ADMIN
+    ) {
       throw new ForbiddenException(
         'Você não tem permissão para deletar esta unidade',
       );

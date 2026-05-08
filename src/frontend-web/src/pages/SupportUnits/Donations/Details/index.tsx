@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom'
 import api from '../../../../services/api'
 import { useReverseGeocode } from '../../../../utils/geocoding'
 
+// donation x volunteer
+
 interface DonationNeed {
   _id: string
   item_name: string
@@ -32,6 +34,7 @@ export default function DonationDetail() {
   const [unit, setUnit] = useState<SupportUnit | null>(null)
   const [donation, setDonation] = useState<DonationNeed | null>(null)
   const [loading, setLoading] = useState(true)
+
 
   const { address, loading: addressLoading } = useReverseGeocode(
     unit?.location?.coordinates[1] || 0,
@@ -98,7 +101,7 @@ export default function DonationDetail() {
           <p className="text-xs text-gray-500">Prioridade: <span className="text-gray-700">{priorityLabel[donation.priority] ?? donation.priority}</span></p>
 
           <div className="pt-2 flex justify-end">
-            <button className="text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors cursor-pointer">
+            <button  className="text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors cursor-pointer">
               Candidatar-se para doação
             </button>
           </div>

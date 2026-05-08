@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import api from '../../../../services/api'
 import { useReverseGeocode } from '../../../../utils/geocoding'
+import ApplicationModal from '../../components/ApplicationModal'
+import SuccessModal from '../../components/SuccessModal'
+import { useAuth } from '../../../../contexts/AuthContext'
 
 interface Mission {
   _id: string
@@ -45,6 +48,10 @@ export default function MissionDetail() {
   const [unit, setUnit] = useState<SupportUnit | null>(null)
   const [mission, setMission] = useState<Mission | null>(null)
   const [loading, setLoading] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isSuccessOpen, setIsSuccessOpen] = useState(false)
+  const [alreadyApplied, setAlreadyApplied] = useState(false)
+  const { user } = useAuth()
 
   const { address, loading: addressLoading } = useReverseGeocode(
     unit?.location?.coordinates[1] || 0,
@@ -68,6 +75,36 @@ export default function MissionDetail() {
     }
     load()
   }, [id, missionId])
+
+  useEffect(() => {
+  async function checkIfAlreadyApplied() {
+    if (!user?._id || !missionId) return
+
+    try {
+      const res = await api.get('/mission-volunteers')
+
+      const exists = res.data.some((application: any) => {
+        const applicationUserId =
+          typeof application.user_id === 'string'
+            ? application.user_id
+            : application.user_id?._id
+
+        const applicationMissionId =
+          typeof application.mission_id === 'string'
+            ? application.mission_id
+            : application.mission_id?._id
+
+        return applicationUserId === user._id && applicationMissionId === missionId
+      })
+
+      setAlreadyApplied(exists)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  checkIfAlreadyApplied()
+}, [user, missionId])
 
   if (loading) {
     return (
@@ -113,13 +150,44 @@ export default function MissionDetail() {
           <p className="text-xs text-gray-500">Descrição: <span className="text-gray-700">{mission.description}</span></p>
 
           <div className="pt-2 flex justify-end">
-            <button className="text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors cursor-pointer">
-              Candidatar-se para missão
-            </button>
+              <button
+                disabled={alreadyApplied}
+                onClick={() => setIsModalOpen(true)}
+                className={`text-xs rounded-lg px-4 py-1.5 transition-colors
+                  ${
+                    alreadyApplied
+                      ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                      : 'border border-gray-200 hover:bg-gray-50 cursor-pointer'
+                  }`}
+              >
+                {alreadyApplied
+                  ? 'Candidatura enviada'
+                  : 'Candidatar-se para missão'}
+              </button>
+              <ApplicationModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSubmit={async () => {
+                  await api.post('/mission-volunteers', {
+                    mission_id: missionId,
+                  })
+
+                  setAlreadyApplied(true)
+
+                  setIsModalOpen(false)
+                  setIsSuccessOpen(true)
+                }}
+              />
+
+              <SuccessModal
+                isOpen={isSuccessOpen}
+                onClose={() => setIsSuccessOpen(false)}
+              />
           </div>
         </div>
 
       </div>
+      
     </div>
   )
 }

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import api from '../../../../services/api'
 import { useReverseGeocode } from '../../../../utils/geocoding'
+import ApplicationModal from '../../components/ApplicationModal'
+import SuccessModal from '../../components/SuccessModal'
 
 // donation x volunteer
 
@@ -34,6 +36,8 @@ export default function DonationDetail() {
   const [unit, setUnit] = useState<SupportUnit | null>(null)
   const [donation, setDonation] = useState<DonationNeed | null>(null)
   const [loading, setLoading] = useState(true)
+  const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false)
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
 
 
   const { address, loading: addressLoading } = useReverseGeocode(
@@ -71,6 +75,11 @@ export default function DonationDetail() {
 
   const capacidadeRestante = unit.capacity - unit.current_occupancy
 
+  async function handleDonationApplication() {
+  setIsApplicationModalOpen(false)
+  setIsSuccessModalOpen(true)
+  }
+
   return (
     <div className="w-full">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4">
@@ -101,13 +110,23 @@ export default function DonationDetail() {
           <p className="text-xs text-gray-500">Prioridade: <span className="text-gray-700">{priorityLabel[donation.priority] ?? donation.priority}</span></p>
 
           <div className="pt-2 flex justify-end">
-            <button  className="text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors cursor-pointer">
+            <button type="button" onClick={() => setIsApplicationModalOpen(true)} className="text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors cursor-pointer">
               Candidatar-se para doação
             </button>
           </div>
         </div>
 
       </div>
+      <ApplicationModal
+        isOpen={isApplicationModalOpen}
+        onClose={() => setIsApplicationModalOpen(false)}
+        onSubmit={handleDonationApplication}
+      />
+
+      <SuccessModal
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+      />
     </div>
   )
 }

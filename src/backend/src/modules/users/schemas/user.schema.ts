@@ -4,10 +4,10 @@ import { Document } from 'mongoose';
 export type UserDocument = User & Document;
 
 export enum UserRole {
-  VICTIM       = 'victim',
-  VOLUNTEER    = 'volunteer',
+  VICTIM = 'victim',
+  VOLUNTEER = 'volunteer',
   SUPPORT_UNIT = 'support_unit',
-  ADMIN        = 'admin',
+  ADMIN = 'admin',
 }
 
 @Schema({
@@ -21,7 +21,6 @@ export enum UserRole {
     },
   },
 })
-
 export class User {
   @Prop({ required: true, trim: true })
   name: string;
@@ -40,6 +39,9 @@ export class User {
 
   @Prop({ trim: true })
   fcm_token?: string;
+
+  @Prop({ trim: true })
+  avatar?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

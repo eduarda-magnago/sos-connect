@@ -90,10 +90,6 @@ export class SupportUnitsController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id') id: string, @CurrentUser() user: UserDocument) {
-    return this.supportUnitsService.remove(
-      id,
-      user._id.toString(),
-      user.role,
-    );
+    return this.supportUnitsService.remove(id, user._id.toString(), user.role);
   }
 }

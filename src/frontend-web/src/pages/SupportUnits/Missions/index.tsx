@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import api from '../../../services/api'
 import { useReverseGeocode } from '../../../utils/geocoding'
 import { useAuth } from '../../../contexts/AuthContext'
@@ -29,6 +29,7 @@ interface SupportUnit {
 export default function Missions() {
   const { id } = useParams()
   const { user } = useAuth()
+  const navigate = useNavigate()
   const [unit, setUnit] = useState<SupportUnit | null>(null)
   const [missions, setMissions] = useState<Mission[]>([])
   const [loading, setLoading] = useState(true)
@@ -59,6 +60,7 @@ export default function Missions() {
   }, [id])
 
   const isOwner = !!(user && unit && user._id === unit.support_unit_user_id)
+  const isVolunteer = user?.role === 'volunteer'
 
   async function handleCreate(data: MissionFormData) {
     const res = await api.post('/missions', { ...data, support_unit_id: id })
@@ -137,7 +139,7 @@ export default function Missions() {
                   <span className="text-xs text-gray-400">{mission.category} · {new Date(mission.date).toLocaleDateString('pt-BR')}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  {isOwner && (
+                  {isOwner ? (
                     <>
                       <button
                         onClick={() => setEditingMission(mission)}
@@ -152,7 +154,14 @@ export default function Missions() {
                         Excluir
                       </button>
                     </>
-                  )}
+                  ) : isVolunteer ? (
+                    <button
+                      onClick={() => navigate(`/support-units/${id}/missions/${mission._id}`)}
+                      className="text-xs border border-gray-200 rounded-lg px-4 py-1.5 hover:bg-gray-50 transition-colors cursor-pointer"
+                    >
+                      Participar
+                    </button>
+                  ) : null}
                 </div>
               </div>
             ))}

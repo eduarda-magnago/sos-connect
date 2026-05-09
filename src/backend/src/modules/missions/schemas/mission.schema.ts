@@ -55,6 +55,12 @@ export class Mission {
 
   @Prop({ required: true })
   date: Date;
+
+  @Prop({ trim: true })
+  contact_phone?: string;
+
+  @Prop({ trim: true })
+  delivery_time?: string;
 }
 
 export const MissionSchema = SchemaFactory.createForClass(Mission);

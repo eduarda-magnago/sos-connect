@@ -40,4 +40,12 @@ export class UpdateMissionDto {
   @IsDateString()
   @IsOptional()
   date?: string;
+
+  @IsString()
+  @IsOptional()
+  contact_phone?: string;
+
+  @IsString()
+  @IsOptional()
+  delivery_time?: string;
 }

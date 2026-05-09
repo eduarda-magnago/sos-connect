@@ -38,4 +38,12 @@ export class CreateMissionDto {
 
   @IsDateString()
   date: string;
+
+  @IsString()
+  @IsOptional()
+  contact_phone?: string;
+
+  @IsString()
+  @IsOptional()
+  delivery_time?: string;
 }

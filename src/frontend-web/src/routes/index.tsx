@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import Layout from "../components/Layout";
 import Login from "../pages/Login";
+import LandingPage from "../pages/LandingPage";
 import Home from "../pages/Home";
 import SupportUnits from "../pages/SupportUnits";
 import CreateSupportUnit from "../pages/CreateSupportUnit";
@@ -24,7 +25,9 @@ export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Login />} />
 
         <Route
           element={

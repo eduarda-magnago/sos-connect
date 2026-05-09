@@ -12,6 +12,7 @@ import DonationDetails from '../pages/SupportUnits/Donations/Details'
 import MissionDetails from '../pages/SupportUnits/Missions/Details'
 import EditSupportUnit from '../pages/EditSupportUnit'
 import Candidatures from '../pages/Candidatures'
+import Certificates from '../pages/Certificates'
 
 function PrivateRoute({ children }: { children: JSX.Element }) {
   const { isAuthenticated } = useAuth()
@@ -42,7 +43,7 @@ export default function AppRoutes() {
           <Route path="/support-units/:id/missions" element={<Missions />} />
           <Route path="/support-units/:id/donations/:donationId" element={<DonationDetails />} />
           <Route path="/support-units/:id/missions/:missionId" element={<MissionDetails />} />
-
+          <Route path="/certificates" element={<Certificates />} />
         </Route>
       </Routes>
     </BrowserRouter>

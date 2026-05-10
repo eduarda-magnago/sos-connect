@@ -12,6 +12,7 @@ import { MissionsModule } from './modules/missions/missions.module';
 import { MissionVolunteersModule } from './modules/mission-volunteers/mission-volunteers.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { CertificatesModule } from './modules/certificates/certificates.module';
+import { GeocodingModule } from './modules/geocoding/geocoding.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { CertificatesModule } from './modules/certificates/certificates.module';
     MissionVolunteersModule,
     NotificationsModule,
     CertificatesModule,
+    GeocodingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

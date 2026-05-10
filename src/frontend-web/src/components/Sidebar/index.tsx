@@ -79,7 +79,7 @@ export default function Sidebar() {
         })}
       </nav>
       {/* Footer */}
-      <div className="p-3 space-y-1">
+      <div className="p-3 space-y-1 mb-5">
         <button
           onClick={() => navigate("/settings")}
           className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors cursor-pointer ${

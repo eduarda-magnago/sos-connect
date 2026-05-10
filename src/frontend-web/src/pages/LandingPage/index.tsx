@@ -106,13 +106,13 @@ export default function LandingPage() {
       <div className="min-h-screen font-sans bg-white">
 
         {/* ── NAVBAR ── */}
-        <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-100">
+        <header className="fixed top-0 left-0 right-0 z-50 bg-white backdrop-blur-sm border-b border-gray-100">
           <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-            <img src={logoDark} alt="SOS Connect" className="h-50" />
+            <img src={logoDark} alt="SOS Connect" className="h-50 cursor-pointer" />
             <div className="flex items-center gap-3">
               <button
                 onClick={() => navigate("/login")}
-                className="text-sm px-5 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
+                className="text-sm px-5 py-2 rounded-lg bg-[#f9f9f9] border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
               >
                 Entrar
               </button>
@@ -157,7 +157,7 @@ export default function LandingPage() {
               <button
                 ref={heroBtnRef}
                 onClick={() => navigate("/register")}
-                className="px-15 py-3 bg-[#F32121]/75 text-white text-sm font-medium rounded-lg hover:bg-[#F32121] transition-colors cursor-pointer"
+                className="px-15 py-3 bg-[#F32121] text-white text-sm font-medium rounded-lg hover:bg-[#F32121] transition-colors cursor-pointer"
               >
                 Quero participar
               </button>
@@ -192,7 +192,7 @@ export default function LandingPage() {
                   {
                     img: imgDoacoes,
                     title: "Ajude com doações",
-                    desc: "Veja as necessidades específicas de cada unidade e doe o que realmente será útil — evitando desperdício e priorizando urgências.",
+                    desc: "Veja as necessidades específicas de cada unidade e doe o que realmente será útil, evitando desperdício e priorizando urgências.",
                   },
                 ].map((card) => (
                   <div
@@ -232,31 +232,31 @@ export default function LandingPage() {
         </section>
 
         {/* ── FOOTER ── */}
-        <footer className="bg-[#102848] text-white py-14">
-          <div className="max-w-7xl mx-auto px-16 flex flex-col md:flex-row justify-between items-start">
+        <footer className="bg-[#102848] text-white py-12">
+          <div className="max-w-7xl mx-auto px-16 flex flex-col md:flex-row justify-between items-center">
             <div className="flex flex-col">
-              <img src={logoLight} alt="SOS Connect" className="w-70 mb-6" />
-              <p className="text-[20px] text-gray-300 leading-relaxed max-w-sm">
+              <img src={logoLight} alt="SOS Connect" className="w-70 mb-6 cursor-pointer" />
+              <p className="text-[18px] text-gray-300 leading-relaxed max-w-sm">
                 Conectando pessoas e recursos para salvar vidas em momentos de emergência.
               </p>
             </div>
 
             <div className="mt-10 md:mt-0">
               <h4 className="text-3xl font-semibold mb-6">Contato</h4>
-              <ul className="space-y-5 text-lg text-gray-300">
+              <ul className="space-y-5 text-[18px] text-gray-300">
                 <li className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-md bg-[#1E3A5F] flex items-center justify-center">✉</div>
+                  <div className="w-10 h-10 rounded-md bg-[#1E3A5F] flex items-center justify-center cursor-pointer">✉</div>
                   <span>sosconnect@gmail.com</span>
                 </li>
                 <li className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-md bg-[#1E3A5F] flex items-center justify-center">
-                    <img src={telefone} className="w-4 mb-1" />
+                    <img src={telefone} className="w-4 mb-1 cursor-pointer" />
                   </div>
                   <span>+55 31 99862-3465</span>
                 </li>
                 <li className="flex items-center gap-4">
                   <div className="w-10 h-10 rounded-md bg-[#1E3A5F] flex items-center justify-center">
-                    <img src={localiza} className="w-5 mb-1" />
+                    <img src={localiza} className="w-5 mb-1 cursor-pointer" />
                   </div>
                   <span>Minas Gerais, Brasil</span>
                 </li>

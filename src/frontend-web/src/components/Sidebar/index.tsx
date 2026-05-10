@@ -31,7 +31,7 @@ const menuByRole: Record<string, MenuItem[]> = {
     { icon: House, label: "Dashboard", path: "/home" },
     { icon: Buildings, label: "Unidades de Apoio", path: "/support-units" },
     { icon: Plus, label: "Criar nova Unidade", path: "/support-units/new" },
-    { icon: ClipboardText, label: "Candidaturas", path: "/candidatures" },
+    { icon: ClipboardText, label: "Candidaturas", path: "/candidatures-institution" },
   ],
   admin: [
     { icon: House, label: "Dashboard", path: "/home" },

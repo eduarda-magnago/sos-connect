@@ -54,9 +54,9 @@ export default function Header({ showBack = false, showGreeting = false }: Heade
             <User size={18} className="text-gray-500" />
           )}
         </div>
-        <div className="text-right">
-          <p className="text-sm font-bold text-gray-900">{user?.name}</p>
-          <p className="text-xs text-gray-400">{roleLabel[user?.role || ""]}</p>
+        <div className="text-left">
+          <p className="text-sm font-bold text-gray-900 whitespace-nowrap">{user?.name}</p>
+          <p className="text-xs text-gray-400 whitespace-nowrap">{roleLabel[user?.role || ""]}</p>
         </div>
           <button
             onClick={handleLogout}

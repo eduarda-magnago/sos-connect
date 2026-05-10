@@ -6,7 +6,6 @@ import {
   Plus,
   ClipboardText,
   Gear,
-  SignOut,
   Medal,
 } from "phosphor-react";
 
@@ -46,10 +45,6 @@ export default function Sidebar() {
 
   const menuItems = user ? menuByRole[user.role] || [] : [];
 
-  function handleLogout() {
-    logout();
-    navigate("/");
-  }
 
   return (
     <aside className="w-[220px] bg-sidebar text-white flex flex-col">
@@ -96,13 +91,7 @@ export default function Sidebar() {
           <Gear size={18} />
           Configurações
         </button>
-        <button
-          onClick={handleLogout}
-          className="w-full flex cursor-pointer items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-400 hover:bg-white/10 hover:text-white transition-colors"
-        >
-          <SignOut size={18} />
-          Sair
-        </button>
+        
       </div>
     </aside>
   );

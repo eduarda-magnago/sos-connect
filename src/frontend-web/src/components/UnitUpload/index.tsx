@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react'
 
-interface AvatarUploadProps {
+interface UnitUploadProps {
   onChange?: (file: File) => void
   preview?: string
 }
 
-export default function AvatarUpload({ onChange, preview }: AvatarUploadProps) {
+export default function UnitUpload({ onChange, preview }: UnitUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [localPreview, setLocalPreview] = useState<string | null>(preview || null)
 
@@ -19,19 +19,19 @@ export default function AvatarUpload({ onChange, preview }: AvatarUploadProps) {
   return (
     <div className="flex items-center gap-6 mb-8">
       <div
-        className="w-20 h-20 rounded-full flex items-center justify-center overflow-hidden"
+        className="w-20 h-20 rounded-lg flex items-center justify-center overflow-hidden"
         style={{ backgroundColor: 'var(--color-border)' }}
       >
         {localPreview ? (
           <img src={localPreview} alt="preview" className="w-full h-full object-cover" />
         ) : (
-          <span className="text-3xl">👤</span>
+          <span className="text-3xl"></span>
         )}
       </div>
 
       <div>
         <p className="text-sm font-medium" style={{ color: 'var(--color-foreground)' }}>
-          Adicionar foto de perfil
+          Adicione uma foto da sua unidade de apoio.
         </p>
         <p className="text-xs mb-2" style={{ color: 'var(--color-muted)' }}>
           Faça o upload da sua foto.

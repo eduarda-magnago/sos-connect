@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import FormField from '../FormField'
 import FormSelect from '../FormSelect'
-import AvatarUpload from '../AvatarUpload'
+import UnitUpload from '../UnitUpload'
 import LocationField from '../LocationField'
 
 export interface SupportUnitFormData {
@@ -64,7 +64,7 @@ export default function SupportUnitForm({
       className="rounded-2xl shadow-sm p-8"
       style={{ backgroundColor: 'var(--color-card)', border: '1px solid var(--color-border)' }}
     >
-      <AvatarUpload />
+      <UnitUpload />
 
       <div className="grid grid-cols-2 gap-6">
         <FormField

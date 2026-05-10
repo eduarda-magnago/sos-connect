@@ -23,7 +23,7 @@ export default function LocationField({ lat, lng, onLocationChange }: LocationFi
   return (
     <div className="space-y-1">
       <div className="flex items-center justify-between">
-        <label className="text-xs" style={{ color: 'var(--color-muted)' }}>Endereço</label>
+        <label className="text-xs" style={{ color: 'var(--color-muted)' }}>Coordenadas</label>
         <button
           type="button"
           onClick={useMyLocation}

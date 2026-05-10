@@ -15,10 +15,19 @@ F --> H[Outros Serviços]
 
 ## Diagrama de Classes
 
-O diagrama de classes ilustra graficamente como será a estrutura do software, e como cada uma das classes da sua estrutura estarão interligadas. Essas classes servem de modelo para materializar os objetos que executarão na memória.
+O diagrama de classes abaixo ilustra a estrutura das principais entidades do sistema, derivadas dos schemas Mongoose implementados no backend (NestJS + MongoDB). Estão representadas as classes de domínio, seus atributos, enums associados e os relacionamentos entre elas.
 
-As referências abaixo irão auxiliá-lo na geração do artefato “Diagrama de Classes”.
+![Diagrama de Classes](img/class-diagram.png)
 
+### Visão geral dos relacionamentos
+
+- **User** centraliza autenticação e perfil; o `role` define o comportamento (vítima, voluntário, responsável por unidade de apoio ou admin).
+- **SupportUnit** é gerenciada por um `User` (responsável) e agrega objetos de valor `Contact` e `Location` (GeoJSON `Point`).
+- **Mission** é criada por uma `SupportUnit` e mantém uma lista direta de voluntários (`volunteer_ids`); a entidade **MissionVolunteer** é a tabela associativa que materializa essa inscrição com status próprio (pendente, aprovado, etc.) e índice único em `(mission_id, user_id)`.
+- **DonationNeed** representa itens demandados por uma `SupportUnit`, com prioridade e status de atendimento.
+- **Certificate** é emitido para um `User` voluntário ao concluir uma `Mission` em uma `SupportUnit`, sendo assinado por outro `User` (`issued_by`).
+
+> Referências:
 > - [Diagramas de Classes - Documentação da IBM](https://www.ibm.com/docs/pt-br/rational-soft-arch/9.6.1?topic=diagrams-class)
 > - [O que é um diagrama de classe UML? | Lucidchart](https://www.lucidchart.com/pages/pt/o-que-e-diagrama-de-classe-uml)
 

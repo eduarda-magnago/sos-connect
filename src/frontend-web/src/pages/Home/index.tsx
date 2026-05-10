@@ -103,10 +103,10 @@ export default function Home() {
        </h1>
        
       {/* Mapa */}
-      <div
-  className="w-full max-w-5xl mx-auto px-4 rounded-2xl overflow-hidden mb-6 shadow-sm"
-  style={{ border: '1px solid var(--color-border)', backgroundColor: 'var(--color-card)' }}
->
+        <div
+            className="w-full max-w-5xl mx-auto px-4 rounded-2xl overflow-hidden mb-6 shadow-sm"
+            style={{ border: '1px solid var(--color-border)', backgroundColor: 'var(--color-card)' }}
+          >
         <div className="p-4" style={{ borderBottom: '1px solid var(--color-border)' }}>
           <h2 className="text-sm font-medium" style={{ color: 'var(--color-foreground)' }}>
             Mapa de Unidades de Apoio

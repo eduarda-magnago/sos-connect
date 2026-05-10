@@ -98,7 +98,7 @@ export default function Sidebar() {
         </button>
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-400 hover:bg-red-500/20 hover:text-red-400 transition-colors"
+          className="w-full flex cursor-pointer items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-400 hover:bg-white/10 hover:text-white transition-colors"
         >
           <SignOut size={18} />
           Sair

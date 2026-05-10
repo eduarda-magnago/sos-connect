@@ -1,20 +1,21 @@
-
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import Sidebar from '../Sidebar'
 import type { ReactNode } from 'react'
-import Header from '../Header' 
+import Header from '../Header'
 
 interface LayoutProps {
   children?: ReactNode
-  showBack?: boolean
 }
 
-export default function Layout({ children, showBack = false }: LayoutProps) {
+export default function Layout({ children }: LayoutProps) {
+  const location = useLocation()
+  const isHome = location.pathname === '/home'
+
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header showBack={showBack} />
+        <Header showBack={!isHome} showGreeting={isHome} />
         <main className="flex-1 overflow-auto p-8 scrollbar-hide">
           {children}
           <Outlet />

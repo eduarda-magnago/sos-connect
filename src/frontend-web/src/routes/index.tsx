@@ -15,6 +15,7 @@ import EditSupportUnit from "../pages/EditSupportUnit";
 import Candidatures from "../pages/Candidatures";
 import Certificates from "../pages/Certificates";
 import Settings from "../pages/Settings";
+import CandidaturesInstitution from "../pages/CandidaturesInstitution";
 
 function PrivateRoute({ children }: { children: JSX.Element }) {
   const { isAuthenticated } = useAuth();
@@ -53,6 +54,7 @@ export default function AppRoutes() {
           />
           <Route path="/certificates" element={<Certificates />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/candidatures-institution" element={<CandidaturesInstitution />} />
         </Route>
       </Routes>
     </BrowserRouter>

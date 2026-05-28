@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useCallback, useState } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
+import { useFocusEffect, useRouter } from "expo-router";
 
-import { useAuth } from '../../contexts/AuthContext';
-import api from '../../services/api';
-import { colors } from '../../constants/theme';
+import { useAuth } from "../../contexts/AuthContext";
+import api from "../../services/api";
+import { colors } from "../../constants/theme";
 
-import { SearchBar } from '../../components/support-units/SearchBar';
-import { SupportUnit } from '../../components/support-units/SupportUnitCard';
-import { SupportUnitSection } from '../../components/support-units/SupportUnitSection';
-import { LoadingState } from '../../components/ui/LoadingState';
+import { SearchBar } from "../../components/support-units/SearchBar";
+import { SupportUnit } from "../../components/support-units/SupportUnitCard";
+import { SupportUnitSection } from "../../components/support-units/SupportUnitSection";
+import { LoadingState } from "../../components/ui/LoadingState";
 
 const statusConfig: Record<string, { label: string; color: string }> = {
-  open: { label: 'Disponível', color: colors.success },
-  full: { label: 'Lotado', color: colors.warning },
-  closed: { label: 'Fechado', color: colors.danger },
+  open: { label: "Disponível", color: colors.success },
+  full: { label: "Lotado", color: colors.warning },
+  closed: { label: "Fechado", color: colors.danger },
 };
 
 export default function SupportUnits() {
@@ -23,15 +23,17 @@ export default function SupportUnits() {
 
   const [units, setUnits] = useState<SupportUnit[]>([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    loadUnits();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadUnits();
+    }, []),
+  );
 
   async function loadUnits() {
     try {
-      const response = await api.get('/support-units');
+      const response = await api.get("/support-units");
       setUnits(response.data);
     } catch (error) {
       console.error(error);
@@ -41,18 +43,16 @@ export default function SupportUnits() {
   }
 
   const myUnits = units.filter(
-    (unit) => unit.support_unit_user_id === user?._id
+    (unit) => unit.support_unit_user_id === user?._id,
   );
 
   const otherUnits = units
     .filter((unit) => unit.support_unit_user_id !== user?._id)
-    .filter((unit) =>
-      unit.name.toLowerCase().includes(search.toLowerCase())
-    );
+    .filter((unit) => unit.name.toLowerCase().includes(search.toLowerCase()));
 
-function goToUnitDetail(unitId: string) {
-  router.push(`/unit/${unitId}` as any);
-}
+  function goToUnitDetail(unitId: string) {
+    router.push(`/unit/${unitId}` as any);
+  }
 
   function goToDonations(unitId: string) {
     router.push(`/(app)/unit/${unitId}/donations` as any);

@@ -6,7 +6,6 @@ import api from '../../services/api';
 import { colors } from '../../constants/theme';
 
 import { MapCard } from '../../components/home/MapCard';
-import { FilterCard } from '../../components/home/FilterCard';
 import { NearbyUnitCard } from '../../components/home/NearbyUnitCard';
 import { SectionHeader } from '../../components/ui/SectionHeader';
 
@@ -93,12 +92,6 @@ export default function Home() {
         loading={loading}
         userLocation={userLocation}
         statusConfig={statusConfig}
-      />
-
-      <FilterCard
-        selectedStatus={statusFilter}
-        onSelectStatus={handleFilter}
-        onClear={handleClearFilter}
       />
 
       <SectionHeader

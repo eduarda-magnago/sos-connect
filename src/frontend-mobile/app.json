@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "SOS Connect",
+    "slug": "sos-connect",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1a2744"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1a2744"
+      },
+      "package": "com.sosconnect.app",
+      "config": {
+        "googleMaps": {
+          "apiKey": "SUA_CHAVE_GOOGLE_MAPS_AQUI"
+        }
+      }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-location",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Permita acesso às fotos para adicionar imagem da unidade."
+        }
+      ]
+    ],
+    "scheme": "sos-connect",
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

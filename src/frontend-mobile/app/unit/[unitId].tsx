@@ -10,6 +10,9 @@ import { LoadingState } from '../../components/ui/LoadingState';
 import { UnitHeader } from '../../components/unit-detail/UnitHeader';
 import { UnitInfo } from '../../components/unit-detail/UnitInfo';
 import { UnitRoleActions } from '../../components/unit-detail/UnitRoleActions';
+import { MapModal } from '../../components/unit-detail/MapModal';
+
+type UserRole = 'victim' | 'volunteer' | 'support_unit' | 'admin';
 
 type SupportUnit = {
   _id: string;
@@ -21,6 +24,10 @@ type SupportUnit = {
   services_available: string[];
   support_unit_user_id: string;
   image_url?: string;
+  location?: {
+    type: string;
+    coordinates: [number, number]; // [longitude, latitude]
+  };
 };
 
 const statusConfig: Record<string, { label: string; color: string }> = {
@@ -40,6 +47,7 @@ export default function UnitDetailModal() {
 
   const [unit, setUnit] = useState<SupportUnit | null>(null);
   const [loading, setLoading] = useState(true);
+  const [mapVisible, setMapVisible] = useState(false);
 
   useEffect(() => {
     loadUnit();
@@ -57,6 +65,14 @@ export default function UnitDetailModal() {
     }
   }
 
+  function handleRoutePress() {
+    if (!unit?.location?.coordinates) {
+      Alert.alert('Rota', 'Localização não disponível.');
+      return;
+    }
+    setMapVisible(true);
+  }
+
   if (loading) {
     return <LoadingState />;
   }
@@ -67,6 +83,10 @@ export default function UnitDetailModal() {
 
   const config = statusConfig[unit.status] || statusConfig.open;
   const isOwner = unit.support_unit_user_id === user?._id;
+
+  // Backend retorna [longitude, latitude]
+  const longitude = unit.location?.coordinates[0];
+  const latitude = unit.location?.coordinates[1];
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -85,11 +105,11 @@ export default function UnitDetailModal() {
       />
 
       <UnitRoleActions
-        role={user?.role}
+        role={user?.role as UserRole | undefined}
         isOwner={isOwner}
-        onRoutePress={() => Alert.alert('Rota', 'Funcionalidade futura.')}
+        onRoutePress={handleRoutePress}
         onAskHelpPress={() => Alert.alert('Ajuda', 'Funcionalidade futura.')}
-        onVolunteerPress={() => Alert.alert('Missão', 'Funcionalidade futura.')}
+        onVolunteerPress={() => router.push(`/unit/${unit._id}/missions` as any)}
         onEditPress={() => router.push(`/unit/${unit._id}/edit` as any)}
         onDonationsPress={() => router.push(`/unit/${unit._id}/donations` as any)}
         onMissionsPress={() => router.push(`/unit/${unit._id}/missions` as any)}
@@ -97,6 +117,16 @@ export default function UnitDetailModal() {
       />
 
       <View style={styles.bottomSpace} />
+
+      {latitude && longitude && (
+        <MapModal
+          visible={mapVisible}
+          onClose={() => setMapVisible(false)}
+          latitude={latitude}
+          longitude={longitude}
+          title={unit.name}
+        />
+      )}
     </ScrollView>
   );
 }

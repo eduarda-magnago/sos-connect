@@ -41,11 +41,14 @@ export function UnitRoleActions({
 
       {role === "volunteer" && (
         <>
-          <ActionButton title="Ver rota" onPress={onRoutePress} />
           <ActionButton title="Ver doações" onPress={onDonationsPress} />
           <ActionButton
-            title="Candidatar-se para missão"
+            title="Participe de uma Missão de ajuda"
             onPress={onVolunteerPress}
+          />
+          <ActionButton
+            title="Ver rota"
+            onPress={onRoutePress}
             variant="primary"
           />
         </>

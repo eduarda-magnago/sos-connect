@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, fonts, spacing } from "../../constants/theme";
 import type { Donation } from "../../app/donations/donations";
+import { useRouter } from "expo-router";
 
 export const priorityConfig: Record<
   Donation["priority"],
@@ -29,6 +30,7 @@ export function DonationCard({
   onApply,
 }: Props) {
   const config = priorityConfig[donation.priority] ?? priorityConfig.medium;
+  const router = useRouter();
 
   return (
     <View style={styles.card}>
@@ -90,10 +92,10 @@ export function DonationCard({
         {!isSupportUnit && (
           <TouchableOpacity
             style={styles.applyBtn}
-            onPress={onApply}
+            onPress={() => router.push(`/unit/${donation.support_unit_id}/donation/${donation._id}`)}
             activeOpacity={0.8}
           >
-            <Ionicons name="heart-outline" size={15} color={colors.action} />
+            <Ionicons name="heart-outline" size={15} color="#fff" />
             <Text style={styles.applyText}>Fazer doação</Text>
           </TouchableOpacity>
         )}
@@ -158,13 +160,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 10,
-    borderWidth: 1.5,
-    borderColor: colors.action,
-    alignSelf: "center",
+    backgroundColor: "#142B45",
+    alignSelf: "flex-end",
   },
   applyText: {
     fontFamily: fonts.semibold,
     fontSize: 13,
-    color: colors.action,
+    color: "#fff",
   },
 });

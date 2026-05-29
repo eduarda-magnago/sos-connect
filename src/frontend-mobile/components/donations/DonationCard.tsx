@@ -37,7 +37,6 @@ export function DonationCard({
       <View style={[styles.priorityBar, { backgroundColor: config.color }]} />
 
       <View style={styles.content}>
-        {/* Linha superior: nome + prioridade + ações */}
         <View style={styles.top}>
           <Text style={styles.item} numberOfLines={1}>
             {donation.item_name}
@@ -88,7 +87,6 @@ export function DonationCard({
           </Text>
         </View>
 
-        {/* Botão centralizado na parte inferior */}
         {!isSupportUnit && (
           <TouchableOpacity
             style={styles.applyBtn}

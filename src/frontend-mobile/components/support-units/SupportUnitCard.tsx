@@ -181,6 +181,8 @@ const styles = StyleSheet.create({
   },
 
   viewButton: {
+    flex: 1,
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: radius.sm,

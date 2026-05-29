@@ -79,7 +79,6 @@ export default function DonationDetailPage() {
 
   return (
     <View style={styles.container}>
-      {/* Header com botão voltar */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn} hitSlop={8}>
           <Ionicons name="arrow-back" size={22} color={colors.foreground} />
@@ -90,12 +89,10 @@ export default function DonationDetailPage() {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.card}>
-          {/* Nome do item */}
           <Text style={styles.itemName}>{donation.item_name}</Text>
 
           <View style={styles.divider} />
 
-          {/* Info da unidade */}
           <Text style={styles.unitName}>{unit.name}</Text>
 
           {unit.address && (
@@ -112,7 +109,6 @@ export default function DonationDetailPage() {
 
           <View style={styles.divider} />
 
-          {/* Informações da doação */}
           <Text style={styles.sectionTitle}>Informações necessárias para a doação:</Text>
 
           <View style={styles.detailsBox}>
@@ -144,7 +140,6 @@ export default function DonationDetailPage() {
             </View>
           </View>
 
-          {/* Botão candidatar */}
           <TouchableOpacity style={styles.applyBtn} onPress={handleApply} activeOpacity={0.85}>
             <Ionicons name="heart-outline" size={18} color="#fff" />
             <Text style={styles.applyText}>Candidatar-se para doação</Text>

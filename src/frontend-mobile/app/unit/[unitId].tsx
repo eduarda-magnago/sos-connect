@@ -84,7 +84,6 @@ export default function UnitDetailModal() {
   const config = statusConfig[unit.status] || statusConfig.open;
   const isOwner = unit.support_unit_user_id === user?._id;
 
-  // Backend retorna [longitude, latitude]
   const longitude = unit.location?.coordinates[0];
   const latitude = unit.location?.coordinates[1];
 

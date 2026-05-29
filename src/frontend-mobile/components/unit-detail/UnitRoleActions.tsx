@@ -1,7 +1,7 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { colors, fonts, radius, spacing } from '../../constants/theme';
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { colors, fonts, radius, spacing } from "../../constants/theme";
 
-type UserRole = 'victim' | 'volunteer' | 'support_unit' | 'admin';
+type UserRole = "victim" | "volunteer" | "support_unit" | "admin";
 
 type UnitRoleActionsProps = {
   role?: UserRole;
@@ -28,39 +28,60 @@ export function UnitRoleActions({
 }: UnitRoleActionsProps) {
   return (
     <View style={styles.container}>
-      {role === 'victim' && (
+      {role === "victim" && (
         <>
           <ActionButton title="Ver rota" onPress={onRoutePress} />
-          <ActionButton title="Pedir ajuda" onPress={onAskHelpPress} variant="primary" />
+          <ActionButton
+            title="Pedir ajuda"
+            onPress={onAskHelpPress}
+            variant="primary"
+          />
         </>
       )}
 
-      {role === 'volunteer' && (
+      {role === "volunteer" && (
         <>
           <ActionButton title="Ver rota" onPress={onRoutePress} />
-          <ActionButton title="Candidatar-se para missão" onPress={onVolunteerPress} variant="primary" />
+          <ActionButton title="Ver doações" onPress={onDonationsPress} />
+          <ActionButton
+            title="Candidatar-se para missão"
+            onPress={onVolunteerPress}
+            variant="primary"
+          />
         </>
       )}
 
-      {role === 'support_unit' && isOwner && (
+      {role === "support_unit" && isOwner && (
         <>
           <ActionButton title="Editar unidade" onPress={onEditPress} />
           <ActionButton title="Gerenciar doações" onPress={onDonationsPress} />
-          <ActionButton title="Gerenciar missões" onPress={onMissionsPress} variant="primary" />
+          <ActionButton
+            title="Gerenciar missões"
+            onPress={onMissionsPress}
+            variant="primary"
+          />
         </>
       )}
 
-      {role === 'support_unit' && !isOwner && (
+      {role === "support_unit" && !isOwner && (
         <>
           <ActionButton title="Ver rota" onPress={onRoutePress} />
-          <ActionButton title="Visualizar informações" onPress={onAskHelpPress} variant="primary" />
+          <ActionButton
+            title="Visualizar informações"
+            onPress={onAskHelpPress}
+            variant="primary"
+          />
         </>
       )}
 
-      {role === 'admin' && (
+      {role === "admin" && (
         <>
           <ActionButton title="Editar unidade" onPress={onEditPress} />
-          <ActionButton title="Aprovar / validar unidade" onPress={onApprovePress} variant="primary" />
+          <ActionButton
+            title="Aprovar / validar unidade"
+            onPress={onApprovePress}
+            variant="primary"
+          />
         </>
       )}
     </View>
@@ -70,11 +91,15 @@ export function UnitRoleActions({
 type ActionButtonProps = {
   title: string;
   onPress: () => void;
-  variant?: 'default' | 'primary';
+  variant?: "default" | "primary";
 };
 
-function ActionButton({ title, onPress, variant = 'default' }: ActionButtonProps) {
-  const isPrimary = variant === 'primary';
+function ActionButton({
+  title,
+  onPress,
+  variant = "default",
+}: ActionButtonProps) {
+  const isPrimary = variant === "primary";
 
   return (
     <TouchableOpacity
@@ -101,7 +126,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderRadius: radius.sm,
     paddingVertical: 13,
-    alignItems: 'center',
+    alignItems: "center",
     backgroundColor: colors.card,
   },
 
@@ -117,6 +142,6 @@ const styles = StyleSheet.create({
   },
 
   primaryButtonText: {
-    color: '#fff',
+    color: "#fff",
   },
 });

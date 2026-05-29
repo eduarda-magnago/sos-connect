@@ -55,15 +55,15 @@ export default function SupportUnits() {
   }
 
   function goToDonations(unitId: string) {
-    router.push(`/(app)/unit/${unitId}/donations` as any);
+    router.push(`/unit/${unitId}/donations` as any);
   }
 
   function goToMissions(unitId: string) {
-    router.push(`/(app)/unit/${unitId}/missions` as any);
+    router.push(`/unit/${unitId}/missions` as any);
   }
 
   function goToEditUnit(unitId: string) {
-    router.push(`/(app)/unit/${unitId}/edit` as any);
+    router.push(`/unit/${unitId}/edit` as any);
   }
 
   if (loading) {

@@ -1,8 +1,8 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Image, StyleSheet, Text, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-import { colors, fonts, spacing } from '../../constants/theme';
-import { StatusBadge } from '../ui/StatusBadge';
+import { colors, fonts, spacing } from "../../constants/theme";
+import { StatusBadge } from "../ui/StatusBadge";
 
 type UnitHeaderProps = {
   name: string;
@@ -38,17 +38,23 @@ export function UnitHeader({
 
 const styles = StyleSheet.create({
   imageArea: {
-    width: '100%',
+    width: "100%",
     height: 180,
     backgroundColor: colors.border,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  content: {
+    padding: spacing.md,
+    gap: spacing.sm,
+    alignItems: "flex-start",
   },
 
   image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
 
   content: {

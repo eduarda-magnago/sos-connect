@@ -10,19 +10,23 @@ export function StatusBadge({ label, color }: StatusBadgeProps) {
   return (
     <View style={[styles.badge, { backgroundColor: `${color}20` }]}>
       <View style={[styles.dot, { backgroundColor: color }]} />
-      <Text style={[styles.text, { color }]}>{label}</Text>
+
+      <Text style={[styles.text, { color }]}>
+        {label}
+      </Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   badge: {
+    alignSelf: 'flex-start',
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 999,
   },
 
   dot: {

@@ -1,8 +1,8 @@
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { colors, fonts } from '../../constants/theme';
-import { useAuth } from '../../contexts/AuthContext';
-import { useRouter } from 'expo-router';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { colors, fonts } from "../../constants/theme";
+import { useAuth } from "../../contexts/AuthContext";
+import { useRouter } from "expo-router";
 
 type HeaderTitleProps = {
   userName?: string;
@@ -12,23 +12,10 @@ export function HeaderTitle({ userName }: HeaderTitleProps) {
   const router = useRouter();
   const { logout } = useAuth();
 
-  const firstName = userName?.split(' ')[0] || 'usuário';
+  const firstName = userName?.split(" ")[0] || "usuário";
 
-  async function handleLogout() {
-    Alert.alert('Sair da conta', 'Deseja realmente sair?', [
-      {
-        text: 'Cancelar',
-        style: 'cancel',
-      },
-      {
-        text: 'Sair',
-        style: 'destructive',
-        onPress: async () => {
-          await logout();
-          router.replace('/(auth)/login' as any);
-        },
-      },
-    ]);
+  function handleAvatarPress() {
+    router.push("/(app)/settings" as any);
   }
 
   return (
@@ -43,7 +30,7 @@ export function HeaderTitle({ userName }: HeaderTitleProps) {
       <TouchableOpacity
         style={styles.avatarButton}
         activeOpacity={0.8}
-        onPress={handleLogout}
+        onPress={handleAvatarPress}
       >
         <Ionicons name="person" size={20} color={colors.muted} />
       </TouchableOpacity>
@@ -53,27 +40,27 @@ export function HeaderTitle({ userName }: HeaderTitleProps) {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: "100%",
     paddingRight: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 
   titleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     flexShrink: 1,
   },
 
   subtitle: {
-    color: '#9CA3AF',
+    color: "#9CA3AF",
     fontSize: 14,
     fontFamily: fonts.regular,
   },
 
   title: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 16,
     fontFamily: fonts.bold,
     flexShrink: 1,
@@ -84,7 +71,7 @@ const styles = StyleSheet.create({
     height: 38,
     borderRadius: 19,
     backgroundColor: colors.border,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

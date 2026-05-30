@@ -31,7 +31,8 @@
         {
           "photosPermission": "Permita acesso às fotos para adicionar imagem da unidade."
         }
-      ]
+      ],
+      "@react-native-community/datetimepicker"
     ],
     "scheme": "sos-connect",
     "experiments": {

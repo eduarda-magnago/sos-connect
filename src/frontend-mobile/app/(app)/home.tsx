@@ -1,13 +1,26 @@
 import { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 
 import api from '../../services/api';
-import { colors } from '../../constants/theme';
+import { colors, fonts, spacing } from '../../constants/theme';
 
 import { MapCard } from '../../components/home/MapCard';
 import { NearbyUnitCard } from '../../components/home/NearbyUnitCard';
 import { SectionHeader } from '../../components/ui/SectionHeader';
+import {
+  MapFilters,
+  EMPTY_FILTERS,
+  countActiveFilters,
+  type MapFilterValues,
+} from '../../components/home/MapFilters';
 
 type SupportUnit = {
   _id: string;
@@ -36,34 +49,80 @@ export default function Home() {
   const [units, setUnits] = useState<SupportUnit[]>([]);
   const [userLocation, setUserLocation] = useState<LocationCoords | null>(null);
   const [loading, setLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState('');
+  const [filters, setFilters] = useState<MapFilterValues>(EMPTY_FILTERS);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [serviceOptions, setServiceOptions] = useState<string[]>([]);
+
+  const activeCount = countActiveFilters(filters);
 
   useEffect(() => {
-    getLocation();
-    loadUnits();
+    init();
   }, []);
 
-  async function getLocation() {
+  async function init() {
+    const coords = await getLocation();
+    await loadUnits(EMPTY_FILTERS, coords);
+  }
+
+  async function getLocation(): Promise<LocationCoords | null> {
     const { status } = await Location.requestForegroundPermissionsAsync();
 
     if (status !== 'granted') {
-      return;
+      return null;
     }
 
     const location = await Location.getCurrentPositionAsync({});
 
-    setUserLocation({
+    const coords = {
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
-    });
+    };
+
+    setUserLocation(coords);
+
+    return coords;
   }
 
-  async function loadUnits(status?: string) {
+  async function loadUnits(
+    applied: MapFilterValues,
+    coords?: LocationCoords | null
+  ) {
     try {
-      const params = status ? `?status=${status}` : '';
-      const response = await api.get(`/support-units${params}`);
+      setLoading(true);
+
+      const loc = coords ?? userLocation;
+      const parts: string[] = [];
+
+      if (applied.status) {
+        parts.push(`status=${applied.status}`);
+      }
+
+      if (applied.services.length > 0) {
+        parts.push(`services=${encodeURIComponent(applied.services.join(','))}`);
+      }
+
+      if (applied.minAvailableCapacity != null) {
+        parts.push(`minAvailableCapacity=${applied.minAvailableCapacity}`);
+      }
+
+      if (applied.radius != null && loc) {
+        parts.push(`lat=${loc.latitude}`);
+        parts.push(`lng=${loc.longitude}`);
+        parts.push(`radius=${applied.radius}`);
+      }
+
+      const query = parts.length > 0 ? `?${parts.join('&')}` : '';
+      const response = await api.get(`/support-units${query}`);
 
       setUnits(response.data);
+
+      if (countActiveFilters(applied) === 0) {
+        const set = new Set<string>();
+        response.data.forEach((u: SupportUnit) =>
+          (u.services_available || []).forEach((s) => set.add(s))
+        );
+        setServiceOptions(Array.from(set).sort());
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -71,21 +130,42 @@ export default function Home() {
     }
   }
 
-  function handleFilter(status: string) {
-    const newStatus = statusFilter === status ? '' : status;
-
-    setStatusFilter(newStatus);
-    loadUnits(newStatus);
+  function handleApplyFilters(values: MapFilterValues) {
+    setFilters(values);
+    setFiltersOpen(false);
+    loadUnits(values);
   }
 
-  function handleClearFilter() {
-    setStatusFilter('');
-    loadUnits();
+  function handleClearFilters() {
+    setFilters(EMPTY_FILTERS);
+    loadUnits(EMPTY_FILTERS);
   }
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <SectionHeader title="Encontre ajuda perto de você!" />
+
+      <View style={styles.filterBar}>
+        <TouchableOpacity
+          style={styles.filterBtn}
+          onPress={() => setFiltersOpen(true)}
+          activeOpacity={0.8}
+        >
+          <Ionicons name="options-outline" size={18} color={colors.foreground} />
+          <Text style={styles.filterBtnText}>Filtros</Text>
+          {activeCount > 0 && (
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>{activeCount}</Text>
+            </View>
+          )}
+        </TouchableOpacity>
+
+        {activeCount > 0 && (
+          <TouchableOpacity onPress={handleClearFilters} hitSlop={8}>
+            <Text style={styles.clearText}>Limpar</Text>
+          </TouchableOpacity>
+        )}
+      </View>
 
       <MapCard
         units={units}
@@ -112,6 +192,15 @@ export default function Home() {
       })}
 
       <View style={styles.bottomSpace} />
+
+      <MapFilters
+        visible={filtersOpen}
+        initial={filters}
+        serviceOptions={serviceOptions}
+        hasLocation={!!userLocation}
+        onClose={() => setFiltersOpen(false)}
+        onApply={handleApplyFilters}
+      />
     </ScrollView>
   );
 }
@@ -120,6 +209,54 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
+  },
+
+  filterBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.md,
+    marginBottom: spacing.sm,
+  },
+
+  filterBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    backgroundColor: colors.card,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+  },
+
+  filterBtnText: {
+    fontFamily: fonts.semibold,
+    fontSize: 13,
+    color: colors.foreground,
+  },
+
+  badge: {
+    minWidth: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: colors.action,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 5,
+  },
+
+  badgeText: {
+    fontFamily: fonts.bold,
+    fontSize: 11,
+    color: '#fff',
+  },
+
+  clearText: {
+    fontFamily: fonts.semibold,
+    fontSize: 13,
+    color: colors.action,
   },
 
   bottomSpace: {

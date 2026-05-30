@@ -15,6 +15,10 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { colors, fonts, spacing } from "../../../constants/theme";
 import { LoadingState } from "../../../components/ui/LoadingState";
 import { MissionCard } from "../../../components/missions/MissionCard";
+import {
+  MissionModal,
+  type MissionFormData,
+} from "../../../components/missions/MissionModal";
 
 export type Mission = {
   _id: string;
@@ -26,6 +30,8 @@ export type Mission = {
   support_unit_id: string;
   volunteers_needed: number;
   volunteer_ids: string[];
+  contact_phone?: string;
+  delivery_time?: string;
 };
 
 export default function MissionsPage() {
@@ -40,6 +46,8 @@ export default function MissionsPage() {
 
   const [missions, setMissions] = useState<Mission[]>([]);
   const [loading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [editingMission, setEditingMission] = useState<Mission | null>(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -74,6 +82,39 @@ export default function MissionsPage() {
         },
       },
     ]);
+  }
+
+  function handleCreate() {
+    setEditingMission(null);
+    setModalVisible(true);
+  }
+
+  function handleEdit(mission: Mission) {
+    setEditingMission(mission);
+    setModalVisible(true);
+  }
+
+  async function handleSubmit(data: MissionFormData) {
+    try {
+      if (editingMission) {
+        const response = await api.put(
+          `/missions/${editingMission._id}`,
+          data
+        );
+        setMissions((prev) =>
+          prev.map((m) => (m._id === editingMission._id ? response.data : m))
+        );
+      } else {
+        const response = await api.post("/missions", {
+          ...data,
+          support_unit_id: unitId,
+        });
+        setMissions((prev) => [...prev, response.data]);
+      }
+      setModalVisible(false);
+    } catch {
+      Alert.alert("Erro", "Não foi possível salvar a missão.");
+    }
   }
 
   if (loading) return <LoadingState />;
@@ -113,7 +154,7 @@ export default function MissionsPage() {
           <MissionCard
             mission={item}
             isSupportUnit={isSupportUnit}
-            onEdit={() => {}}
+            onEdit={() => handleEdit(item)}
             onDelete={() => handleDelete(item._id)}
           />
         )}
@@ -122,14 +163,20 @@ export default function MissionsPage() {
       {isSupportUnit && (
         <TouchableOpacity
           style={styles.fab}
-          onPress={() => {
-          }}
+          onPress={handleCreate}
           activeOpacity={0.85}
         >
           <Ionicons name="add" size={24} color="#fff" />
           <Text style={styles.fabText}>Nova missão</Text>
         </TouchableOpacity>
       )}
+
+      <MissionModal
+        visible={modalVisible}
+        mission={editingMission}
+        onClose={() => setModalVisible(false)}
+        onSubmit={handleSubmit}
+      />
     </View>
   );
 }

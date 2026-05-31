@@ -5,15 +5,18 @@ type AuthSubmitButtonProps = {
   title: string;
   loading: boolean;
   onPress: () => void;
+  testID?: string;
 };
 
 export function AuthSubmitButton({
   title,
   loading,
   onPress,
+  testID,
 }: AuthSubmitButtonProps) {
   return (
     <TouchableOpacity
+      testID={testID}
       style={[styles.button, loading && styles.buttonDisabled]}
       onPress={onPress}
       disabled={loading}

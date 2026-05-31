@@ -64,6 +64,7 @@ export default function AppLayout() {
         options={{
           title: 'Unidades',
           headerTitle: 'Unidades',
+          tabBarButtonTestID: 'tab-support-units',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="business-outline" size={size} color={color} />
           ),

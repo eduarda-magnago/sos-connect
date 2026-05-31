@@ -142,7 +142,7 @@ export default function Missions() {
                   {isOwner ? (
                     <>
                       <button
-                        onClick={() => setEditingMission(mission)}
+                          onClick={() => setEditingMission(mission)}
                         className="text-xs border border-gray-200 rounded-lg px-3 py-1.5 hover:bg-gray-50 transition-colors cursor-pointer"
                       >
                         Editar

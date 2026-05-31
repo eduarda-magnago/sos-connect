@@ -147,6 +147,7 @@ export default function Home() {
 
       <View style={styles.filterBar}>
         <TouchableOpacity
+          testID="dashboard-filter-button"
           style={styles.filterBtn}
           onPress={() => setFiltersOpen(true)}
           activeOpacity={0.8}
@@ -154,14 +155,14 @@ export default function Home() {
           <Ionicons name="options-outline" size={18} color={colors.foreground} />
           <Text style={styles.filterBtnText}>Filtros</Text>
           {activeCount > 0 && (
-            <View style={styles.badge}>
+            <View testID="dashboard-filter-badge" style={styles.badge}>
               <Text style={styles.badgeText}>{activeCount}</Text>
             </View>
           )}
         </TouchableOpacity>
 
         {activeCount > 0 && (
-          <TouchableOpacity onPress={handleClearFilters} hitSlop={8}>
+          <TouchableOpacity testID="dashboard-filter-clear" onPress={handleClearFilters} hitSlop={8}>
             <Text style={styles.clearText}>Limpar</Text>
           </TouchableOpacity>
         )}

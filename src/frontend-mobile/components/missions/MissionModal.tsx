@@ -145,6 +145,7 @@ export function MissionModal({ visible, mission, onClose, onSubmit }: Props) {
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={styles.fields}>
                 <FormInput
+                  testID="mission-title-input"
                   label="Nome da missão"
                   placeholder="Ex: Distribuição de cestas"
                   value={title}
@@ -152,6 +153,7 @@ export function MissionModal({ visible, mission, onClose, onSubmit }: Props) {
                 />
 
                 <FormInput
+                  testID="mission-description-input"
                   label="Descrição"
                   placeholder="Detalhes da missão"
                   value={description}
@@ -167,6 +169,7 @@ export function MissionModal({ visible, mission, onClose, onSubmit }: Props) {
                       return (
                         <TouchableOpacity
                           key={c.key}
+                          testID={`mission-category-${c.key}`}
                           style={[
                             styles.categoryBtn,
                             selected && styles.categoryBtnSelected,
@@ -189,6 +192,7 @@ export function MissionModal({ visible, mission, onClose, onSubmit }: Props) {
                 </View>
 
                 <FormInput
+                  testID="mission-volunteers-input"
                   label="Voluntários necessários"
                   placeholder="Ex: 5"
                   value={volunteersNeeded}
@@ -199,6 +203,7 @@ export function MissionModal({ visible, mission, onClose, onSubmit }: Props) {
                 <View>
                   <Text style={styles.label}>Data</Text>
                   <TouchableOpacity
+                    testID="mission-date-input"
                     style={styles.dateInput}
                     onPress={() => setShowDatePicker((s) => !s)}
                     activeOpacity={0.7}
@@ -243,6 +248,7 @@ export function MissionModal({ visible, mission, onClose, onSubmit }: Props) {
                 />
 
                 <TouchableOpacity
+                  testID="mission-submit-button"
                   style={[styles.submit, (loading || !isValid) && styles.submitDisabled]}
                   onPress={handleSubmit}
                   disabled={loading || !isValid}

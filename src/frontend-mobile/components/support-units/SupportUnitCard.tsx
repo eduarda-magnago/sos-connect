@@ -86,7 +86,11 @@ export function SupportUnitCard({
                 <Text style={styles.actionButtonText}>Doação</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={styles.actionButton} onPress={onMissionPress}>
+              <TouchableOpacity
+                testID={`support-unit-mission-${unit._id}`}
+                style={styles.actionButton}
+                onPress={onMissionPress}
+              >
                 <Text style={styles.actionButtonText}>Missão</Text>
               </TouchableOpacity>
 

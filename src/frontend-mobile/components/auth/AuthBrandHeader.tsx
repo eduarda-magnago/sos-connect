@@ -1,11 +1,11 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { colors, fonts } from '../../constants/theme';
+import { Image, StyleSheet, Text, View } from "react-native";
+import { colors, fonts, spacing } from "../../constants/theme";
 
 export function AuthBrandHeader() {
   return (
     <View style={styles.container}>
       <Image
-        source={require('../../assets/images/logo_sos_connect.png')}
+        source={require("../../assets/images/logo_sos_connect.png")}
         style={styles.logo}
         resizeMode="contain"
       />
@@ -17,21 +17,23 @@ export function AuthBrandHeader() {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    gap: 16,
     paddingTop: 76,
     paddingBottom: 20,
+    paddingHorizontal: spacing.lg,
     backgroundColor: colors.sidebar,
   },
 
   logo: {
     width: 90,
     height: 90,
-    marginBottom: 14,
   },
 
   appName: {
-    color: '#fff',
+    color: "#fff",
     fontFamily: fonts.bold,
     fontSize: 26,
     letterSpacing: 0.2,

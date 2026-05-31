@@ -21,6 +21,7 @@ type ActionButtonProps = {
   icon: keyof typeof Ionicons.glyphMap;
   onPress: () => void;
   variant?: "default" | "primary";
+  testID?: string;
 };
 
 export function UnitRoleActions({
@@ -55,17 +56,20 @@ export function UnitRoleActions({
               title="Ver doações"
               icon="gift-outline"
               onPress={onDonationsPress}
+              testID="unit-btn-donations"
             />
             <ActionButton
               title="Participar de missão"
               icon="flag-outline"
               onPress={onVolunteerPress}
+              testID="unit-btn-missions"
             />
             <ActionButton
               title="Ver rota"
               icon="navigate-outline"
               onPress={onRoutePress}
               variant="primary"
+              testID="unit-btn-route"
             />
           </>
         )}
@@ -120,6 +124,7 @@ function ActionButton({
   icon,
   onPress,
   variant = "default",
+  testID,
 }: ActionButtonProps) {
   const isPrimary = variant === "primary";
 
@@ -128,6 +133,7 @@ function ActionButton({
       style={[styles.button, isPrimary && styles.primaryButton]}
       onPress={onPress}
       activeOpacity={0.85}
+      testID={testID}
     >
       <Ionicons
         name={icon}

@@ -13,6 +13,7 @@ type MetricProps = {
   icon: keyof typeof Ionicons.glyphMap;
   label: string;
   value: string;
+  testID?: string;
 };
 
 export function UnitInfo({
@@ -28,14 +29,14 @@ export function UnitInfo({
   return (
     <View style={styles.card}>
       <View style={styles.metrics}>
-        <Metric icon="people-outline" label="Vagas" value={`${remainingCapacity}/${capacity}`} />
-        <Metric icon="stats-chart-outline" label="Ocupação" value={`${occupancyPercent}%`} />
+        <Metric icon="people-outline" label="Vagas" value={`${remainingCapacity}/${capacity}`} testID="unit-capacity" />
+        <Metric icon="stats-chart-outline" label="Ocupação" value={`${occupancyPercent}%`} testID="unit-occupancy"/>
       </View>
 
       <View style={styles.section}>
         <View style={styles.sectionTitleRow}>
           <Ionicons name="medkit-outline" size={17} color={colors.primary} />
-          <Text style={styles.sectionTitle}>Serviços disponíveis</Text>
+          <Text style={styles.sectionTitle} testID="unit-services-title">Serviços disponíveis</Text>
         </View>
 
         {services?.length > 0 ? (
@@ -64,9 +65,9 @@ export function UnitInfo({
   );
 }
 
-function Metric({ icon, label, value }: MetricProps) {
+function Metric({ icon, label, value, testID }: MetricProps) {
   return (
-    <View style={styles.metric}>
+    <View style={styles.metric} testID={testID}>
       <View style={styles.metricIcon}>
         <Ionicons name={icon} size={18} color={colors.primary} />
       </View>

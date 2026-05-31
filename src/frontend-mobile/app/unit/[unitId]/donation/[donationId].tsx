@@ -89,7 +89,7 @@ export default function DonationDetailPage() {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.card}>
-          <Text style={styles.itemName}>{donation.item_name}</Text>
+          <Text style={styles.itemName} testID="donation-item-name">{donation.item_name}</Text>
 
           <View style={styles.divider} />
 
@@ -140,7 +140,7 @@ export default function DonationDetailPage() {
             </View>
           </View>
 
-          <TouchableOpacity style={styles.applyBtn} onPress={handleApply} activeOpacity={0.85}>
+          <TouchableOpacity style={styles.applyBtn} onPress={handleApply} activeOpacity={0.85} testID="donation-apply-btn">
             <Ionicons name="heart-outline" size={18} color="#fff" />
             <Text style={styles.applyText}>Candidatar-se para doação</Text>
           </TouchableOpacity>

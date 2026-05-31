@@ -40,6 +40,7 @@ export function DonationCard({
       style={styles.card}
       activeOpacity={0.85}
       onPress={isSupportUnit ? undefined : goToDonationDetail}
+      testID={`donation-card-${donation._id}`}
     >
       <View style={styles.main}>
         <View style={[styles.itemIcon, { backgroundColor: `${config.color}18` }]}>
@@ -91,6 +92,7 @@ export function DonationCard({
             style={styles.applyBtn}
             onPress={goToDonationDetail}
             activeOpacity={0.85}
+            testID={`donation-card-details-${donation._id}`}
           >
             <Text style={styles.applyText}>Ver detalhes</Text>
             <Ionicons name="chevron-forward" size={17} color="#fff" />

@@ -25,6 +25,8 @@
     },
     "plugins": [
       "expo-router",
+      "@config-plugins/detox",
+      "./plugins/withDetoxJniPickFirst",
       "expo-location",
       [
         "expo-image-picker",

@@ -141,6 +141,7 @@ export function MapFilters({
                       return (
                         <TouchableOpacity
                           key={opt.key}
+                          testID={`map-filter-status-${opt.key}`}
                           style={[styles.chip, selected && styles.chipSelected]}
                           onPress={() =>
                             setStatus(selected ? "" : opt.key)
@@ -268,6 +269,7 @@ export function MapFilters({
                     <Text style={styles.btnGhostText}>Limpar</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
+                    testID="map-filters-apply"
                     style={[styles.btn, styles.btnPrimary]}
                     onPress={handleApply}
                     activeOpacity={0.85}

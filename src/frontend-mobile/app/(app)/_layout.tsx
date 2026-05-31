@@ -24,6 +24,7 @@ export default function AppLayout() {
         headerTitleStyle: {
           fontFamily: fonts.bold,
         },
+
         tabBarStyle: {
           backgroundColor: colors.sidebar,
           borderTopColor: "rgba(255,255,255,0.1)",
@@ -31,15 +32,18 @@ export default function AppLayout() {
           paddingTop: 6,
           paddingBottom: Math.max(insets.bottom, 10),
         },
+
         tabBarItemStyle: {
           paddingVertical: 4,
         },
+
         tabBarActiveTintColor: colors.action,
         tabBarInactiveTintColor: "#6B7280",
         tabBarLabelStyle: {
           fontFamily: fonts.medium,
           fontSize: 11,
         },
+
         tabBarHideOnKeyboard: true,
       }}
     >

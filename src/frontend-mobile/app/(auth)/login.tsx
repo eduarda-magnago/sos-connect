@@ -96,6 +96,7 @@ export default function Login() {
               <Text style={styles.formSubtitle}>Faça login para acessar sua conta.</Text>
 
               <AuthInput
+                testID="login-email-input"
                 label="E-mail"
                 placeholder="email@gmail.com"
                 keyboardType="email-address"
@@ -105,6 +106,7 @@ export default function Login() {
               />
 
               <PasswordInput
+                testID="login-password-input"
                 label="Senha"
                 value={password}
                 onChangeText={setPassword}
@@ -113,6 +115,7 @@ export default function Login() {
               />
 
               <AuthSubmitButton
+                testID="login-submit-button"
                 title="Entrar"
                 loading={loading}
                 onPress={handleLogin}

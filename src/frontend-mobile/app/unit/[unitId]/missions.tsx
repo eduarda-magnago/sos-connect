@@ -162,6 +162,7 @@ export default function MissionsPage() {
 
       {isSupportUnit && (
         <TouchableOpacity
+          testID="mission-create-fab"
           style={styles.fab}
           onPress={handleCreate}
           activeOpacity={0.85}

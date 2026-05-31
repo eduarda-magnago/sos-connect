@@ -8,6 +8,7 @@ type PasswordInputProps = {
   onChangeText: (value: string) => void;
   visible: boolean;
   onToggleVisible: () => void;
+  testID?: string;
 };
 
 export function PasswordInput({
@@ -16,6 +17,7 @@ export function PasswordInput({
   onChangeText,
   visible,
   onToggleVisible,
+  testID,
 }: PasswordInputProps) {
   return (
     <View style={styles.field}>
@@ -23,6 +25,7 @@ export function PasswordInput({
 
       <View style={styles.inputRow}>
         <TextInput
+          testID={testID}
           style={styles.input}
           placeholder="••••••••••••"
           placeholderTextColor={colors.muted}

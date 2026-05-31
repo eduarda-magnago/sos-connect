@@ -8,6 +8,7 @@ type AuthInputProps = {
   onChangeText: (value: string) => void;
   keyboardType?: KeyboardTypeOptions;
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
+  testID?: string;
 };
 
 export function AuthInput({
@@ -17,12 +18,14 @@ export function AuthInput({
   onChangeText,
   keyboardType = 'default',
   autoCapitalize = 'sentences',
+  testID,
 }: AuthInputProps) {
   return (
     <View style={styles.field}>
       <Text style={styles.label}>{label}</Text>
 
       <TextInput
+        testID={testID}
         style={styles.input}
         placeholder={placeholder}
         placeholderTextColor={colors.muted}

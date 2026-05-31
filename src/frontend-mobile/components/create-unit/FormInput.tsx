@@ -8,6 +8,7 @@ type FormInputProps = {
   onChangeText: (value: string) => void;
   keyboardType?: KeyboardTypeOptions;
   multiline?: boolean;
+  testID?: string;
 };
 
 export function FormInput({
@@ -17,12 +18,14 @@ export function FormInput({
   onChangeText,
   keyboardType = 'default',
   multiline = false,
+  testID,
 }: FormInputProps) {
   return (
     <View style={styles.field}>
       <Text style={styles.label}>{label}</Text>
 
       <TextInput
+        testID={testID}
         style={[styles.input, multiline && styles.textarea]}
         placeholder={placeholder}
         placeholderTextColor={colors.muted}

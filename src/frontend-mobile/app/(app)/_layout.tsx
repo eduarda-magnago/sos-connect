@@ -1,4 +1,4 @@
-import { Tabs } from "expo-router";
+import { Redirect, Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -7,8 +7,12 @@ import { colors, fonts } from "../../constants/theme";
 import { HeaderTitle } from "../../components/home/HeaderTitle";
 
 export default function AppLayout() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const insets = useSafeAreaInsets();
+  
+  if (!loading && !user) {
+    return <Redirect href="/(auth)/login" />;
+  }
 
   const isVolunteer = user?.role === "volunteer";
   const isSupportUnit = user?.role === "support_unit";

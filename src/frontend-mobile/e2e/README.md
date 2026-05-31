@@ -43,6 +43,22 @@ npm run e2e:build
 npm run e2e:test
 ```
 
+### Rodando no Windows
+
+O Detox para **Android** funciona no Windows (apenas o runner de iOS exige macOS).
+A única diferença é que o `cmd.exe` não aceita `./gradlew` — então existe uma
+configuração separada que usa `gradlew` (`gradlew.bat`). No Windows, use os
+scripts `:win`:
+
+```bash
+npm run e2e:build:win
+npm run e2e:test:win
+```
+
+Pré-requisitos no Windows: Node.js, JDK 17, Android SDK + um AVD, e as variáveis
+`ANDROID_HOME` / `ANDROID_SDK_ROOT` definidas. O `expo prebuild --platform android`
+e tudo mais funciona igual ao macOS/Linux.
+
 ## O teste de login (`login.test.js`)
 
 - ✅ exibe o formulário de login

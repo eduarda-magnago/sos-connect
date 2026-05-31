@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { Alert, FlatList, StyleSheet, View } from "react-native";
 import { useFocusEffect, useRouter } from "expo-router";
 
 import { useAuth } from "../../contexts/AuthContext";
@@ -9,6 +9,7 @@ import { colors } from "../../constants/theme";
 import { SearchBar } from "../../components/support-units/SearchBar";
 import { SupportUnit } from "../../components/support-units/SupportUnitCard";
 import { SupportUnitSection } from "../../components/support-units/SupportUnitSection";
+import { PendingUnitSection } from "../../components/support-units/PendingUnitSection";
 import { LoadingState } from "../../components/ui/LoadingState";
 
 const statusConfig: Record<string, { label: string; color: string }> = {
@@ -22,6 +23,7 @@ export default function SupportUnits() {
   const { user } = useAuth();
 
   const [units, setUnits] = useState<SupportUnit[]>([]);
+  const [pendingUnits, setPendingUnits] = useState<SupportUnit[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
@@ -35,11 +37,73 @@ export default function SupportUnits() {
     try {
       const response = await api.get("/support-units");
       setUnits(response.data);
+
+      if (user?.role === "admin") {
+        const pendingResponse = await api.get("/support-units/pending");
+        setPendingUnits(pendingResponse.data);
+      }
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
     }
+  }
+
+  async function handleApprove(unitId: string) {
+    try {
+      await api.patch(`/support-units/${unitId}/validate`, { approved: true });
+      setPendingUnits((prev) => prev.filter((u) => u._id !== unitId));
+      loadUnits();
+    } catch {
+      Alert.alert("Erro", "Não foi possível aprovar a unidade.");
+    }
+  }
+
+  async function handleReject(unitId: string) {
+    Alert.alert(
+      "Rejeitar unidade",
+      "Tem certeza que deseja rejeitar esta unidade?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Rejeitar",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await api.patch(`/support-units/${unitId}/validate`, {
+                approved: false,
+              });
+              setPendingUnits((prev) => prev.filter((u) => u._id !== unitId));
+            } catch {
+              Alert.alert("Erro", "Não foi possível rejeitar a unidade.");
+            }
+          },
+        },
+      ],
+    );
+  }
+
+  async function handleDelete(unitId: string) {
+    Alert.alert(
+      "Excluir unidade",
+      "Tem certeza que deseja excluir esta unidade?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Excluir",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await api.delete(`/support-units/${unitId}`);
+              setPendingUnits((prev) => prev.filter((u) => u._id !== unitId));
+              loadUnits();
+            } catch {
+              Alert.alert("Erro", "Não foi possível excluir a unidade.");
+            }
+          },
+        },
+      ],
+    );
   }
 
   const myUnits = units.filter(
@@ -79,6 +143,17 @@ export default function SupportUnits() {
         renderItem={null}
         ListHeaderComponent={
           <>
+            {user?.role === "admin" && (
+              <PendingUnitSection
+                units={pendingUnits}
+                statusConfig={statusConfig}
+                onApprove={handleApprove}
+                onReject={handleReject}
+                onDelete={handleDelete}
+                onUnitPress={goToUnitDetail}
+              />
+            )}
+
             <SupportUnitSection
               title="Minhas Unidades de Apoio"
               units={myUnits}

@@ -4,7 +4,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import api from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
-import { colors } from '../../constants/theme';
+import { colors, radius } from '../../constants/theme';
 
 import { LoadingState } from '../../components/ui/LoadingState';
 import { UnitHeader } from '../../components/unit-detail/UnitHeader';
@@ -89,31 +89,37 @@ export default function UnitDetailModal() {
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <UnitHeader
-        name={unit.name}
-        imageUrl={unit.image_url}
-        statusLabel={config.label}
-        statusColor={config.color}
-      />
+      <View style={styles.contentPanel}>
+        <UnitHeader
+          name={unit.name}
+          imageUrl={unit.image_url}
+          statusLabel={config.label}
+          statusColor={config.color}
+        />
 
-      <UnitInfo
-        capacity={unit.capacity}
-        currentOccupancy={unit.current_occupancy}
-        services={unit.services_available}
-        description={unit.description}
-      />
+        <View style={styles.divider} />
 
-      <UnitRoleActions
-        role={user?.role as UserRole | undefined}
-        isOwner={isOwner}
-        onRoutePress={handleRoutePress}
-        onAskHelpPress={() => Alert.alert('Ajuda', 'Funcionalidade futura.')}
-        onVolunteerPress={() => router.push(`/unit/${unit._id}/missions` as any)}
-        onEditPress={() => router.push(`/unit/${unit._id}/edit` as any)}
-        onDonationsPress={() => router.push(`/unit/${unit._id}/donations` as any)}
-        onMissionsPress={() => router.push(`/unit/${unit._id}/missions` as any)}
-        onApprovePress={() => Alert.alert('Admin', 'Funcionalidade futura.')}
-      />
+        <UnitInfo
+          capacity={unit.capacity}
+          currentOccupancy={unit.current_occupancy}
+          services={unit.services_available}
+          description={unit.description}
+        />
+
+        <View style={styles.divider} />
+
+        <UnitRoleActions
+          role={user?.role as UserRole | undefined}
+          isOwner={isOwner}
+          onRoutePress={handleRoutePress}
+          onAskHelpPress={() => Alert.alert('Ajuda', 'Funcionalidade futura.')}
+          onVolunteerPress={() => router.push(`/unit/${unit._id}/missions` as any)}
+          onEditPress={() => router.push(`/unit/${unit._id}/edit` as any)}
+          onDonationsPress={() => router.push(`/unit/${unit._id}/donations` as any)}
+          onMissionsPress={() => router.push(`/unit/${unit._id}/missions` as any)}
+          onApprovePress={() => Alert.alert('Admin', 'Funcionalidade futura.')}
+        />
+      </View>
 
       <View style={styles.bottomSpace} />
 
@@ -134,6 +140,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
+  },
+
+  contentPanel: {
+    marginHorizontal: 16,
+    marginTop: 16,
+    marginBottom: 16,
+    borderRadius: radius.lg,
+    backgroundColor: colors.card,
+    elevation: 2,
+    overflow: 'hidden',
+  },
+
+  divider: {
+    height: 1,
+    backgroundColor: colors.border,
+    marginHorizontal: 16,
   },
 
   bottomSpace: {

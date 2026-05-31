@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors, fonts, radius, spacing } from '../../constants/theme';
 
@@ -8,63 +9,157 @@ type UnitInfoProps = {
   description?: string;
 };
 
+type MetricProps = {
+  icon: keyof typeof Ionicons.glyphMap;
+  label: string;
+  value: string;
+};
+
 export function UnitInfo({
   capacity,
   currentOccupancy,
   services,
   description,
 }: UnitInfoProps) {
-  const remainingCapacity = capacity - currentOccupancy;
+  const remainingCapacity = Math.max(capacity - currentOccupancy, 0);
+  const occupancyPercent =
+    capacity > 0 ? Math.min(100, Math.round((currentOccupancy / capacity) * 100)) : 0;
 
   return (
     <View style={styles.card}>
-      <Text style={styles.title}>Informações</Text>
+      <View style={styles.metrics}>
+        <Metric icon="people-outline" label="Vagas" value={`${remainingCapacity}/${capacity}`} />
+        <Metric icon="stats-chart-outline" label="Ocupação" value={`${occupancyPercent}%`} />
+      </View>
 
-      <Text style={styles.info}>
-        👥 Capacidade restante: {remainingCapacity}/{capacity}
-      </Text>
+      <View style={styles.section}>
+        <View style={styles.sectionTitleRow}>
+          <Ionicons name="medkit-outline" size={17} color={colors.primary} />
+          <Text style={styles.sectionTitle}>Serviços disponíveis</Text>
+        </View>
 
-      {services?.length > 0 ? (
-        <Text style={styles.info}>
-          🛠️ Serviços: {services.join(', ')}
-        </Text>
-      ) : (
-        <Text style={styles.info}>🛠️ Serviços não informados</Text>
-      )}
+        {services?.length > 0 ? (
+          <View style={styles.chipRow}>
+            {services.map((service) => (
+              <View key={service} style={styles.chip}>
+                <Text style={styles.chipText}>{service}</Text>
+              </View>
+            ))}
+          </View>
+        ) : (
+          <Text style={styles.emptyText}>Serviços não informados</Text>
+        )}
+      </View>
 
       {description ? (
-        <Text style={styles.description}>{description}</Text>
+        <View style={styles.section}>
+          <View style={styles.sectionTitleRow}>
+            <Ionicons name="document-text-outline" size={17} color={colors.primary} />
+            <Text style={styles.sectionTitle}>Descrição</Text>
+          </View>
+          <Text style={styles.description}>{description}</Text>
+        </View>
       ) : null}
+    </View>
+  );
+}
+
+function Metric({ icon, label, value }: MetricProps) {
+  return (
+    <View style={styles.metric}>
+      <View style={styles.metricIcon}>
+        <Ionicons name={icon} size={18} color={colors.primary} />
+      </View>
+      <View>
+        <Text style={styles.metricValue}>{value}</Text>
+        <Text style={styles.metricLabel}>{label}</Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    marginHorizontal: spacing.md,
-    marginBottom: spacing.md,
     padding: spacing.md,
-    borderRadius: radius.lg,
+    gap: spacing.md,
+  },
+
+  metrics: {
+    gap: spacing.sm,
+  },
+
+  metric: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+
+  metricIcon: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
     backgroundColor: colors.card,
-    elevation: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
-  title: {
+  metricValue: {
     fontFamily: fonts.bold,
-    fontSize: 16,
+    fontSize: 15,
     color: colors.foreground,
-    marginBottom: spacing.sm,
   },
 
-  info: {
+  metricLabel: {
+    marginTop: 2,
     fontFamily: fonts.regular,
-    fontSize: 13,
+    fontSize: 11,
     color: colors.muted,
-    marginBottom: 6,
+  },
+
+  section: {
+    gap: spacing.sm,
+  },
+
+  sectionTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+
+  sectionTitle: {
+    fontFamily: fonts.semibold,
+    fontSize: 13,
+    color: colors.foreground,
+  },
+
+  chipRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.xs,
+  },
+
+  chip: {
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    backgroundColor: colors.background,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+
+  chipText: {
+    fontFamily: fonts.medium,
+    fontSize: 12,
+    color: colors.foreground,
+  },
+
+  emptyText: {
+    fontFamily: fonts.regular,
+    fontSize: 12,
+    color: colors.muted,
   },
 
   description: {
-    marginTop: spacing.sm,
     fontFamily: fonts.regular,
     fontSize: 13,
     lineHeight: 20,

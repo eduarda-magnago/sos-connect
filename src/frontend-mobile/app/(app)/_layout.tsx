@@ -1,6 +1,7 @@
-import { Redirect, Tabs } from "expo-router";
+import { Redirect, Tabs, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { useAuth } from "../../contexts/AuthContext";
 import { colors, fonts } from "../../constants/theme";
@@ -9,6 +10,7 @@ import { HeaderTitle } from "../../components/home/HeaderTitle";
 export default function AppLayout() {
   const { user, loading } = useAuth();
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   
   if (!loading && !user) {
     return <Redirect href="/(auth)/login" />;
@@ -54,8 +56,34 @@ export default function AppLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          title: "Dashboard",
-          headerTitle: () => <HeaderTitle userName={user?.name} />,
+          title: "Início",
+          headerTitle: "",
+          headerRightContainerStyle: {
+            paddingRight: 16,
+          },
+          headerLeft: () => (
+            <View style={styles.headerProfile}>
+              <TouchableOpacity
+                style={styles.headerIconButton}
+                activeOpacity={0.8}
+                onPress={() => router.push("/(app)/settings" as any)}
+              >
+                <Ionicons name="person" size={20} color={colors.muted} />
+              </TouchableOpacity>
+              <HeaderTitle userName={user?.name} userRole={user?.role} />
+            </View>
+          ),
+          headerRight: () => (
+            <TouchableOpacity
+              style={styles.headerIconButton}
+              activeOpacity={0.8}
+              onPress={() =>
+                Alert.alert("Notificações", "Funcionalidade em desenvolvimento.")
+              }
+            >
+              <Ionicons name="notifications-outline" size={20} color={colors.muted} />
+            </TouchableOpacity>
+          ),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home-outline" size={size} color={color} />
           ),
@@ -122,3 +150,21 @@ export default function AppLayout() {
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  headerProfile: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: 16,
+    gap: 10,
+  },
+
+  headerIconButton: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: colors.border,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

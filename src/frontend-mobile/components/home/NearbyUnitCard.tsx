@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, fonts, radius, spacing } from '../../constants/theme';
 import { StatusBadge } from '../ui/StatusBadge';
@@ -20,13 +20,18 @@ type StatusConfig = {
 type NearbyUnitCardProps = {
   unit: SupportUnit;
   statusConfig: StatusConfig;
+  onPress?: () => void;
 };
 
-export function NearbyUnitCard({ unit, statusConfig }: NearbyUnitCardProps) {
+export function NearbyUnitCard({ unit, statusConfig, onPress }: NearbyUnitCardProps) {
   const remainingCapacity = unit.capacity - unit.current_occupancy;
 
   return (
-    <View style={styles.card}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={onPress}
+      activeOpacity={0.8}
+    >
       <View style={styles.imageBox}>
         <Ionicons name="business" size={32} color={colors.muted} />
       </View>
@@ -53,7 +58,7 @@ export function NearbyUnitCard({ unit, statusConfig }: NearbyUnitCardProps) {
           </Text>
         ) : null}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

@@ -1,8 +1,8 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { colors, fonts, radius, spacing } from "../../constants/theme";
-import { SupportUnit } from "./SupportUnitCard";
 import { StatusBadge } from "../ui/StatusBadge";
+import { SupportUnit } from "./SupportUnitCard";
 
 type StatusConfigMap = Record<string, { label: string; color: string }>;
 
@@ -24,84 +24,66 @@ export function PendingUnitSection({
   onUnitPress,
 }: PendingUnitSectionProps) {
   if (units.length === 0) {
-    return (
-      <View style={styles.emptyContainer}>
-        <Text style={styles.title}>Unidades Pendentes</Text>
-        <Text style={styles.emptyText}>
-          Nenhuma unidade pendente no momento.
-        </Text>
-      </View>
-    );
+    return null;
   }
 
   return (
     <View>
-      <Text style={styles.title}>Unidades Pendentes</Text>
+      <View style={styles.header}>
+        <Text style={styles.title}>Unidades pendentes</Text>
+        <Text style={styles.count}>{units.length}</Text>
+      </View>
 
       {units.map((unit) => {
         const config = statusConfig[unit.status] || statusConfig.open;
-        const remainingCapacity = unit.capacity - unit.current_occupancy;
+        const remainingCapacity = Math.max(unit.capacity - unit.current_occupancy, 0);
 
         return (
           <TouchableOpacity
             key={unit._id}
             style={styles.card}
             onPress={() => onUnitPress(unit._id)}
-            activeOpacity={0.8}
+            activeOpacity={0.85}
           >
-            <View style={styles.cardHeader}>
+            <View style={styles.main}>
               <View style={styles.iconContainer}>
-                <Ionicons name="business" size={28} color={colors.muted} />
+                <Ionicons name="business-outline" size={26} color={colors.warning} />
               </View>
 
-              <View style={styles.cardInfo}>
-                <View style={styles.nameRow}>
+              <View style={styles.content}>
+                <View style={styles.titleRow}>
                   <Text style={styles.name} numberOfLines={1}>
                     {unit.name}
                   </Text>
                   <StatusBadge label={config.label} color={config.color} />
                 </View>
 
-                <Text style={styles.info}>
-                  👥 Capacidade restante: {remainingCapacity}
-                </Text>
+                <View style={styles.infoRow}>
+                  <Ionicons name="people-outline" size={15} color={colors.muted} />
+                  <Text style={styles.info}>Vagas: {remainingCapacity}/{unit.capacity}</Text>
+                </View>
               </View>
             </View>
 
             <View style={styles.actions}>
-              <TouchableOpacity
-                style={styles.approveButton}
+              <ActionButton
+                icon="checkmark"
+                label="Aprovar"
+                color={colors.success}
                 onPress={() => onApprove(unit._id)}
-              >
-                <Ionicons name="checkmark" size={14} color={colors.success} />
-                <Text style={[styles.actionText, { color: colors.success }]}>
-                  Aprovar
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.rejectButton}
+              />
+              <ActionButton
+                icon="close"
+                label="Rejeitar"
+                color={colors.warning}
                 onPress={() => onReject(unit._id)}
-              >
-                <Ionicons name="close" size={14} color={colors.warning} />
-                <Text style={[styles.actionText, { color: colors.warning }]}>
-                  Rejeitar
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.deleteButton}
+              />
+              <ActionButton
+                icon="trash-outline"
+                label="Excluir"
+                color={colors.danger}
                 onPress={() => onDelete(unit._id)}
-              >
-                <Ionicons
-                  name="trash-outline"
-                  size={14}
-                  color={colors.danger}
-                />
-                <Text style={[styles.actionText, { color: colors.danger }]}>
-                  Excluir
-                </Text>
-              </TouchableOpacity>
+              />
             </View>
           </TouchableOpacity>
         );
@@ -110,24 +92,41 @@ export function PendingUnitSection({
   );
 }
 
+type ActionButtonProps = {
+  icon: keyof typeof Ionicons.glyphMap;
+  label: string;
+  color: string;
+  onPress: () => void;
+};
+
+function ActionButton({ icon, label, color, onPress }: ActionButtonProps) {
+  return (
+    <TouchableOpacity style={styles.actionButton} onPress={onPress} activeOpacity={0.8}>
+      <Ionicons name={icon} size={14} color={color} />
+      <Text style={[styles.actionText, { color }]}>{label}</Text>
+    </TouchableOpacity>
+  );
+}
+
 const styles = StyleSheet.create({
+  header: {
+    marginHorizontal: spacing.md,
+    marginTop: spacing.sm,
+    marginBottom: spacing.sm,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+
   title: {
     fontFamily: fonts.bold,
     fontSize: 15,
     color: colors.foreground,
-    marginHorizontal: spacing.md,
-    marginTop: spacing.sm,
-    marginBottom: spacing.sm,
   },
 
-  emptyContainer: {
-    marginHorizontal: spacing.md,
-    marginBottom: spacing.md,
-  },
-
-  emptyText: {
-    fontFamily: fonts.regular,
-    fontSize: 13,
+  count: {
+    fontFamily: fonts.medium,
+    fontSize: 12,
     color: colors.muted,
   },
 
@@ -137,48 +136,52 @@ const styles = StyleSheet.create({
     marginHorizontal: spacing.md,
     marginBottom: spacing.sm,
     padding: spacing.md,
+    gap: spacing.md,
     elevation: 2,
-    borderLeftWidth: 3,
-    borderLeftColor: colors.warning,
   },
 
-  cardHeader: {
+  main: {
     flexDirection: "row",
-    gap: spacing.sm,
-    marginBottom: spacing.sm,
+    gap: spacing.md,
   },
 
   iconContainer: {
-    width: 52,
-    height: 52,
-    backgroundColor: colors.border,
+    width: 56,
+    height: 56,
+    backgroundColor: `${colors.warning}18`,
     borderRadius: radius.md,
     justifyContent: "center",
     alignItems: "center",
   },
 
-  cardInfo: {
+  content: {
     flex: 1,
+    gap: spacing.xs,
   },
 
-  nameRow: {
+  titleRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 4,
+    alignItems: "flex-start",
+    gap: spacing.sm,
   },
 
   name: {
-    fontFamily: fonts.bold,
-    fontSize: 14,
-    color: colors.foreground,
     flex: 1,
-    marginRight: 8,
+    fontFamily: fonts.bold,
+    fontSize: 15,
+    color: colors.foreground,
+  },
+
+  infoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
   },
 
   info: {
-    fontSize: 12,
+    flex: 1,
     fontFamily: fonts.regular,
+    fontSize: 12,
     color: colors.muted,
   },
 
@@ -186,51 +189,23 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: spacing.sm,
     borderTopWidth: 1,
-    borderTopColor: colors.border,
+    borderTopColor: colors.background,
     paddingTop: spacing.sm,
   },
 
-  approveButton: {
+  actionButton: {
     flex: 1,
+    minHeight: 38,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 4,
-    borderWidth: 1,
-    borderColor: `${colors.success}40`,
-    borderRadius: radius.sm,
-    paddingVertical: 6,
-    backgroundColor: `${colors.success}10`,
-  },
-
-  rejectButton: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 4,
-    borderWidth: 1,
-    borderColor: `${colors.warning}40`,
-    borderRadius: radius.sm,
-    paddingVertical: 6,
-    backgroundColor: `${colors.warning}10`,
-  },
-
-  deleteButton: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 4,
-    borderWidth: 1,
-    borderColor: `${colors.danger}40`,
-    borderRadius: radius.sm,
-    paddingVertical: 6,
-    backgroundColor: `${colors.danger}10`,
+    borderRadius: radius.md,
+    backgroundColor: colors.background,
   },
 
   actionText: {
     fontSize: 12,
-    fontFamily: fonts.medium,
+    fontFamily: fonts.semibold,
   },
 });

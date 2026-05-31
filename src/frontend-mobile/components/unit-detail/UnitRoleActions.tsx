@@ -1,3 +1,4 @@
+import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { colors, fonts, radius, spacing } from "../../constants/theme";
 
@@ -15,6 +16,13 @@ type UnitRoleActionsProps = {
   onApprovePress: () => void;
 };
 
+type ActionButtonProps = {
+  title: string;
+  icon: keyof typeof Ionicons.glyphMap;
+  onPress: () => void;
+  variant?: "default" | "primary";
+};
+
 export function UnitRoleActions({
   role,
   isOwner = false,
@@ -27,78 +35,89 @@ export function UnitRoleActions({
   onApprovePress,
 }: UnitRoleActionsProps) {
   return (
-    <View style={styles.container}>
-      {role === "victim" && (
-        <>
-          <ActionButton title="Ver rota" onPress={onRoutePress} />
-          <ActionButton
-            title="Pedir ajuda"
-            onPress={onAskHelpPress}
-            variant="primary"
-          />
-        </>
-      )}
+    <View style={styles.card}>
+      <View style={styles.actions}>
+        {role === "victim" && (
+          <>
+            <ActionButton title="Ver rota" icon="navigate-outline" onPress={onRoutePress} />
+            <ActionButton
+              title="Pedir ajuda"
+              icon="heart-outline"
+              onPress={onAskHelpPress}
+              variant="primary"
+            />
+          </>
+        )}
 
-      {role === "volunteer" && (
-        <>
-          <ActionButton title="Ver doações" onPress={onDonationsPress} />
-          <ActionButton
-            title="Participe de uma Missão de ajuda"
-            onPress={onVolunteerPress}
-          />
-          <ActionButton
-            title="Ver rota"
-            onPress={onRoutePress}
-            variant="primary"
-          />
-        </>
-      )}
+        {role === "volunteer" && (
+          <>
+            <ActionButton
+              title="Ver doações"
+              icon="gift-outline"
+              onPress={onDonationsPress}
+            />
+            <ActionButton
+              title="Participar de missão"
+              icon="flag-outline"
+              onPress={onVolunteerPress}
+            />
+            <ActionButton
+              title="Ver rota"
+              icon="navigate-outline"
+              onPress={onRoutePress}
+              variant="primary"
+            />
+          </>
+        )}
 
-      {role === "support_unit" && isOwner && (
-        <>
-          <ActionButton title="Editar unidade" onPress={onEditPress} />
-          <ActionButton title="Gerenciar doações" onPress={onDonationsPress} />
-          <ActionButton
-            title="Gerenciar missões"
-            onPress={onMissionsPress}
-            variant="primary"
-          />
-        </>
-      )}
+        {role === "support_unit" && isOwner && (
+          <>
+            <ActionButton title="Editar unidade" icon="create-outline" onPress={onEditPress} />
+            <ActionButton
+              title="Gerenciar doações"
+              icon="gift-outline"
+              onPress={onDonationsPress}
+            />
+            <ActionButton
+              title="Gerenciar missões"
+              icon="flag-outline"
+              onPress={onMissionsPress}
+              variant="primary"
+            />
+          </>
+        )}
 
-      {role === "support_unit" && !isOwner && (
-        <>
-          <ActionButton title="Ver rota" onPress={onRoutePress} />
-          <ActionButton
-            title="Visualizar informações"
-            onPress={onAskHelpPress}
-            variant="primary"
-          />
-        </>
-      )}
+        {role === "support_unit" && !isOwner && (
+          <>
+            <ActionButton title="Ver rota" icon="navigate-outline" onPress={onRoutePress} />
+            <ActionButton
+              title="Visualizar informações"
+              icon="information-circle-outline"
+              onPress={onAskHelpPress}
+              variant="primary"
+            />
+          </>
+        )}
 
-      {role === "admin" && (
-        <>
-          <ActionButton title="Editar unidade" onPress={onEditPress} />
-          <ActionButton
-            title="Aprovar / validar unidade"
-            onPress={onApprovePress}
-            variant="primary"
-          />
-        </>
-      )}
+        {role === "admin" && (
+          <>
+            <ActionButton title="Editar unidade" icon="create-outline" onPress={onEditPress} />
+            <ActionButton
+              title="Validar unidade"
+              icon="shield-checkmark-outline"
+              onPress={onApprovePress}
+              variant="primary"
+            />
+          </>
+        )}
+      </View>
     </View>
   );
 }
 
-type ActionButtonProps = {
-  title: string;
-  onPress: () => void;
-  variant?: "default" | "primary";
-};
-
 function ActionButton({
   title,
+  icon,
   onPress,
   variant = "default",
 }: ActionButtonProps) {
@@ -108,8 +127,13 @@ function ActionButton({
     <TouchableOpacity
       style={[styles.button, isPrimary && styles.primaryButton]}
       onPress={onPress}
-      activeOpacity={0.8}
+      activeOpacity={0.85}
     >
+      <Ionicons
+        name={icon}
+        size={18}
+        color={isPrimary ? "#fff" : colors.primary}
+      />
       <Text style={[styles.buttonText, isPrimary && styles.primaryButtonText]}>
         {title}
       </Text>
@@ -118,19 +142,26 @@ function ActionButton({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: spacing.md,
+  card: {
+    padding: spacing.md,
+    gap: spacing.md,
+  },
+
+  actions: {
     gap: spacing.sm,
-    marginBottom: spacing.lg,
   },
 
   button: {
+    minHeight: 48,
     borderWidth: 1,
     borderColor: colors.border,
-    borderRadius: radius.sm,
-    paddingVertical: 13,
+    borderRadius: radius.md,
+    paddingHorizontal: spacing.md,
+    flexDirection: "row",
     alignItems: "center",
-    backgroundColor: colors.card,
+    justifyContent: "center",
+    gap: spacing.sm,
+    backgroundColor: colors.background,
   },
 
   primaryButton: {
@@ -139,7 +170,7 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    fontFamily: fonts.medium,
+    fontFamily: fonts.semibold,
     fontSize: 14,
     color: colors.foreground,
   },

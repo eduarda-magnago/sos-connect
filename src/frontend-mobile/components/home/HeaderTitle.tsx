@@ -1,77 +1,83 @@
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { StyleSheet, Text, View } from "react-native";
 import { colors, fonts } from "../../constants/theme";
-import { useAuth } from "../../contexts/AuthContext";
-import { useRouter } from "expo-router";
 
 type HeaderTitleProps = {
   userName?: string;
+  userRole?: string;
 };
 
-export function HeaderTitle({ userName }: HeaderTitleProps) {
-  const router = useRouter();
-  const { logout } = useAuth();
+function getFirstName(name?: string) {
+  return name?.trim().split(" ")[0] || "bem-vindo";
+}
 
-  const firstName = userName?.split(" ")[0] || "usuário";
+function getHeaderText(userName?: string, userRole?: string) {
+  const firstName = getFirstName(userName);
 
-  function handleAvatarPress() {
-    router.push("/(app)/settings" as any);
+  if (userRole === "victim") {
+    return {
+      title: `Olá, ${firstName}`,
+      subtitle: "Encontre ajuda perto de você",
+    };
   }
+
+  if (userRole === "volunteer") {
+    return {
+      title: `Olá, ${firstName}`,
+      subtitle: "Encontre missões para ajudar",
+    };
+  }
+
+  if (userRole === "support_unit") {
+    return {
+      title: userName || "Minha instituição",
+      subtitle: "Gerencie unidades, missões e doações",
+    };
+  }
+
+  if (userRole === "admin") {
+    return {
+      title: "Painel administrativo",
+      subtitle: "Valide unidades e acompanhe atividades",
+    };
+  }
+
+  return {
+    title: `Olá, ${firstName}`,
+    subtitle: "Acompanhe as novidades da SOS Connect",
+  };
+}
+
+export function HeaderTitle({ userName, userRole }: HeaderTitleProps) {
+  const { title, subtitle } = getHeaderText(userName, userRole);
 
   return (
     <View style={styles.container}>
-      <View style={styles.titleRow}>
-        <Text style={styles.subtitle}>Bem-vindo(a), </Text>
-        <Text style={styles.title} numberOfLines={1}>
-          {firstName}!
-        </Text>
-      </View>
-
-      <TouchableOpacity
-        style={styles.avatarButton}
-        activeOpacity={0.8}
-        onPress={handleAvatarPress}
-      >
-        <Ionicons name="person" size={20} color={colors.muted} />
-      </TouchableOpacity>
+      <Text style={styles.title} numberOfLines={1}>
+        {title}
+      </Text>
+      <Text style={styles.subtitle} numberOfLines={1}>
+        {subtitle}
+      </Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    paddingRight: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-
-  titleRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    flexShrink: 1,
-  },
-
-  subtitle: {
-    color: "#9CA3AF",
-    fontSize: 14,
-    fontFamily: fonts.regular,
+    maxWidth: 220,
+    alignItems: "flex-start",
   },
 
   title: {
-    color: "#FFFFFF",
-    fontSize: 16,
     fontFamily: fonts.bold,
-    flexShrink: 1,
+    fontSize: 16,
+    color: "#fff",
   },
 
-  avatarButton: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    backgroundColor: colors.border,
-    justifyContent: "center",
-    alignItems: "center",
+  subtitle: {
+    marginTop: 2,
+    fontFamily: fonts.regular,
+    fontSize: 11,
+    color: colors.border,
   },
 });

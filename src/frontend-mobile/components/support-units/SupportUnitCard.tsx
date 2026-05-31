@@ -1,5 +1,5 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors, fonts, radius, spacing } from '../../constants/theme';
 import { StatusBadge } from '../ui/StatusBadge';
 
@@ -41,69 +41,72 @@ export function SupportUnitCard({
   onMissionPress,
   onEditPress,
 }: SupportUnitCardProps) {
-  const remainingCapacity = unit.capacity - unit.current_occupancy;
+  const remainingCapacity = Math.max(unit.capacity - unit.current_occupancy, 0);
+  const servicePreview = unit.services_available?.slice(0, 2).join(', ');
 
   return (
-    <TouchableOpacity
-      style={styles.card}
-      onPress={onPress}
-      activeOpacity={0.8}
-    >
-      <View style={styles.imageContainer}>
-        {unit.image_url ? (
-          <Image source={{ uri: unit.image_url }} style={styles.image} />
-        ) : (
-          <Ionicons name="business" size={36} color={colors.muted} />
-        )}
-      </View>
-
-      <View style={styles.content}>
-        <View style={styles.header}>
-          <Text style={styles.name} numberOfLines={1}>
-            {unit.name}
-          </Text>
-
-          <StatusBadge
-            label={statusConfig.label}
-            color={statusConfig.color}
-          />
-        </View>
-
-        <Text style={styles.info}>
-          👥 Capacidade restante: {remainingCapacity}
-        </Text>
-
-        {unit.services_available?.length > 0 ? (
-          <Text style={styles.info} numberOfLines={1}>
-            🛠️ {unit.services_available.join(', ')}
-          </Text>
-        ) : null}
-
-        <View style={styles.actions}>
-          {isOwner ? (
-            <>
-              <TouchableOpacity style={styles.actionButton} onPress={onDonationPress}>
-                <Text style={styles.actionButtonText}>Doação</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                testID={`support-unit-mission-${unit._id}`}
-                style={styles.actionButton}
-                onPress={onMissionPress}
-              >
-                <Text style={styles.actionButtonText}>Missão</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.editButton} onPress={onEditPress}>
-                <Ionicons name="pencil" size={16} color={colors.muted} />
-              </TouchableOpacity>
-            </>
+    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.85}>
+      <View style={styles.main}>
+        <View style={styles.imageContainer}>
+          {unit.image_url ? (
+            <Image source={{ uri: unit.image_url }} style={styles.image} />
           ) : (
-            <TouchableOpacity style={styles.viewButton} onPress={onPress}>
-              <Text style={styles.viewButtonText}>Visualizar</Text>
-            </TouchableOpacity>
+            <Ionicons name="business-outline" size={28} color={colors.muted} />
           )}
         </View>
+
+        <View style={styles.content}>
+          <View style={styles.titleRow}>
+            <Text style={styles.name} numberOfLines={1}>
+              {unit.name}
+            </Text>
+            <StatusBadge label={statusConfig.label} color={statusConfig.color} />
+          </View>
+
+          <View style={styles.infoRow}>
+            <Ionicons name="people-outline" size={15} color={colors.muted} />
+            <Text style={styles.info}>Vagas: {remainingCapacity}/{unit.capacity}</Text>
+          </View>
+
+          {!!servicePreview && (
+            <View style={styles.infoRow}>
+              <Ionicons name="medkit-outline" size={15} color={colors.muted} />
+              <Text style={styles.info} numberOfLines={1}>
+                {servicePreview}
+              </Text>
+            </View>
+          )}
+        </View>
+      </View>
+
+      <View style={styles.footer}>
+        {isOwner ? (
+          <View style={styles.ownerActions}>
+            <TouchableOpacity style={styles.secondaryBtn} onPress={onDonationPress} activeOpacity={0.8}>
+              <Ionicons name="gift-outline" size={16} color={colors.primary} />
+              <Text style={styles.secondaryBtnText}>Doações</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              testID={`support-unit-mission-${unit._id}`}
+              style={styles.secondaryBtn}
+              onPress={onMissionPress}
+              activeOpacity={0.8}
+            >
+              <Ionicons name="flag-outline" size={16} color={colors.primary} />
+              <Text style={styles.secondaryBtnText}>Missões</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.iconBtn} onPress={onEditPress} activeOpacity={0.8}>
+              <Ionicons name="pencil-outline" size={18} color={colors.muted} />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.viewAction}>
+            <Text style={styles.viewText}>Ver detalhes</Text>
+            <Ionicons name="chevron-forward" size={17} color={colors.primary} />
+          </View>
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -115,16 +118,24 @@ const styles = StyleSheet.create({
     borderRadius: radius.lg,
     marginHorizontal: spacing.md,
     marginBottom: spacing.sm,
-    overflow: 'hidden',
+    padding: spacing.md,
+    gap: spacing.md,
     elevation: 2,
   },
 
+  main: {
+    flexDirection: 'row',
+    gap: spacing.md,
+  },
+
   imageContainer: {
-    width: '100%',
-    height: 120,
-    backgroundColor: colors.border,
+    width: 64,
+    height: 64,
+    borderRadius: radius.md,
+    backgroundColor: colors.background,
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
   },
 
   image: {
@@ -134,69 +145,85 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    padding: spacing.md,
+    flex: 1,
+    gap: spacing.xs,
   },
 
-  header: {
+  titleRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 6,
+    alignItems: 'flex-start',
+    gap: spacing.sm,
   },
 
   name: {
+    flex: 1,
     fontFamily: fonts.bold,
     fontSize: 15,
     color: colors.foreground,
-    flex: 1,
-    marginRight: 8,
+  },
+
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
   },
 
   info: {
-    fontSize: 12,
-    fontFamily: fonts.regular,
-    color: colors.muted,
-    marginTop: 2,
-  },
-
-  actions: {
-    flexDirection: 'row',
-    gap: 8,
-    marginTop: spacing.sm,
-    alignItems: 'center',
-  },
-
-  actionButton: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radius.sm,
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-  },
-
-  actionButtonText: {
-    fontSize: 12,
-    fontFamily: fonts.medium,
-    color: colors.foreground,
-  },
-
-  editButton: {
-    marginLeft: 'auto',
-  },
-
-  viewButton: {
     flex: 1,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radius.sm,
-    paddingHorizontal: 20,
-    paddingVertical: 6,
+    fontFamily: fonts.regular,
+    fontSize: 12,
+    color: colors.muted,
   },
 
-  viewButtonText: {
+  footer: {
+    borderTopWidth: 1,
+    borderTopColor: colors.background,
+    paddingTop: spacing.sm,
+  },
+
+  ownerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+
+  secondaryBtn: {
+    flex: 1,
+    minHeight: 40,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.xs,
+    borderRadius: radius.md,
+    backgroundColor: colors.background,
+  },
+
+  secondaryBtnText: {
+    fontFamily: fonts.semibold,
     fontSize: 12,
-    fontFamily: fonts.medium,
-    color: colors.foreground,
+    color: colors.primary,
+  },
+
+  iconBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: radius.md,
+    backgroundColor: colors.background,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  viewAction: {
+    minHeight: 36,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    gap: spacing.xs,
+  },
+
+  viewText: {
+    fontFamily: fonts.semibold,
+    fontSize: 13,
+    color: colors.primary,
   },
 });

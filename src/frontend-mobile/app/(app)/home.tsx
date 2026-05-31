@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
+import { useRouter } from 'expo-router';
 
 import api from '../../services/api';
 import { colors, fonts, spacing } from '../../constants/theme';
@@ -46,6 +47,8 @@ const statusConfig: Record<string, { label: string; color: string }> = {
 };
 
 export default function Home() {
+  const router = useRouter();
+
   const [units, setUnits] = useState<SupportUnit[]>([]);
   const [userLocation, setUserLocation] = useState<LocationCoords | null>(null);
   const [loading, setLoading] = useState(true);
@@ -141,10 +144,12 @@ export default function Home() {
     loadUnits(EMPTY_FILTERS);
   }
 
+  function goToUnitDetail(unitId: string) {
+    router.push(`/unit/${unitId}` as any);
+  }
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <SectionHeader title="Encontre ajuda perto de você!" />
-
       <View style={styles.filterBar}>
         <TouchableOpacity
           testID="dashboard-filter-button"
@@ -188,6 +193,7 @@ export default function Home() {
             key={unit._id}
             unit={unit}
             statusConfig={config}
+            onPress={() => goToUnitDetail(unit._id)}
           />
         );
       })}
@@ -217,6 +223,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: spacing.md,
+    marginTop: spacing.md,
     marginBottom: spacing.sm,
   },
 

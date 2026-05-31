@@ -130,6 +130,21 @@ export default function DonationsPage() {
         keyExtractor={(item) => item._id}
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
+        ListHeaderComponent={
+          donations.length > 0 ? (
+            <View style={styles.summary}>
+              <View>
+                <Text style={styles.summaryTitle}>Necessidades de doação</Text>
+                <Text style={styles.summarySubtitle}>
+                  {donations.length} {donations.length === 1 ? "item cadastrado" : "itens cadastrados"}
+                </Text>
+              </View>
+              <View style={styles.summaryIcon}>
+                <Ionicons name="gift-outline" size={22} color={colors.primary} />
+              </View>
+            </View>
+          ) : null
+        }
         ListEmptyComponent={
           <View style={styles.empty}>
             <Ionicons name="gift-outline" size={48} color={colors.muted} />
@@ -184,6 +199,35 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     paddingBottom: 100,
     gap: spacing.sm,
+  },
+  summary: {
+    backgroundColor: colors.card,
+    borderRadius: 16,
+    padding: spacing.md,
+    marginBottom: spacing.xs,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    elevation: 2,
+  },
+  summaryTitle: {
+    fontFamily: fonts.bold,
+    fontSize: 16,
+    color: colors.foreground,
+  },
+  summarySubtitle: {
+    marginTop: 2,
+    fontFamily: fonts.regular,
+    fontSize: 13,
+    color: colors.muted,
+  },
+  summaryIcon: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    backgroundColor: colors.background,
+    justifyContent: "center",
+    alignItems: "center",
   },
   empty: {
     alignItems: "center",

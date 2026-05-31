@@ -1,4 +1,4 @@
-import { TextInput, View, StyleSheet } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, fonts, radius, spacing } from '../../constants/theme';
 
@@ -19,6 +19,12 @@ export function SearchBar({ value, onChangeText }: SearchBarProps) {
         value={value}
         onChangeText={onChangeText}
       />
+
+      {value.length > 0 && (
+        <TouchableOpacity onPress={() => onChangeText('')} hitSlop={8}>
+          <Ionicons name="close-circle" size={18} color={colors.muted} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
@@ -27,13 +33,15 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: spacing.sm,
     margin: spacing.md,
+    marginBottom: spacing.sm,
     backgroundColor: colors.card,
     borderRadius: radius.md,
     paddingHorizontal: spacing.md,
-    paddingVertical: 10,
-    elevation: 1,
+    minHeight: 48,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
 
   input: {

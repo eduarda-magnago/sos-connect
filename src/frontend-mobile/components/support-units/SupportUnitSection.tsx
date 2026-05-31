@@ -31,7 +31,12 @@ export function SupportUnitSection({
 
   return (
     <View>
-      <Text style={styles.title}>{title}</Text>
+      <View style={styles.header}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.count}>
+          {units.length} {units.length === 1 ? 'unidade' : 'unidades'}
+        </Text>
+      </View>
 
       {units.map((unit) => {
         const config = statusConfig[unit.status] || statusConfig.open;
@@ -58,8 +63,20 @@ const styles = StyleSheet.create({
     fontFamily: fonts.bold,
     fontSize: 15,
     color: colors.foreground,
+  },
+
+  header: {
     marginHorizontal: spacing.md,
     marginTop: spacing.sm,
     marginBottom: spacing.sm,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+
+  count: {
+    fontFamily: fonts.medium,
+    fontSize: 12,
+    color: colors.muted,
   },
 });

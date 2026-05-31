@@ -10,11 +10,20 @@ module.exports = {
     },
   },
   apps: {
+    // macOS / Linux — uses ./gradlew
     'android.debug': {
       type: 'android.apk',
       binaryPath: 'android/app/build/outputs/apk/debug/app-debug.apk',
       build:
         'cd android && ./gradlew :app:assembleDebug :app:assembleAndroidTest -DtestBuildType=debug && cd ..',
+      reversePorts: [8081],
+    },
+    // Windows — uses gradlew (gradlew.bat); ./gradlew fails in cmd.exe
+    'android.debug.win': {
+      type: 'android.apk',
+      binaryPath: 'android/app/build/outputs/apk/debug/app-debug.apk',
+      build:
+        'cd android && gradlew :app:assembleDebug :app:assembleAndroidTest -DtestBuildType=debug && cd ..',
       reversePorts: [8081],
     },
   },
@@ -32,6 +41,10 @@ module.exports = {
     'android.emu.debug': {
       device: 'emulator',
       app: 'android.debug',
+    },
+    'android.emu.debug.win': {
+      device: 'emulator',
+      app: 'android.debug.win',
     },
   },
 };

@@ -1,3 +1,5 @@
+import { Ionicons } from "@expo/vector-icons";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   Alert,
@@ -7,16 +9,17 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
 
-import api from "../../../../services/api";
-import { colors, fonts, spacing } from "../../../../constants/theme";
-import { LoadingState } from "../../../../components/ui/LoadingState";
+import { ApplicationModal } from "../../../../components/applications/ApplicationModal";
 import {
-  statusConfig,
   categoryConfig,
+  statusConfig,
 } from "../../../../components/missions/MissionCard";
+import { LoadingState } from "../../../../components/ui/LoadingState";
+import { useAuth } from "../../../../contexts/AuthContext";
+import api from "../../../../services/api";
+import { saveLocalApplication } from "../../../../services/localApplications";
+import { colors, fonts, spacing } from "../../../../constants/theme";
 
 type MissionDetail = {
   _id: string;
@@ -38,8 +41,15 @@ type SupportUnit = {
   current_occupancy: number;
 };
 
+type ApplicationFormData = {
+  name: string;
+  email: string;
+  availableOnSchedule: boolean;
+};
+
 export default function MissionDetailPage() {
   const router = useRouter();
+  const { user } = useAuth();
   const params = useLocalSearchParams();
 
   const unitId = Array.isArray(params.unitId)
@@ -53,6 +63,8 @@ export default function MissionDetailPage() {
   const [mission, setMission] = useState<MissionDetail | null>(null);
   const [unit, setUnit] = useState<SupportUnit | null>(null);
   const [loading, setLoading] = useState(true);
+  const [applicationVisible, setApplicationVisible] = useState(false);
+  const [submittingApplication, setSubmittingApplication] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -74,12 +86,38 @@ export default function MissionDetailPage() {
     }
   }
 
-  async function handleApply() {
+  async function handleApply(data: ApplicationFormData) {
+    if (!mission || !unit || !user) return;
+
     try {
-      await api.post(`/missions/${missionId}/apply`);
-      Alert.alert("✓ Sucesso", "Candidatura enviada com sucesso!");
+      setSubmittingApplication(true);
+
+      try {
+        await api.post("/mission-volunteers", {
+          mission_id: mission._id,
+        });
+      } catch {
+        // Without backend support, keep the candidature as a local reminder.
+      }
+
+      await saveLocalApplication({
+        type: "mission",
+        itemId: mission._id,
+        title: mission.title,
+        unitId: unit._id,
+        unitName: unit.name,
+        applicantUserId: user._id,
+        applicantName: data.name,
+        applicantEmail: data.email,
+        availableOnSchedule: data.availableOnSchedule,
+      });
+
+      setApplicationVisible(false);
+      Alert.alert("Sucesso", "Candidatura enviada com sucesso!");
     } catch {
       Alert.alert("Erro", "Não foi possível enviar a candidatura.");
+    } finally {
+      setSubmittingApplication(false);
     }
   }
 
@@ -88,7 +126,6 @@ export default function MissionDetailPage() {
 
   const status = statusConfig[mission.status];
   const category = categoryConfig[mission.category] ?? categoryConfig.other;
-
   const remainingSpots =
     mission.volunteers_needed - mission.volunteer_ids.length;
 
@@ -128,9 +165,7 @@ export default function MissionDetailPage() {
 
           <View style={styles.divider} />
 
-          <Text style={styles.sectionTitle}>
-            Informações da missão:
-          </Text>
+          <Text style={styles.sectionTitle}>Informações da missão:</Text>
 
           <View style={styles.detailsBox}>
             <View style={styles.detailRow}>
@@ -154,35 +189,41 @@ export default function MissionDetailPage() {
 
             <View style={styles.detailRow}>
               <Text style={styles.detailLabel}>Vagas restantes:</Text>
-              <Text style={styles.detailValue}>
-                {remainingSpots}
-              </Text>
+              <Text style={styles.detailValue}>{remainingSpots}</Text>
             </View>
 
             {mission.description && (
               <View style={styles.descriptionBox}>
                 <Text style={styles.descriptionText}>
-                    <Text style={styles.detailLabel}>Descrição: </Text>
-                    {mission.description}
+                  <Text style={styles.detailLabel}>Descrição: </Text>
+                  {mission.description}
                 </Text>
-               </View>
+              </View>
             )}
           </View>
 
           <TouchableOpacity
             style={styles.applyBtn}
-            onPress={handleApply}
+            onPress={() => setApplicationVisible(true)}
             activeOpacity={0.85}
           >
             <Ionicons name="hand-left-outline" size={18} color="#fff" />
-            <Text style={styles.applyText}>
-              Candidatar-se para a missão
-            </Text>
+            <Text style={styles.applyText}>Candidatar-se para a missão</Text>
           </TouchableOpacity>
         </View>
 
         <View style={{ height: 32 }} />
       </ScrollView>
+
+      <ApplicationModal
+        visible={applicationVisible}
+        title={mission.title}
+        defaultName={user?.name}
+        defaultEmail={user?.email}
+        loading={submittingApplication}
+        onClose={() => setApplicationVisible(false)}
+        onSubmit={handleApply}
+      />
     </View>
   );
 }
@@ -286,11 +327,10 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
     gap: 4,
   },
-
   descriptionText: {
     fontFamily: fonts.regular,
     fontSize: 13,
     color: colors.foreground,
-    lineHeight: 20, 
+    lineHeight: 20,
   },
 });

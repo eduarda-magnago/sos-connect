@@ -1,12 +1,22 @@
-import { useEffect, useState } from "react";
-import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import api from "../../../../services/api";
-import { colors, fonts, spacing } from "../../../../constants/theme";
-import { LoadingState } from "../../../../components/ui/LoadingState";
+import { ApplicationModal } from "../../../../components/applications/ApplicationModal";
 import { priorityConfig } from "../../../../components/donations/DonationCard";
+import { LoadingState } from "../../../../components/ui/LoadingState";
+import { useAuth } from "../../../../contexts/AuthContext";
+import api from "../../../../services/api";
+import { saveLocalApplication } from "../../../../services/localApplications";
+import { colors, fonts, spacing } from "../../../../constants/theme";
 
 type DonationDetail = {
   _id: string;
@@ -26,6 +36,12 @@ type SupportUnit = {
   current_occupancy: number;
 };
 
+type ApplicationFormData = {
+  name: string;
+  email: string;
+  availableOnSchedule: boolean;
+};
+
 const statusLabel: Record<DonationDetail["status"], string> = {
   pending: "Pendente",
   partially_fulfilled: "Parcialmente atendido",
@@ -35,13 +51,18 @@ const statusLabel: Record<DonationDetail["status"], string> = {
 
 export default function DonationDetailPage() {
   const router = useRouter();
+  const { user } = useAuth();
   const params = useLocalSearchParams();
   const unitId = Array.isArray(params.unitId) ? params.unitId[0] : params.unitId;
-  const donationId = Array.isArray(params.donationId) ? params.donationId[0] : params.donationId;
+  const donationId = Array.isArray(params.donationId)
+    ? params.donationId[0]
+    : params.donationId;
 
   const [donation, setDonation] = useState<DonationDetail | null>(null);
   const [unit, setUnit] = useState<SupportUnit | null>(null);
   const [loading, setLoading] = useState(true);
+  const [applicationVisible, setApplicationVisible] = useState(false);
+  const [submittingApplication, setSubmittingApplication] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -62,12 +83,30 @@ export default function DonationDetailPage() {
     }
   }
 
-  async function handleApply() {
+  async function handleApply(data: ApplicationFormData) {
+    if (!donation || !unit || !user) return;
+
     try {
-      await api.post(`/donation-needs/${donationId}/apply`);
-      Alert.alert("✓ Sucesso", "Candidatura enviada com sucesso!");
+      setSubmittingApplication(true);
+
+      await saveLocalApplication({
+        type: "donation",
+        itemId: donation._id,
+        title: donation.item_name,
+        unitId: unit._id,
+        unitName: unit.name,
+        applicantUserId: user._id,
+        applicantName: data.name,
+        applicantEmail: data.email,
+        availableOnSchedule: data.availableOnSchedule,
+      });
+
+      setApplicationVisible(false);
+      Alert.alert("Sucesso", "Candidatura enviada com sucesso!");
     } catch {
       Alert.alert("Erro", "Não foi possível enviar a candidatura.");
+    } finally {
+      setSubmittingApplication(false);
     }
   }
 
@@ -80,7 +119,11 @@ export default function DonationDetailPage() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn} hitSlop={8}>
+        <TouchableOpacity
+          onPress={() => router.back()}
+          style={styles.backBtn}
+          hitSlop={8}
+        >
           <Ionicons name="arrow-back" size={22} color={colors.foreground} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Detalhes da Doação</Text>
@@ -89,7 +132,9 @@ export default function DonationDetailPage() {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.card}>
-          <Text style={styles.itemName} testID="donation-item-name">{donation.item_name}</Text>
+          <Text style={styles.itemName} testID="donation-item-name">
+            {donation.item_name}
+          </Text>
 
           <View style={styles.divider} />
 
@@ -104,12 +149,16 @@ export default function DonationDetailPage() {
 
           <View style={styles.infoRow}>
             <Ionicons name="people-outline" size={15} color={colors.muted} />
-            <Text style={styles.infoText}>Capacidade restante: {capacityRemaining}</Text>
+            <Text style={styles.infoText}>
+              Capacidade restante: {capacityRemaining}
+            </Text>
           </View>
 
           <View style={styles.divider} />
 
-          <Text style={styles.sectionTitle}>Informações necessárias para a doação:</Text>
+          <Text style={styles.sectionTitle}>
+            Informações necessárias para a doação:
+          </Text>
 
           <View style={styles.detailsBox}>
             <View style={styles.detailRow}>
@@ -136,11 +185,18 @@ export default function DonationDetailPage() {
 
             <View style={styles.detailRow}>
               <Text style={styles.detailLabel}>Status:</Text>
-              <Text style={styles.detailValue}>{statusLabel[donation.status]}</Text>
+              <Text style={styles.detailValue}>
+                {statusLabel[donation.status]}
+              </Text>
             </View>
           </View>
 
-          <TouchableOpacity style={styles.applyBtn} onPress={handleApply} activeOpacity={0.85} testID="donation-apply-btn">
+          <TouchableOpacity
+            style={styles.applyBtn}
+            onPress={() => setApplicationVisible(true)}
+            activeOpacity={0.85}
+            testID="donation-apply-btn"
+          >
             <Ionicons name="heart-outline" size={18} color="#fff" />
             <Text style={styles.applyText}>Candidatar-se para doação</Text>
           </TouchableOpacity>
@@ -148,6 +204,16 @@ export default function DonationDetailPage() {
 
         <View style={{ height: 32 }} />
       </ScrollView>
+
+      <ApplicationModal
+        visible={applicationVisible}
+        title={donation.item_name}
+        defaultName={user?.name}
+        defaultEmail={user?.email}
+        loading={submittingApplication}
+        onClose={() => setApplicationVisible(false)}
+        onSubmit={handleApply}
+      />
     </View>
   );
 }

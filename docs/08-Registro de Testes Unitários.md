@@ -176,6 +176,9 @@ describe('MissionsService', () => {
   });
 });
 ```
+<img width="633" height="662" alt="unidade de apoio" src="https://github.com/user-attachments/assets/2f235e17-8300-4c40-8828-2ad927ecf8e2" />
+
+<img width="638" height="620" alt="necessidade de doação" src="https://github.com/user-attachments/assets/576dcb8c-c59c-4304-9b7a-9240767d0a13" />
 
 Pontos a observar nesse exemplo:
 

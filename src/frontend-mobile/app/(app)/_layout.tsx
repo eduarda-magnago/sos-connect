@@ -1,11 +1,12 @@
 import { Redirect, Tabs, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Alert, Image, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { useAuth } from "../../contexts/AuthContext";
 import { colors, fonts } from "../../constants/theme";
 import { HeaderTitle } from "../../components/home/HeaderTitle";
+import { getMediaUrl } from "../../services/media";
 
 export default function AppLayout() {
   const { user, loading } = useAuth();
@@ -18,6 +19,7 @@ export default function AppLayout() {
 
   const isVolunteer = user?.role === "volunteer";
   const isSupportUnit = user?.role === "support_unit";
+  const avatarUrl = getMediaUrl(user?.avatar);
 
   return (
     <Tabs
@@ -68,7 +70,11 @@ export default function AppLayout() {
                 activeOpacity={0.8}
                 onPress={() => router.push("/(app)/settings" as any)}
               >
-                <Ionicons name="person" size={20} color={colors.muted} />
+                {avatarUrl ? (
+                  <Image source={{ uri: avatarUrl }} style={styles.headerAvatar} />
+                ) : (
+                  <Ionicons name="person" size={20} color={colors.muted} />
+                )}
               </TouchableOpacity>
               <HeaderTitle userName={user?.name} userRole={user?.role} />
             </View>
@@ -166,5 +172,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.border,
     justifyContent: "center",
     alignItems: "center",
+    overflow: "hidden",
+  },
+
+  headerAvatar: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 19,
   },
 });

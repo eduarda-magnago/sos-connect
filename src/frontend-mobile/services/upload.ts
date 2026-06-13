@@ -1,9 +1,12 @@
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import * as ImagePicker from 'expo-image-picker';
 
 import api from './api';
 
 type UploadSource = 'camera' | 'gallery';
+type UploadOptions = {
+  aspect?: [number, number];
+};
 
 async function requestPermission(source: UploadSource) {
   const permission =
@@ -20,23 +23,27 @@ async function requestPermission(source: UploadSource) {
   }
 }
 
-async function launchPicker(source: UploadSource) {
-  const options: ImagePicker.ImagePickerOptions = {
+async function launchPicker(source: UploadSource, options?: UploadOptions) {
+  const pickerOptions: ImagePicker.ImagePickerOptions = {
     mediaTypes: ImagePicker.MediaTypeOptions.Images,
     allowsEditing: true,
-    aspect: [16, 9],
+    aspect: options?.aspect || [16, 9],
     quality: 0.7,
   };
 
   return source === 'gallery'
-    ? ImagePicker.launchImageLibraryAsync(options)
-    : ImagePicker.launchCameraAsync(options);
+    ? ImagePicker.launchImageLibraryAsync(pickerOptions)
+    : ImagePicker.launchCameraAsync(pickerOptions);
 }
 
-async function pickAndUpload(source: UploadSource, folder: string) {
+async function pickAndUpload(
+  source: UploadSource,
+  folder: string,
+  options?: UploadOptions,
+) {
   await requestPermission(source);
 
-  const result = await launchPicker(source);
+  const result = await launchPicker(source, options);
   if (result.canceled) {
     return null;
   }
@@ -47,20 +54,24 @@ async function pickAndUpload(source: UploadSource, folder: string) {
     encoding: 'base64',
   });
 
-  const response = await api.post<{ url: string }>('/upload/image', {
-    base64: `data:${mimeType};base64,${base64}`,
-    folder,
-  }, {
-    timeout: 30000,
-  });
+  const response = await api.post<{ url: string }>(
+    '/upload/image',
+    {
+      base64: `data:${mimeType};base64,${base64}`,
+      folder,
+    },
+    {
+      timeout: 60000,
+    },
+  );
 
   return response.data.url;
 }
 
-export function pickAndUploadImage(folder: string) {
-  return pickAndUpload('gallery', folder);
+export function pickAndUploadImage(folder: string, options?: UploadOptions) {
+  return pickAndUpload('gallery', folder, options);
 }
 
-export function takeAndUploadPhoto(folder: string) {
-  return pickAndUpload('camera', folder);
+export function takeAndUploadPhoto(folder: string, options?: UploadOptions) {
+  return pickAndUpload('camera', folder, options);
 }

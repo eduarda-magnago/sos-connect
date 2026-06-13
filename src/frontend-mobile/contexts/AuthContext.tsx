@@ -8,6 +8,7 @@ interface User {
   email: string
   role: string
   skills: string[]
+  avatar?: string
 }
 
 interface AuthContextData {
@@ -16,6 +17,7 @@ interface AuthContextData {
   loading: boolean
   login: (email: string, password: string) => Promise<void>
   register: (data: RegisterData) => Promise<void>
+  updateUser: (user: User) => Promise<void>
   logout: () => Promise<void>
 }
 
@@ -60,6 +62,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(user)
   }
 
+  async function updateUser(user: User) {
+    await SecureStore.setItemAsync('sos-user', JSON.stringify(user))
+    setUser(user)
+  }
+
   async function logout() {
     await SecureStore.deleteItemAsync('sos-token')
     await SecureStore.deleteItemAsync('sos-user')
@@ -73,6 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       loading,
       login,
       register,
+      updateUser,
       logout,
     }}>
       {children}

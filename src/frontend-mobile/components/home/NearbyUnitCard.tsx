@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, fonts, radius, spacing } from '../../constants/theme';
 import { StatusBadge } from '../ui/StatusBadge';
@@ -10,6 +10,7 @@ type SupportUnit = {
   capacity: number;
   current_occupancy: number;
   services_available: string[];
+  image_url?: string;
 };
 
 type StatusConfig = {
@@ -33,7 +34,11 @@ export function NearbyUnitCard({ unit, statusConfig, onPress }: NearbyUnitCardPr
       activeOpacity={0.8}
     >
       <View style={styles.imageBox}>
-        <Ionicons name="business" size={32} color={colors.muted} />
+        {unit.image_url ? (
+          <Image source={{ uri: unit.image_url }} style={styles.image} />
+        ) : (
+          <Ionicons name="business" size={32} color={colors.muted} />
+        )}
       </View>
 
       <View style={styles.content}>
@@ -81,6 +86,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.border,
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
+  },
+
+  image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
   },
 
   content: {

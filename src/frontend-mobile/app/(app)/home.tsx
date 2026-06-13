@@ -33,6 +33,7 @@ type SupportUnit = {
     coordinates: number[];
   };
   services_available: string[];
+  image_url?: string;
 };
 
 type LocationCoords = {

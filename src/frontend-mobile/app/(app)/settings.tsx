@@ -13,86 +13,82 @@ import {
   View,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
+
 import { useAuth } from "../../contexts/AuthContext";
 import api from "../../services/api";
+import { getMediaUrl } from "../../services/media";
+import { pickAndUploadImage } from "../../services/upload";
 import { colors, fonts, radius, spacing } from "../../constants/theme";
 
 const roleLabel: Record<string, string> = {
-  victim: "Usuário Comum",
-  volunteer: "Voluntário(a)",
-  support_unit: "Instituição",
+  victim: "Usuario Comum",
+  volunteer: "Voluntario(a)",
+  support_unit: "Instituicao",
   admin: "Administrador",
 };
 
 export default function Settings() {
   const [avatarUri, setAvatarUri] = useState<string | null>(null);
-  const { user, logout } = useAuth();
+  const [avatarChanged, setAvatarChanged] = useState(false);
+  const { user, logout, updateUser } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [avatarLoading, setAvatarLoading] = useState(false);
 
   useEffect(() => {
     if (user) {
       setName(user.name);
       setEmail(user.email);
+      setAvatarUri(getMediaUrl(user.avatar));
+      setAvatarChanged(false);
     }
   }, [user]);
 
   async function handlePickImage() {
-    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permission.granted) {
-      Alert.alert(
-        "Permissão necessária",
-        "Precisamos de acesso à sua galeria.",
-      );
-      return;
-    }
+    setAvatarLoading(true);
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.7,
-    });
+    try {
+      const url = await pickAndUploadImage("avatars", { aspect: [1, 1] });
 
-    if (!result.canceled) {
-      setAvatarUri(result.assets[0].uri);
+      if (url) {
+        setAvatarUri(url);
+        setAvatarChanged(true);
+      }
+    } catch (error: any) {
+      Alert.alert("Erro", error.message || "Nao foi possivel enviar a imagem.");
+    } finally {
+      setAvatarLoading(false);
     }
   }
 
   async function handleSave() {
-    const payload: { name?: string; email?: string; password?: string } = {};
+    const payload: {
+      name?: string;
+      email?: string;
+      password?: string;
+      avatar?: string;
+    } = {};
+
     if (name !== user?.name) payload.name = name;
     if (email !== user?.email) payload.email = email;
     if (password.length >= 6) payload.password = password;
+    if (avatarChanged && avatarUri) payload.avatar = avatarUri;
 
-    if (Object.keys(payload).length === 0 && !avatarUri) {
-      Alert.alert("Atenção", "Nenhuma alteração detectada.");
+    if (Object.keys(payload).length === 0) {
+      Alert.alert("Atencao", "Nenhuma alteracao detectada.");
       return;
     }
 
     setLoading(true);
     try {
-      if (Object.keys(payload).length > 0) {
-        await api.put(`/users/${user?._id}`, payload);
-      }
+      const response = await api.put(`/users/${user?._id}`, payload);
+      await updateUser(response.data);
 
-      if (avatarUri) {
-        const formData = new FormData();
-        formData.append("avatar", {
-          uri: avatarUri,
-          type: "image/jpeg",
-          name: "avatar.jpg",
-        } as any);
-        await api.post(`/users/${user?._id}/avatar`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-      }
-
-      Alert.alert("✓ Sucesso", "Configurações salvas com sucesso!");
+      Alert.alert("Sucesso", "Configuracoes salvas com sucesso!");
       setPassword("");
+      setAvatarChanged(false);
     } catch (error: any) {
       console.log(
         "Erro ao salvar:",
@@ -100,7 +96,7 @@ export default function Settings() {
         error?.response?.data,
         error?.message,
       );
-      Alert.alert("Erro", "Não foi possível salvar as configurações.");
+      Alert.alert("Erro", "Nao foi possivel salvar as configuracoes.");
     } finally {
       setLoading(false);
     }
@@ -119,7 +115,7 @@ export default function Settings() {
 
   return (
     <>
-      <Stack.Screen options={{ title: "Configurações" }} />
+      <Stack.Screen options={{ title: "Configuracoes" }} />
       <KeyboardAvoidingView
         style={styles.keyboardView}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -132,8 +128,11 @@ export default function Settings() {
             <TouchableOpacity
               onPress={handlePickImage}
               style={styles.avatarContainer}
+              disabled={avatarLoading}
             >
-              {avatarUri ? (
+              {avatarLoading ? (
+                <Ionicons name="cloud-upload-outline" size={32} color={colors.muted} />
+              ) : avatarUri ? (
                 <Image source={{ uri: avatarUri }} style={styles.avatarImage} />
               ) : (
                 <Ionicons name="person" size={36} color={colors.muted} />
@@ -151,7 +150,7 @@ export default function Settings() {
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Informações pessoais</Text>
+            <Text style={styles.sectionTitle}>Informacoes pessoais</Text>
 
             <View style={styles.field}>
               <Text style={styles.label}>Nome</Text>
@@ -183,7 +182,7 @@ export default function Settings() {
                 style={styles.input}
                 value={password}
                 onChangeText={setPassword}
-                placeholder="••••••••"
+                placeholder="********"
                 placeholderTextColor={colors.muted}
                 secureTextEntry
               />
@@ -195,7 +194,7 @@ export default function Settings() {
               disabled={loading}
             >
               <Text style={styles.saveButtonText}>
-                {loading ? "Salvando..." : "Salvar alterações"}
+                {loading ? "Salvando..." : "Salvar alteracoes"}
               </Text>
             </TouchableOpacity>
           </View>

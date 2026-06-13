@@ -34,4 +34,8 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   fcm_token?: string;
+
+  @IsString()
+  @IsOptional()
+  avatar?: string;
 }

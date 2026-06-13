@@ -5,13 +5,14 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
+  Text,
   View,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import api from '../../../services/api';
 import { pickAndUploadImage, takeAndUploadPhoto } from '../../../services/upload';
-import { colors, spacing } from '../../../constants/theme';
+import { colors, fonts, radius, spacing } from '../../../constants/theme';
 
 import { LoadingState } from '../../../components/ui/LoadingState';
 import { ImagePickerField } from '../../../components/create-unit/ImagePickerField';
@@ -19,6 +20,7 @@ import { FormInput } from '../../../components/create-unit/FormInput';
 import { CoordinateFields } from '../../../components/create-unit/CoordinateFields';
 import { StatusSelector } from '../../../components/create-unit/StatusSelector';
 import { SubmitButton } from '../../../components/create-unit/SubmitButton';
+import { showError, showInfo, showSuccess, showWarning } from '../../../components/ui/FeedbackProvider';
 
 type EditUnitForm = {
   name: string;
@@ -113,10 +115,9 @@ export default function EditUnitModal() {
     try {
       const response = await api.get(`/support-units/${unitId}`);
       const unit: SupportUnitResponse = response.data;
-
       const coordinates = unit.location?.coordinates;
-      setImage(unit.image_url || null);
 
+      setImage(unit.image_url || null);
       setForm({
         name: unit.name || '',
         email: unit.contact?.email || '',
@@ -143,7 +144,7 @@ export default function EditUnitModal() {
       });
     } catch (error) {
       console.error(error);
-      Alert.alert('Erro', 'Não foi possível carregar os dados da unidade.');
+      showError('Não foi possível carregar', 'Os dados da unidade não puderam ser carregados agora.');
       router.back();
     } finally {
       setLoading(false);
@@ -171,7 +172,10 @@ export default function EditUnitModal() {
         setImage(url);
       }
     } catch (error: any) {
-      Alert.alert('Erro', error.message || 'Nao foi possivel enviar a imagem.');
+      showError(
+        'Não foi possível enviar a imagem',
+        error.message || 'Tente novamente em alguns instantes ou escolha outra foto.',
+      );
     } finally {
       setImageLoading(false);
     }
@@ -187,89 +191,83 @@ export default function EditUnitModal() {
       !form.lat ||
       !form.lng
     ) {
-      Alert.alert('Atenção', 'Preencha todos os campos obrigatórios.');
+      showWarning('Campos obrigatórios', 'Preencha todos os campos marcados com asterisco.');
       return false;
     }
 
     return true;
   }
 
-async function handleUpdate() {
-  if (!validateForm()) {
-    return;
+  async function handleUpdate() {
+    if (!validateForm()) {
+      return;
+    }
+
+    setSaving(true);
+
+    const lat = parseFloat(form.lat);
+    const lng = parseFloat(form.lng);
+    const capacity = parseInt(form.capacity, 10);
+    const currentOccupancy = parseInt(form.currentOccupancy, 10);
+
+    if (Number.isNaN(lat) || Number.isNaN(lng)) {
+      showWarning('Coordenadas inválidas', 'Latitude e longitude precisam ser válidas.');
+      setSaving(false);
+      return;
+    }
+
+    if (Number.isNaN(capacity) || Number.isNaN(currentOccupancy)) {
+      showWarning('Dados inválidos', 'Capacidade e ocupação atual precisam ser números válidos.');
+      setSaving(false);
+      return;
+    }
+
+    if (capacity < 1 || currentOccupancy < 0) {
+      showWarning('Capacidade inválida', 'Capacidade deve ser maior que zero e ocupação atual não pode ser negativa.');
+      setSaving(false);
+      return;
+    }
+
+    if (currentOccupancy > capacity) {
+      showWarning('Ocupação inválida', 'A ocupação atual não pode ser maior que a capacidade.');
+      setSaving(false);
+      return;
+    }
+
+    try {
+      await api.put(`/support-units/${unitId}`, {
+        name: form.name,
+        description: form.description,
+        contact: {
+          email: form.email,
+          phone: form.phone,
+        },
+        location: {
+          lat,
+          lng,
+        },
+        capacity,
+        current_occupancy: currentOccupancy,
+        status: getComputedStatus(capacity, currentOccupancy),
+        image_url: image,
+        services_available: parseServices(form.services),
+      });
+
+      showSuccess('Unidade atualizada', 'Os dados da unidade foram salvos com sucesso.', () =>
+        router.back(),
+      );
+    } catch (error: any) {
+      console.error('Erro ao atualizar unidade:', {
+        status: error?.response?.status,
+        data: error?.response?.data,
+        message: error?.message,
+      });
+
+      showError('Não foi possível salvar', 'Verifique os dados e tente novamente.');
+    } finally {
+      setSaving(false);
+    }
   }
-
-  setSaving(true);
-
-  const lat = parseFloat(form.lat);
-  const lng = parseFloat(form.lng);
-  const capacity = parseInt(form.capacity, 10);
-  const currentOccupancy = parseInt(form.currentOccupancy, 10);
-
-  if (Number.isNaN(lat) || Number.isNaN(lng)) {
-    Alert.alert('Atenção', 'Latitude e longitude precisam ser válidas.');
-    setSaving(false);
-    return;
-  }
-
-  if (Number.isNaN(capacity) || Number.isNaN(currentOccupancy)) {
-    Alert.alert('Atencao', 'Capacidade e ocupacao atual precisam ser numeros validos.');
-    setSaving(false);
-    return;
-  }
-
-  if (capacity < 1 || currentOccupancy < 0) {
-    Alert.alert('Atencao', 'Capacidade deve ser maior que zero e ocupacao atual nao pode ser negativa.');
-    setSaving(false);
-    return;
-  }
-
-  if (currentOccupancy > capacity) {
-    Alert.alert('Atencao', 'A ocupacao atual nao pode ser maior que a capacidade.');
-    setSaving(false);
-    return;
-  }
-
-  try {
-    await api.put(`/support-units/${unitId}`, {
-      name: form.name,
-      description: form.description,
-      contact: {
-        email: form.email,
-        phone: form.phone,
-      },
-      location: {
-        lat,
-        lng,
-      },
-      capacity,
-      current_occupancy: currentOccupancy,
-      status: getComputedStatus(capacity, currentOccupancy),
-      image_url: image,
-      services_available: parseServices(form.services),
-    });
-
-    Alert.alert('✓ Sucesso', 'Unidade atualizada com sucesso.', [
-      {
-        text: 'OK',
-        onPress: () => router.back(),
-      },
-    ]);
-  } catch (error: any) {
-    console.error('Erro ao atualizar unidade:', {
-      status: error?.response?.status,
-      data: error?.response?.data,
-      message: error?.message,
-    });
-
-   Alert.alert('Erro', 'Não foi possível salvar os dados.', [
-  { text: 'OK' },
-]);
-
-  } finally {
-    setSaving(false);
-  }
-}
 
   if (loading) {
     return <LoadingState />;
@@ -280,14 +278,20 @@ async function handleUpdate() {
       style={styles.keyboardView}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
         <ImagePickerField
           image={image}
           onPress={showImageOptions}
           loading={imageLoading}
         />
 
-        <View style={styles.form}>
+        <View style={styles.formCard}>
+          <Text style={styles.sectionTitle}>Dados da unidade</Text>
+
           <FormInput
             label="Nome da Instituição *"
             placeholder="Digite o nome"
@@ -301,9 +305,9 @@ async function handleUpdate() {
             onChangeLatitude={(value) => updateField('lat', value)}
             onChangeLongitude={(value) => updateField('lng', value)}
             onUseCurrentLocation={() => {
-              Alert.alert(
+              showInfo(
                 'Localização',
-                'Podemos reaproveitar aqui a função de localização depois.'
+                'Em breve você poderá atualizar as coordenadas usando sua localização atual.',
               );
             }}
           />
@@ -326,7 +330,6 @@ async function handleUpdate() {
                 onChangeText={(value) => updateField('phone', value)}
               />
             </View>
-
           </View>
 
           <FormInput
@@ -338,8 +341,8 @@ async function handleUpdate() {
           />
 
           <FormInput
-            label="Servicos disponiveis"
-            placeholder="Ex: alimentacao, abrigo, agua"
+            label="Serviços disponíveis"
+            placeholder="Ex: alimentação, abrigo, água"
             value={form.services}
             multiline
             onChangeText={(value) => updateField('services', value)}
@@ -359,7 +362,7 @@ async function handleUpdate() {
           />
 
           <FormInput
-            label="Ocupacao atual *"
+            label="Ocupação atual *"
             placeholder="0"
             value={form.currentOccupancy}
             keyboardType="numeric"
@@ -371,8 +374,6 @@ async function handleUpdate() {
             loading={saving}
             onPress={handleUpdate}
           />
-
-          <View style={styles.bottomSpace} />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -389,9 +390,25 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
 
-  form: {
+  content: {
+    paddingBottom: 112,
+  },
+
+  formCard: {
+    margin: spacing.md,
     padding: spacing.md,
     gap: spacing.md,
+    backgroundColor: colors.card,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    borderColor: colors.border,
+    elevation: 1,
+  },
+
+  sectionTitle: {
+    fontFamily: fonts.bold,
+    fontSize: 16,
+    color: colors.foreground,
   },
 
   row: {
@@ -401,9 +418,5 @@ const styles = StyleSheet.create({
 
   flex: {
     flex: 1,
-  },
-
-  bottomSpace: {
-    height: 32,
   },
 });

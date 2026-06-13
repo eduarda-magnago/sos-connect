@@ -5,6 +5,7 @@ import {
   Platform,
   ScrollView,
   StyleSheet,
+  Text,
   View,
 } from 'react-native';
 import { useRouter } from 'expo-router';
@@ -12,13 +13,14 @@ import * as Location from 'expo-location';
 
 import api from '../../services/api';
 import { pickAndUploadImage, takeAndUploadPhoto } from '../../services/upload';
-import { colors, spacing } from '../../constants/theme';
+import { colors, fonts, radius, spacing } from '../../constants/theme';
 
 import { ImagePickerField } from '../../components/create-unit/ImagePickerField';
 import { FormInput } from '../../components/create-unit/FormInput';
 import { CoordinateFields } from '../../components/create-unit/CoordinateFields';
 import { StatusSelector } from '../../components/create-unit/StatusSelector';
 import { SubmitButton } from '../../components/create-unit/SubmitButton';
+import { showError, showSuccess, showWarning } from '../../components/ui/FeedbackProvider';
 
 type CreateUnitForm = {
   name: string;
@@ -99,7 +101,10 @@ export default function CreateUnit() {
         setImage(url);
       }
     } catch (error: any) {
-      Alert.alert('Erro', error.message || 'Nao foi possivel enviar a imagem.');
+      showError(
+        'Não foi possível enviar a imagem',
+        error.message || 'Tente novamente em alguns instantes ou escolha outra foto.',
+      );
     } finally {
       setImageLoading(false);
     }
@@ -109,7 +114,7 @@ export default function CreateUnit() {
     const { status } = await Location.requestForegroundPermissionsAsync();
 
     if (status !== 'granted') {
-      Alert.alert('Permissão negada', 'Ative a localização nas configurações.');
+      showWarning('Permissão negada', 'Ative a localização nas configurações para usar sua posição atual.');
       return;
     }
 
@@ -118,7 +123,7 @@ export default function CreateUnit() {
     updateField('lat', String(location.coords.latitude));
     updateField('lng', String(location.coords.longitude));
 
-    Alert.alert('✓', 'Localização obtida com sucesso!');
+    showSuccess('Localização adicionada', 'As coordenadas foram preenchidas com sua posição atual.');
   }
 
   function validateForm() {
@@ -132,7 +137,7 @@ export default function CreateUnit() {
       !form.lat ||
       !form.lng
     ) {
-      Alert.alert('Atenção', 'Preencha todos os campos obrigatórios.');
+      showWarning('Campos obrigatórios', 'Preencha todos os campos marcados com asterisco.');
       return false;
     }
 
@@ -158,17 +163,17 @@ export default function CreateUnit() {
         Number.isNaN(capacity) ||
         Number.isNaN(currentOccupancy)
       ) {
-        Alert.alert('Atencao', 'Capacidade, ocupacao atual e coordenadas precisam ser numeros validos.');
+        showWarning('Dados inválidos', 'Capacidade, ocupação atual e coordenadas precisam ser números válidos.');
         return;
       }
 
       if (capacity < 1 || currentOccupancy < 0) {
-        Alert.alert('Atencao', 'Capacidade deve ser maior que zero e ocupacao atual nao pode ser negativa.');
+        showWarning('Capacidade inválida', 'Capacidade deve ser maior que zero e ocupação atual não pode ser negativa.');
         return;
       }
 
       if (currentOccupancy > capacity) {
-        Alert.alert('Atencao', 'A ocupacao atual nao pode ser maior que a capacidade.');
+        showWarning('Ocupação inválida', 'A ocupação atual não pode ser maior que a capacidade.');
         return;
       }
 
@@ -191,14 +196,13 @@ export default function CreateUnit() {
         services_available: parseServices(form.services),
       });
 
-      Alert.alert('✓ Sucesso', 'Unidade criada! Aguarde a validação do admin.', [
-        {
-          text: 'OK',
-          onPress: () => router.back(),
-        },
-      ]);
+      showSuccess(
+        'Unidade criada',
+        'Sua unidade foi enviada e ficará disponível após validação.',
+        () => router.back(),
+      );
     } catch {
-      Alert.alert('Erro', 'Não foi possível criar a unidade. Verifique os dados.');
+      showError('Não foi possível criar a unidade', 'Verifique os dados e tente novamente.');
     } finally {
       setLoading(false);
     }
@@ -209,14 +213,20 @@ export default function CreateUnit() {
       style={styles.keyboardView}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
         <ImagePickerField
           image={image}
           onPress={showImageOptions}
           loading={imageLoading}
         />
 
-        <View style={styles.form}>
+        <View style={styles.formCard}>
+          <Text style={styles.sectionTitle}>Dados básicos</Text>
+
           <FormInput
             label="Nome da Instituição *"
             placeholder="Digite o nome"
@@ -224,13 +234,16 @@ export default function CreateUnit() {
             onChangeText={(value) => updateField('name', value)}
           />
 
-          <CoordinateFields
-            latitude={form.lat}
-            longitude={form.lng}
-            onChangeLatitude={(value) => updateField('lat', value)}
-            onChangeLongitude={(value) => updateField('lng', value)}
-            onUseCurrentLocation={useMyLocation}
+          <FormInput
+            label="Descrição"
+            placeholder="Faça uma descrição"
+            value={form.description}
+            multiline
+            onChangeText={(value) => updateField('description', value)}
           />
+          <View style={styles.sectionDivider} />
+
+          <Text style={styles.sectionTitle}>Contato</Text>
 
           <FormInput
             label="E-mail *"
@@ -260,18 +273,23 @@ export default function CreateUnit() {
               />
             </View>
           </View>
+          <View style={styles.sectionDivider} />
 
-          <FormInput
-            label="Descrição"
-            placeholder="Faça uma descrição"
-            value={form.description}
-            multiline
-            onChangeText={(value) => updateField('description', value)}
+          <Text style={styles.sectionTitle}>Localização</Text>
+          <CoordinateFields
+            latitude={form.lat}
+            longitude={form.lng}
+            onChangeLatitude={(value) => updateField('lat', value)}
+            onChangeLongitude={(value) => updateField('lng', value)}
+            onUseCurrentLocation={useMyLocation}
           />
 
+          <View style={styles.sectionDivider} />
+
+          <Text style={styles.sectionTitle}>Capacidade e serviços</Text>
           <FormInput
-            label="Servicos disponiveis"
-            placeholder="Ex: alimentacao, abrigo, agua"
+            label="Serviços disponíveis"
+            placeholder="Ex: alimentação, abrigo, água"
             value={form.services}
             multiline
             onChangeText={(value) => updateField('services', value)}
@@ -291,20 +309,20 @@ export default function CreateUnit() {
           />
 
           <FormInput
-            label="Ocupacao atual *"
+            label="Ocupação atual *"
             placeholder="0"
             value={form.currentOccupancy}
             keyboardType="numeric"
             onChangeText={(value) => updateField('currentOccupancy', value)}
           />
+        </View>
 
+        <View style={styles.submitSection}>
           <SubmitButton
             title="Criar Unidade"
             loading={loading}
             onPress={handleSubmit}
           />
-
-          <View style={styles.bottomSpace} />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -321,9 +339,37 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
 
-  form: {
+  content: {
+    paddingBottom: 124,
+  },
+
+  formCard: {
+    marginHorizontal: spacing.md,
+    marginTop: spacing.md,
     padding: spacing.md,
     gap: spacing.md,
+    backgroundColor: colors.card,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+    borderColor: colors.border,
+    elevation: 1,
+  },
+
+  submitSection: {
+    marginHorizontal: spacing.md,
+    marginTop: spacing.md,
+  },
+
+  sectionTitle: {
+    fontFamily: fonts.bold,
+    fontSize: 14,
+    color: colors.primary,
+  },
+
+  sectionDivider: {
+    height: 1,
+    backgroundColor: colors.border,
+    marginTop: spacing.xs,
   },
 
   row: {
@@ -333,9 +379,5 @@ const styles = StyleSheet.create({
 
   flex: {
     flex: 1,
-  },
-
-  bottomSpace: {
-    height: 32,
   },
 });

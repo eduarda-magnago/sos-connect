@@ -30,7 +30,7 @@ function getHeaderText(userName?: string, userRole?: string) {
   if (userRole === "support_unit") {
     return {
       title: userName || "Minha instituição",
-      subtitle: "Gerencie unidades, missões e doações",
+      subtitle: "Gerencie unidades e missões",
     };
   }
 
@@ -64,7 +64,7 @@ export function HeaderTitle({ userName, userRole }: HeaderTitleProps) {
 
 const styles = StyleSheet.create({
   container: {
-    maxWidth: 220,
+    maxWidth: 230,
     alignItems: "flex-start",
   },
 

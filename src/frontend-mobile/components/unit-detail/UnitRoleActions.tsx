@@ -160,10 +160,10 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    minHeight: 48,
+    minHeight: 46,
     borderWidth: 1,
     borderColor: colors.border,
-    borderRadius: radius.md,
+    borderRadius: radius.sm,
     paddingHorizontal: spacing.md,
     flexDirection: "row",
     alignItems: "center",

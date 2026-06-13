@@ -29,7 +29,7 @@ export function UnitInfo({
   return (
     <View style={styles.card}>
       <View style={styles.metrics}>
-        <Metric icon="people-outline" label="Vagas" value={`${remainingCapacity}/${capacity}`} testID="unit-capacity" />
+        <Metric icon="people-outline" label="Vagas livres" value={`${remainingCapacity}/${capacity}`} testID="unit-capacity" />
         <Metric icon="stats-chart-outline" label="Ocupação" value={`${occupancyPercent}%`} testID="unit-occupancy"/>
       </View>
 
@@ -86,13 +86,18 @@ const styles = StyleSheet.create({
   },
 
   metrics: {
+    flexDirection: 'row',
     gap: spacing.sm,
   },
 
   metric: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
+    padding: spacing.sm,
+    borderRadius: radius.md,
+    backgroundColor: colors.background,
   },
 
   metricIcon: {

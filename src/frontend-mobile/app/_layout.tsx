@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { AuthProvider } from "../contexts/AuthContext";
+import { FeedbackProvider } from "../components/ui/FeedbackProvider";
 import {
   useFonts,
   Roboto_400Regular,
@@ -41,6 +42,7 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
+      <FeedbackProvider>
       <StatusBar style="light" backgroundColor="#1a2744" />
 
       <Stack screenOptions={{ headerShown: false }}>
@@ -63,6 +65,7 @@ export default function RootLayout() {
           options={{ ...modalScreenOptions, title: "Necessidades de Doação" }}
         />
       </Stack>
+      </FeedbackProvider>
     </AuthProvider>
   );
 }

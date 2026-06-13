@@ -1,16 +1,18 @@
 import { useCallback, useState } from "react";
-import { Alert, FlatList, StyleSheet, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { useFocusEffect, useRouter } from "expo-router";
 
 import { useAuth } from "../../contexts/AuthContext";
 import api from "../../services/api";
-import { colors } from "../../constants/theme";
+import { colors, fonts, spacing } from "../../constants/theme";
 
 import { SearchBar } from "../../components/support-units/SearchBar";
 import { SupportUnit } from "../../components/support-units/SupportUnitCard";
 import { SupportUnitSection } from "../../components/support-units/SupportUnitSection";
 import { PendingUnitSection } from "../../components/support-units/PendingUnitSection";
 import { LoadingState } from "../../components/ui/LoadingState";
+import { confirmFeedback, showError } from "../../components/ui/FeedbackProvider";
 
 const statusConfig: Record<string, { label: string; color: string }> = {
   open: { label: "Disponível", color: colors.success },
@@ -55,55 +57,43 @@ export default function SupportUnits() {
       setPendingUnits((prev) => prev.filter((u) => u._id !== unitId));
       loadUnits();
     } catch {
-      Alert.alert("Erro", "Não foi possível aprovar a unidade.");
+      showError("Não foi possível aprovar", "Tente novamente em alguns instantes.");
     }
   }
 
   async function handleReject(unitId: string) {
-    Alert.alert(
-      "Rejeitar unidade",
-      "Tem certeza que deseja rejeitar esta unidade?",
-      [
-        { text: "Cancelar", style: "cancel" },
-        {
-          text: "Rejeitar",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              await api.patch(`/support-units/${unitId}/validate`, {
-                approved: false,
-              });
-              setPendingUnits((prev) => prev.filter((u) => u._id !== unitId));
-            } catch {
-              Alert.alert("Erro", "Não foi possível rejeitar a unidade.");
-            }
-          },
-        },
-      ],
-    );
+    confirmFeedback({
+      title: "Rejeitar unidade?",
+      message: "Esta unidade sairá da lista de validação.",
+      confirmText: "Rejeitar",
+      onConfirm: async () => {
+        try {
+          await api.patch(`/support-units/${unitId}/validate`, {
+            approved: false,
+          });
+          setPendingUnits((prev) => prev.filter((u) => u._id !== unitId));
+        } catch {
+          showError("Não foi possível rejeitar", "Tente novamente em alguns instantes.");
+        }
+      },
+    });
   }
 
   async function handleDelete(unitId: string) {
-    Alert.alert(
-      "Excluir unidade",
-      "Tem certeza que deseja excluir esta unidade?",
-      [
-        { text: "Cancelar", style: "cancel" },
-        {
-          text: "Excluir",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              await api.delete(`/support-units/${unitId}`);
-              setPendingUnits((prev) => prev.filter((u) => u._id !== unitId));
-              loadUnits();
-            } catch {
-              Alert.alert("Erro", "Não foi possível excluir a unidade.");
-            }
-          },
-        },
-      ],
-    );
+    confirmFeedback({
+      title: "Excluir unidade?",
+      message: "Essa ação remove a unidade da listagem e não pode ser desfeita aqui.",
+      confirmText: "Excluir",
+      onConfirm: async () => {
+        try {
+          await api.delete(`/support-units/${unitId}`);
+          setPendingUnits((prev) => prev.filter((u) => u._id !== unitId));
+          loadUnits();
+        } catch {
+          showError("Não foi possível excluir", "Tente novamente em alguns instantes.");
+        }
+      },
+    });
   }
 
   const myUnits = units.filter(
@@ -113,6 +103,10 @@ export default function SupportUnits() {
   const otherUnits = units
     .filter((unit) => unit.support_unit_user_id !== user?._id)
     .filter((unit) => unit.name.toLowerCase().includes(search.toLowerCase()));
+  const hasVisibleUnits =
+    myUnits.length > 0 ||
+    otherUnits.length > 0 ||
+    (user?.role === "admin" && pendingUnits.length > 0);
 
   function goToUnitDetail(unitId: string) {
     router.push(`/unit/${unitId}` as any);
@@ -141,6 +135,7 @@ export default function SupportUnits() {
       <FlatList
         data={[]}
         renderItem={null}
+        contentContainerStyle={styles.listContent}
         ListHeaderComponent={
           <>
             {user?.role === "admin" && (
@@ -172,7 +167,15 @@ export default function SupportUnits() {
               onUnitPress={goToUnitDetail}
             />
 
-            <View style={styles.bottomSpace} />
+            {!hasVisibleUnits && (
+              <View style={styles.empty}>
+                <Ionicons name="business-outline" size={46} color={colors.muted} />
+                <Text style={styles.emptyTitle}>Nenhuma unidade encontrada</Text>
+                <Text style={styles.emptySubtitle}>
+                  Ajuste a busca ou volte mais tarde para ver novas unidades de apoio.
+                </Text>
+              </View>
+            )}
           </>
         }
         showsVerticalScrollIndicator={false}
@@ -187,7 +190,30 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
 
-  bottomSpace: {
-    height: 24,
+  listContent: {
+    paddingBottom: 112,
+    paddingTop: spacing.xs,
+  },
+
+  empty: {
+    alignItems: "center",
+    paddingTop: 72,
+    paddingHorizontal: spacing.lg,
+    gap: spacing.sm,
+  },
+
+  emptyTitle: {
+    fontFamily: fonts.bold,
+    fontSize: 16,
+    color: colors.foreground,
+    textAlign: "center",
+  },
+
+  emptySubtitle: {
+    fontFamily: fonts.regular,
+    fontSize: 14,
+    lineHeight: 22,
+    color: colors.muted,
+    textAlign: "center",
   },
 });

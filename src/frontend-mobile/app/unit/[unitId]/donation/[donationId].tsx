@@ -2,7 +2,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
-  Alert,
   ScrollView,
   StyleSheet,
   Text,
@@ -17,6 +16,7 @@ import { useAuth } from "../../../../contexts/AuthContext";
 import api from "../../../../services/api";
 import { saveLocalApplication } from "../../../../services/localApplications";
 import { colors, fonts, spacing } from "../../../../constants/theme";
+import { showError, showSuccess } from "../../../../components/ui/FeedbackProvider";
 
 type DonationDetail = {
   _id: string;
@@ -77,7 +77,7 @@ export default function DonationDetailPage() {
       setDonation(donationRes.data);
       setUnit(unitRes.data);
     } catch {
-      Alert.alert("Erro", "Não foi possível carregar os detalhes.");
+      showError("Não foi possível carregar", "Os detalhes não puderam ser carregados agora.");
     } finally {
       setLoading(false);
     }
@@ -102,9 +102,9 @@ export default function DonationDetailPage() {
       });
 
       setApplicationVisible(false);
-      Alert.alert("Sucesso", "Candidatura enviada com sucesso!");
+      showSuccess("Candidatura enviada", "A unidade receberá sua intenção de ajudar.");
     } catch {
-      Alert.alert("Erro", "Não foi possível enviar a candidatura.");
+      showError("Não foi possível enviar", "Tente enviar a candidatura novamente.");
     } finally {
       setSubmittingApplication(false);
     }

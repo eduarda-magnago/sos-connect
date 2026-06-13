@@ -1,7 +1,6 @@
 import { Stack } from "expo-router";
 import { useEffect, useState } from "react";
 import {
-  Alert,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -19,11 +18,17 @@ import api from "../../services/api";
 import { getMediaUrl } from "../../services/media";
 import { pickAndUploadImage } from "../../services/upload";
 import { colors, fonts, radius, spacing } from "../../constants/theme";
+import {
+  confirmFeedback,
+  showError,
+  showSuccess,
+  showWarning,
+} from "../../components/ui/FeedbackProvider";
 
 const roleLabel: Record<string, string> = {
-  victim: "Usuario Comum",
-  volunteer: "Voluntario(a)",
-  support_unit: "Instituicao",
+  victim: "Usuário comum",
+  volunteer: "Voluntário(a)",
+  support_unit: "Instituição",
   admin: "Administrador",
 };
 
@@ -57,7 +62,10 @@ export default function Settings() {
         setAvatarChanged(true);
       }
     } catch (error: any) {
-      Alert.alert("Erro", error.message || "Nao foi possivel enviar a imagem.");
+      showError(
+        "Não foi possível enviar a foto",
+        error.message || "Tente novamente em alguns instantes ou escolha outra imagem.",
+      );
     } finally {
       setAvatarLoading(false);
     }
@@ -77,7 +85,10 @@ export default function Settings() {
     if (avatarChanged && avatarUri) payload.avatar = avatarUri;
 
     if (Object.keys(payload).length === 0) {
-      Alert.alert("Atencao", "Nenhuma alteracao detectada.");
+      showWarning(
+        "Nada para salvar",
+        "Faça alguma alteração no perfil antes de tocar em salvar.",
+      );
       return;
     }
 
@@ -86,7 +97,7 @@ export default function Settings() {
       const response = await api.put(`/users/${user?._id}`, payload);
       await updateUser(response.data);
 
-      Alert.alert("Sucesso", "Configuracoes salvas com sucesso!");
+      showSuccess("Perfil atualizado", "Suas informações foram salvas com segurança.");
       setPassword("");
       setAvatarChanged(false);
     } catch (error: any) {
@@ -96,39 +107,40 @@ export default function Settings() {
         error?.response?.data,
         error?.message,
       );
-      Alert.alert("Erro", "Nao foi possivel salvar as configuracoes.");
+      showError("Não foi possível salvar", "Verifique os dados informados e tente novamente.");
     } finally {
       setLoading(false);
     }
   }
 
   function handleLogout() {
-    Alert.alert("Sair", "Tem certeza que deseja sair da conta?", [
-      { text: "Cancelar", style: "cancel" },
-      {
-        text: "Sair",
-        style: "destructive",
-        onPress: logout,
-      },
-    ]);
+    confirmFeedback({
+      title: "Sair da conta?",
+      message: "Você precisará entrar novamente para acessar seu perfil e suas unidades.",
+      confirmText: "Sair",
+      onConfirm: logout,
+    });
   }
 
   return (
     <>
-      <Stack.Screen options={{ title: "Configuracoes" }} />
+      <Stack.Screen options={{ title: "Perfil" }} />
       <KeyboardAvoidingView
         style={styles.keyboardView}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
         <ScrollView
           style={styles.container}
+          contentContainerStyle={styles.content}
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.profileCard}>
+            <View style={styles.profileHeader}>
             <TouchableOpacity
               onPress={handlePickImage}
               style={styles.avatarContainer}
               disabled={avatarLoading}
+              activeOpacity={0.82}
             >
               {avatarLoading ? (
                 <Ionicons name="cloud-upload-outline" size={32} color={colors.muted} />
@@ -141,16 +153,16 @@ export default function Settings() {
                 <Ionicons name="camera" size={12} color="#fff" />
               </View>
             </TouchableOpacity>
-            <View>
-              <Text style={styles.profileName}>{user?.name}</Text>
+            <View style={styles.profileText}>
+              <Text style={styles.profileName} numberOfLines={1}>{user?.name}</Text>
               <Text style={styles.profileRole}>
                 {roleLabel[user?.role || ""]}
               </Text>
             </View>
-          </View>
+            </View>
 
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Informacoes pessoais</Text>
+            <View style={styles.sectionDivider} />
+            <Text style={styles.sectionTitle}>Informações pessoais</Text>
 
             <View style={styles.field}>
               <Text style={styles.label}>Nome</Text>
@@ -192,18 +204,19 @@ export default function Settings() {
               style={[styles.saveButton, loading && styles.saveButtonDisabled]}
               onPress={handleSave}
               disabled={loading}
+              activeOpacity={0.86}
             >
               <Text style={styles.saveButtonText}>
-                {loading ? "Salvando..." : "Salvar alteracoes"}
+                {loading ? "Salvando..." : "Salvar alterações"}
               </Text>
             </TouchableOpacity>
-          </View>
+            <View style={styles.sectionDivider} />
 
-          <View style={styles.section}>
             <Text style={styles.sectionTitle}>Conta</Text>
             <TouchableOpacity
               style={styles.logoutButton}
               onPress={handleLogout}
+              activeOpacity={0.82}
             >
               <Ionicons
                 name="log-out-outline"
@@ -213,10 +226,9 @@ export default function Settings() {
               <Text style={styles.logoutText}>Sair da conta</Text>
             </TouchableOpacity>
           </View>
-
-          <View style={styles.bottomSpace} />
         </ScrollView>
       </KeyboardAvoidingView>
+
     </>
   );
 }
@@ -231,48 +243,63 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
 
+  content: {
+    paddingBottom: 112,
+  },
+
   profileCard: {
-    flexDirection: "row",
-    alignItems: "center",
     gap: spacing.md,
     backgroundColor: colors.card,
     marginHorizontal: spacing.md,
     marginTop: spacing.md,
     padding: spacing.md,
-    borderRadius: radius.lg,
-    elevation: 2,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+    elevation: 1,
+  },
+
+  profileHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.md,
   },
 
   avatarContainer: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 66,
+    height: 66,
+    borderRadius: 33,
     backgroundColor: colors.border,
     justifyContent: "center",
     alignItems: "center",
   },
 
   avatarImage: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 66,
+    height: 66,
+    borderRadius: 33,
   },
 
   avatarEditBadge: {
     position: "absolute",
     bottom: 0,
     right: 0,
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    width: 21,
+    height: 21,
+    borderRadius: 11,
     backgroundColor: colors.action,
     justifyContent: "center",
     alignItems: "center",
   },
 
+  profileText: {
+    flex: 1,
+    minWidth: 0,
+  },
+
   profileName: {
     fontFamily: fonts.bold,
-    fontSize: 16,
+    fontSize: 17,
     color: colors.foreground,
   },
 
@@ -283,25 +310,20 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
 
-  section: {
-    backgroundColor: colors.card,
-    marginHorizontal: spacing.md,
-    marginTop: spacing.md,
-    padding: spacing.md,
-    borderRadius: radius.lg,
-    elevation: 2,
-    gap: spacing.sm,
-  },
-
   sectionTitle: {
     fontFamily: fonts.bold,
     fontSize: 14,
-    color: colors.foreground,
-    marginBottom: spacing.xs,
+    color: colors.primary,
+  },
+
+  sectionDivider: {
+    height: 1,
+    backgroundColor: colors.border,
+    marginTop: spacing.xs,
   },
 
   field: {
-    gap: 4,
+    gap: 5,
   },
 
   label: {
@@ -315,7 +337,7 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     borderRadius: radius.sm,
     paddingHorizontal: spacing.md,
-    paddingVertical: 10,
+    paddingVertical: 11,
     fontFamily: fonts.regular,
     fontSize: 14,
     color: colors.foreground,
@@ -324,8 +346,8 @@ const styles = StyleSheet.create({
 
   saveButton: {
     backgroundColor: colors.primary,
-    borderRadius: radius.sm,
-    paddingVertical: 12,
+    borderRadius: radius.md,
+    paddingVertical: 13,
     alignItems: "center",
     marginTop: spacing.xs,
   },
@@ -344,6 +366,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: spacing.sm,
+    minHeight: 44,
     paddingVertical: spacing.sm,
   },
 
@@ -351,9 +374,5 @@ const styles = StyleSheet.create({
     fontFamily: fonts.medium,
     fontSize: 14,
     color: colors.danger,
-  },
-
-  bottomSpace: {
-    height: 32,
   },
 });

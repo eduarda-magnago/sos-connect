@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import MapView, { Circle, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import { colors, fonts, radius, spacing } from '../../constants/theme';
@@ -39,6 +40,8 @@ type MapCardProps = {
   loading: boolean;
   userLocation: LocationCoords | null;
   statusConfig: StatusConfig;
+  activeFiltersCount?: number;
+  onFilterPress?: () => void;
 };
 
 function getUnitCoordinate(unit: SupportUnit) {
@@ -58,6 +61,8 @@ export function MapCard({
   loading,
   userLocation,
   statusConfig,
+  activeFiltersCount = 0,
+  onFilterPress,
 }: MapCardProps) {
   const [selectedUnitId, setSelectedUnitId] = useState<string | null>(null);
 
@@ -90,7 +95,33 @@ export function MapCard({
   return (
     <View style={styles.card}>
       <View style={styles.header}>
-        <Text style={styles.title}>Mapa de Unidades de Apoio</Text>
+        <View style={styles.titleRow}>
+          <Ionicons name="map-outline" size={16} color={colors.primary} />
+          <Text style={styles.title}>Mapa de unidades</Text>
+        </View>
+
+        {onFilterPress ? (
+          <TouchableOpacity
+            testID="dashboard-filter-button"
+            style={[
+              styles.filterButton,
+              activeFiltersCount > 0 && styles.filterButtonActive,
+            ]}
+            onPress={onFilterPress}
+            activeOpacity={0.82}
+          >
+            <Ionicons
+              name="options-outline"
+              size={17}
+              color={activeFiltersCount > 0 ? colors.action : colors.primary}
+            />
+            {activeFiltersCount > 0 ? (
+              <View testID="dashboard-filter-badge" style={styles.filterBadge}>
+                <Text style={styles.filterBadgeText}>{activeFiltersCount}</Text>
+              </View>
+            ) : null}
+          </TouchableOpacity>
+        ) : null}
       </View>
 
       {loading ? (
@@ -153,17 +184,20 @@ export function MapCard({
                   <Text style={styles.statusText}>{selectedConfig.label}</Text>
                 </View>
 
-                <Text style={styles.previewText}>
-                  Vagas livres: {selectedAvailable}/{selectedUnit.capacity}
-                </Text>
-                <Text style={styles.previewText}>
-                  Ocupacao atual: {selectedUnit.current_occupancy}
-                </Text>
+                <View style={styles.previewMetaRow}>
+                  <Ionicons name="people-outline" size={13} color={colors.muted} />
+                  <Text style={styles.previewText}>
+                    {selectedAvailable}/{selectedUnit.capacity} vagas livres
+                  </Text>
+                </View>
 
                 {selectedUnit.contact?.phone ? (
-                  <Text style={styles.previewContact} numberOfLines={1}>
-                    Tel: {selectedUnit.contact.phone}
-                  </Text>
+                  <View style={styles.previewMetaRow}>
+                    <Ionicons name="call-outline" size={13} color={colors.primary} />
+                    <Text style={styles.previewContact} numberOfLines={1}>
+                      {selectedUnit.contact.phone}
+                    </Text>
+                  </View>
                 ) : null}
               </View>
 
@@ -172,7 +206,7 @@ export function MapCard({
                 onPress={() => setSelectedUnitId(null)}
                 hitSlop={8}
               >
-                <Text style={styles.closeText}>x</Text>
+                <Ionicons name="close" size={16} color={colors.muted} />
               </TouchableOpacity>
             </View>
           ) : null}
@@ -185,15 +219,27 @@ export function MapCard({
 const styles = StyleSheet.create({
   card: {
     margin: spacing.md,
-    borderRadius: radius.lg,
+    borderRadius: radius.md,
     backgroundColor: colors.card,
     overflow: 'hidden',
-    elevation: 2,
+    borderWidth: 1,
+    borderColor: colors.border,
+    elevation: 1,
   },
 
   header: {
-    padding: spacing.md,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.md,
     paddingBottom: spacing.sm,
+  },
+
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 7,
   },
 
   title: {
@@ -202,17 +248,52 @@ const styles = StyleSheet.create({
     color: colors.foreground,
   },
 
+  filterButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.background,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  filterButtonActive: {
+    borderColor: '#FECACA',
+    backgroundColor: '#FEF2F2',
+  },
+
+  filterBadge: {
+    position: 'absolute',
+    top: -3,
+    right: -3,
+    minWidth: 17,
+    height: 17,
+    borderRadius: 9,
+    backgroundColor: colors.action,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
+
+  filterBadgeText: {
+    fontFamily: fonts.bold,
+    fontSize: 10,
+    color: '#fff',
+  },
+
   mapArea: {
     position: 'relative',
   },
 
   map: {
-    height: 240,
+    height: 238,
     width: '100%',
   },
 
   placeholder: {
-    height: 240,
+    height: 238,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F3F4F6',
@@ -220,9 +301,9 @@ const styles = StyleSheet.create({
 
   previewCard: {
     position: 'absolute',
-    left: spacing.md,
-    right: spacing.md,
-    bottom: spacing.md,
+    left: spacing.sm,
+    right: spacing.sm,
+    bottom: spacing.sm,
     flexDirection: 'row',
     gap: spacing.sm,
     borderRadius: radius.md,
@@ -231,18 +312,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
     elevation: 4,
+    shadowColor: '#000',
+    shadowOpacity: 0.12,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
   },
 
   previewImage: {
-    width: 64,
-    height: 64,
+    width: 62,
+    height: 62,
     borderRadius: radius.sm,
     backgroundColor: colors.border,
   },
 
   previewImagePlaceholder: {
-    width: 64,
-    height: 64,
+    width: 62,
+    height: 62,
     borderRadius: radius.sm,
     backgroundColor: colors.border,
     justifyContent: 'center',
@@ -257,6 +342,7 @@ const styles = StyleSheet.create({
 
   previewContent: {
     flex: 1,
+    minWidth: 0,
     paddingRight: spacing.md,
   },
 
@@ -286,33 +372,34 @@ const styles = StyleSheet.create({
     color: colors.foreground,
   },
 
+  previewMetaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    marginTop: 2,
+  },
+
   previewText: {
+    flex: 1,
     fontFamily: fonts.regular,
     fontSize: 11,
     color: colors.muted,
-    marginTop: 1,
   },
 
   previewContact: {
+    flex: 1,
     fontFamily: fonts.medium,
     fontSize: 11,
     color: colors.primary,
-    marginTop: 4,
   },
 
   closeButton: {
     position: 'absolute',
     top: 6,
     right: 8,
-    width: 20,
-    height: 20,
+    width: 22,
+    height: 22,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-
-  closeText: {
-    fontFamily: fonts.bold,
-    fontSize: 14,
-    color: colors.muted,
   },
 });

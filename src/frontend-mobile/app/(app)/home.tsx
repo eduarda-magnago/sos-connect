@@ -2,16 +2,12 @@ import { useCallback, useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { useFocusEffect, useRouter } from 'expo-router';
 
 import api from '../../services/api';
-import { colors, fonts, spacing } from '../../constants/theme';
+import { colors } from '../../constants/theme';
 
 import { MapCard } from '../../components/home/MapCard';
 import { NearbyUnitCard } from '../../components/home/NearbyUnitCard';
@@ -96,7 +92,7 @@ export default function Home() {
 
   async function loadUnits(
     applied: MapFilterValues,
-    coords?: LocationCoords | null
+    coords?: LocationCoords | null,
   ) {
     try {
       setLoading(true);
@@ -130,7 +126,7 @@ export default function Home() {
       if (countActiveFilters(applied) === 0) {
         const set = new Set<string>();
         response.data.forEach((u: SupportUnit) =>
-          (u.services_available || []).forEach((s) => set.add(s))
+          (u.services_available || []).forEach((s) => set.add(s)),
         );
         setServiceOptions(Array.from(set).sort());
       }
@@ -147,51 +143,26 @@ export default function Home() {
     loadUnits(values);
   }
 
-  function handleClearFilters() {
-    setFilters(EMPTY_FILTERS);
-    loadUnits(EMPTY_FILTERS);
-  }
-
   function goToUnitDetail(unitId: string) {
     router.push(`/unit/${unitId}` as any);
   }
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <View style={styles.filterBar}>
-        <TouchableOpacity
-          testID="dashboard-filter-button"
-          style={styles.filterBtn}
-          onPress={() => setFiltersOpen(true)}
-          activeOpacity={0.8}
-        >
-          <Ionicons name="options-outline" size={18} color={colors.foreground} />
-          <Text style={styles.filterBtnText}>Filtros</Text>
-          {activeCount > 0 && (
-            <View testID="dashboard-filter-badge" style={styles.badge}>
-              <Text style={styles.badgeText}>{activeCount}</Text>
-            </View>
-          )}
-        </TouchableOpacity>
-
-        {activeCount > 0 && (
-          <TouchableOpacity testID="dashboard-filter-clear" onPress={handleClearFilters} hitSlop={8}>
-            <Text style={styles.clearText}>Limpar</Text>
-          </TouchableOpacity>
-        )}
-      </View>
-
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.content}
+      showsVerticalScrollIndicator={false}
+    >
       <MapCard
         units={units}
         loading={loading}
         userLocation={userLocation}
         statusConfig={statusConfig}
+        activeFiltersCount={activeCount}
+        onFilterPress={() => setFiltersOpen(true)}
       />
 
-      <SectionHeader
-        title="Unidades próximas"
-        rightText={`${units.length} encontradas`}
-      />
+      <SectionHeader title="Unidades próximas" />
 
       {units.slice(0, 3).map((unit) => {
         const config = statusConfig[unit.status] || statusConfig.open;
@@ -205,8 +176,6 @@ export default function Home() {
           />
         );
       })}
-
-      <View style={styles.bottomSpace} />
 
       <MapFilters
         visible={filtersOpen}
@@ -226,56 +195,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
 
-  filterBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.md,
-    marginTop: spacing.md,
-    marginBottom: spacing.sm,
-  },
-
-  filterBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.xs,
-    backgroundColor: colors.card,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 10,
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-  },
-
-  filterBtnText: {
-    fontFamily: fonts.semibold,
-    fontSize: 13,
-    color: colors.foreground,
-  },
-
-  badge: {
-    minWidth: 18,
-    height: 18,
-    borderRadius: 9,
-    backgroundColor: colors.action,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 5,
-  },
-
-  badgeText: {
-    fontFamily: fonts.bold,
-    fontSize: 11,
-    color: '#fff',
-  },
-
-  clearText: {
-    fontFamily: fonts.semibold,
-    fontSize: 13,
-    color: colors.action,
-  },
-
-  bottomSpace: {
-    height: 24,
+  content: {
+    paddingBottom: 124,
   },
 });

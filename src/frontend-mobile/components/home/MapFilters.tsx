@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-import { colors, fonts, spacing } from "../../constants/theme";
+import { colors, fonts, radius, spacing } from "../../constants/theme";
 
 export type MapFilterValues = {
   status: string;
@@ -77,7 +77,7 @@ export function MapFilters({
   const [status, setStatus] = useState(initial.status);
   const [services, setServices] = useState<string[]>(initial.services);
   const [capacity, setCapacity] = useState<number | null>(
-    initial.minAvailableCapacity
+    initial.minAvailableCapacity,
   );
   const [radius, setRadius] = useState<number | null>(initial.radius);
 
@@ -92,7 +92,7 @@ export function MapFilters({
     setServices((prev) =>
       prev.includes(value)
         ? prev.filter((s) => s !== value)
-        : [...prev, value]
+        : [...prev, value],
     );
   }
 
@@ -143,9 +143,7 @@ export function MapFilters({
                           key={opt.key}
                           testID={`map-filter-status-${opt.key}`}
                           style={[styles.chip, selected && styles.chipSelected]}
-                          onPress={() =>
-                            setStatus(selected ? "" : opt.key)
-                          }
+                          onPress={() => setStatus(selected ? "" : opt.key)}
                           activeOpacity={0.75}
                         >
                           <Text
@@ -289,7 +287,7 @@ export function MapFilters({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.55)",
+    backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "flex-end",
   },
   sheetWrapper: {
@@ -304,13 +302,13 @@ const styles = StyleSheet.create({
     paddingBottom: Platform.OS === "ios" ? 40 : spacing.lg,
   },
   handle: {
-    width: 40,
+    width: 42,
     height: 4,
     borderRadius: 2,
     backgroundColor: colors.muted,
     alignSelf: "center",
     marginBottom: spacing.md,
-    opacity: 0.35,
+    opacity: 0.28,
   },
   header: {
     flexDirection: "row",
@@ -346,11 +344,12 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   chip: {
-    paddingVertical: 9,
-    paddingHorizontal: 14,
-    borderRadius: 10,
-    borderWidth: 1.5,
+    paddingVertical: 8,
+    paddingHorizontal: 13,
+    borderRadius: radius.lg,
+    borderWidth: 1,
     borderColor: colors.border,
+    backgroundColor: colors.card,
   },
   chipSelected: {
     backgroundColor: colors.primary,
@@ -375,12 +374,12 @@ const styles = StyleSheet.create({
   },
   btn: {
     flex: 1,
-    borderRadius: 14,
-    paddingVertical: 15,
+    borderRadius: radius.md,
+    paddingVertical: 14,
     alignItems: "center",
   },
   btnGhost: {
-    borderWidth: 1.5,
+    borderWidth: 1,
     borderColor: colors.border,
   },
   btnGhostText: {

@@ -57,7 +57,7 @@ export function SupportUnitCard({
 
         <View style={styles.content}>
           <View style={styles.titleRow}>
-            <Text style={styles.name} numberOfLines={1}>
+            <Text style={styles.name} numberOfLines={2}>
               {unit.name}
             </Text>
             <StatusBadge label={statusConfig.label} color={statusConfig.color} />
@@ -65,7 +65,7 @@ export function SupportUnitCard({
 
           <View style={styles.infoRow}>
             <Ionicons name="people-outline" size={15} color={colors.muted} />
-            <Text style={styles.info}>Vagas: {remainingCapacity}/{unit.capacity}</Text>
+            <Text style={styles.info}>{remainingCapacity}/{unit.capacity} vagas livres</Text>
           </View>
 
           {!!servicePreview && (
@@ -115,12 +115,14 @@ export function SupportUnitCard({
 const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.card,
-    borderRadius: radius.lg,
+    borderRadius: radius.md,
     marginHorizontal: spacing.md,
-    marginBottom: spacing.sm,
+    marginBottom: spacing.md,
     padding: spacing.md,
     gap: spacing.md,
-    elevation: 2,
+    borderWidth: 1,
+    borderColor: colors.border,
+    elevation: 1,
   },
 
   main: {
@@ -129,8 +131,8 @@ const styles = StyleSheet.create({
   },
 
   imageContainer: {
-    width: 64,
-    height: 64,
+    width: 66,
+    height: 66,
     borderRadius: radius.md,
     backgroundColor: colors.background,
     justifyContent: 'center',
@@ -146,6 +148,7 @@ const styles = StyleSheet.create({
 
   content: {
     flex: 1,
+    minWidth: 0,
     gap: spacing.xs,
   },
 
@@ -159,6 +162,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: fonts.bold,
     fontSize: 15,
+    lineHeight: 19,
     color: colors.foreground,
   },
 

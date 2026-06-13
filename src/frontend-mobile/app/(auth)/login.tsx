@@ -1,7 +1,6 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import {
-  Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -13,6 +12,7 @@ import {
 
 import { colors, fonts, spacing } from "../../constants/theme";
 import { useAuth } from "../../contexts/AuthContext";
+import { showError, showWarning } from "../../components/ui/FeedbackProvider";
 
 import { AuthBrandHeader } from "../../components/auth/AuthBrandHeader";
 import { AuthInput } from "../../components/auth/AuthInput";
@@ -39,7 +39,7 @@ export default function Login() {
 
   async function handleLogin() {
     if (!email || !password) {
-      Alert.alert("Atenção", "Preencha todos os campos");
+      showWarning("Campos obrigatórios", "Preencha e-mail e senha para entrar.");
       return;
     }
 
@@ -49,7 +49,7 @@ export default function Login() {
       await login(email, password);
       router.replace("/(app)/home" as any);
     } catch {
-      Alert.alert("Erro", "Email ou senha inválidos");
+      showError("Não foi possível entrar", "Confira seu e-mail e senha e tente novamente.");
     } finally {
       setLoading(false);
     }
@@ -57,7 +57,7 @@ export default function Login() {
 
   async function handleRegister() {
     if (!regName || !regEmail || !regPassword) {
-      Alert.alert("Atenção", "Preencha todos os campos");
+      showWarning("Campos obrigatórios", "Preencha nome, e-mail e senha para criar sua conta.");
       return;
     }
 
@@ -73,7 +73,7 @@ export default function Login() {
 
       router.replace("/(app)/home" as any);
     } catch {
-      Alert.alert("Erro", "Não foi possível criar a conta");
+      showError("Não foi possível criar a conta", "Verifique os dados e tente novamente.");
     } finally {
       setLoading(false);
     }

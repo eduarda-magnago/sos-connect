@@ -25,25 +25,26 @@ type NearbyUnitCardProps = {
 };
 
 export function NearbyUnitCard({ unit, statusConfig, onPress }: NearbyUnitCardProps) {
-  const remainingCapacity = unit.capacity - unit.current_occupancy;
+  const remainingCapacity = Math.max(unit.capacity - unit.current_occupancy, 0);
+  const services = unit.services_available?.slice(0, 3).join(', ');
 
   return (
     <TouchableOpacity
       style={styles.card}
       onPress={onPress}
-      activeOpacity={0.8}
+      activeOpacity={0.84}
     >
       <View style={styles.imageBox}>
         {unit.image_url ? (
           <Image source={{ uri: unit.image_url }} style={styles.image} />
         ) : (
-          <Ionicons name="business" size={32} color={colors.muted} />
+          <Ionicons name="business-outline" size={30} color={colors.muted} />
         )}
       </View>
 
       <View style={styles.content}>
         <View style={styles.header}>
-          <Text style={styles.name} numberOfLines={1}>
+          <Text style={styles.name} numberOfLines={2}>
             {unit.name}
           </Text>
 
@@ -53,16 +54,24 @@ export function NearbyUnitCard({ unit, statusConfig, onPress }: NearbyUnitCardPr
           />
         </View>
 
-        <Text style={styles.info}>
-          👥 Vagas: {remainingCapacity}/{unit.capacity}
-        </Text>
-
-        {unit.services_available?.length > 0 ? (
-          <Text style={styles.info} numberOfLines={1}>
-            🛠️ {unit.services_available.join(', ')}
+        <View style={styles.metaRow}>
+          <Ionicons name="people-outline" size={14} color={colors.muted} />
+          <Text style={styles.info}>
+            {remainingCapacity}/{unit.capacity} vagas livres
           </Text>
+        </View>
+
+        {services ? (
+          <View style={styles.metaRow}>
+            <Ionicons name="medical-outline" size={14} color={colors.muted} />
+            <Text style={styles.info} numberOfLines={1}>
+              {services}
+            </Text>
+          </View>
         ) : null}
       </View>
+
+      <Ionicons name="chevron-forward" size={18} color={colors.border} />
     </TouchableOpacity>
   );
 }
@@ -74,14 +83,17 @@ const styles = StyleSheet.create({
     margin: spacing.md,
     marginTop: 0,
     backgroundColor: colors.card,
-    borderRadius: radius.lg,
+    borderRadius: radius.md,
     padding: spacing.md,
-    elevation: 2,
+    borderWidth: 1,
+    borderColor: colors.border,
+    alignItems: 'center',
+    elevation: 1,
   },
 
   imageBox: {
-    width: 60,
-    height: 60,
+    width: 70,
+    height: 70,
     borderRadius: radius.md,
     backgroundColor: colors.border,
     justifyContent: 'center',
@@ -97,27 +109,36 @@ const styles = StyleSheet.create({
 
   content: {
     flex: 1,
+    minWidth: 0,
   },
 
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 4,
+    alignItems: 'flex-start',
+    marginBottom: 6,
   },
 
   name: {
     fontFamily: fonts.bold,
-    fontSize: 14,
+    fontSize: 15,
+    lineHeight: 19,
     color: colors.foreground,
     flex: 1,
     marginRight: 8,
   },
 
+  metaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 3,
+  },
+
   info: {
-    fontFamily: fonts.regular,
+    flex: 1,
+    fontFamily: fonts.medium,
     fontSize: 12,
     color: colors.muted,
-    marginTop: 2,
   },
 });

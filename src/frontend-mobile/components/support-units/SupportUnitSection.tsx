@@ -61,13 +61,13 @@ export function SupportUnitSection({
 const styles = StyleSheet.create({
   title: {
     fontFamily: fonts.bold,
-    fontSize: 15,
+    fontSize: 16,
     color: colors.foreground,
   },
 
   header: {
     marginHorizontal: spacing.md,
-    marginTop: spacing.sm,
+    marginTop: spacing.md,
     marginBottom: spacing.sm,
     flexDirection: 'row',
     alignItems: 'center',

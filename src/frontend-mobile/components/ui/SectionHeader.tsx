@@ -24,12 +24,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.sm,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.xs,
   },
 
   title: {
     fontFamily: fonts.bold,
-    fontSize: 16,
+    fontSize: 17,
     color: colors.foreground,
   },
 

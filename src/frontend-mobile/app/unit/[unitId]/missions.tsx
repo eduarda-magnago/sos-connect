@@ -1,6 +1,5 @@
 import { useCallback, useState } from "react";
 import {
-  Alert,
   FlatList,
   StyleSheet,
   Text,
@@ -19,6 +18,7 @@ import {
   MissionModal,
   type MissionFormData,
 } from "../../../components/missions/MissionModal";
+import { confirmFeedback, showError } from "../../../components/ui/FeedbackProvider";
 
 export type Mission = {
   _id: string;
@@ -60,28 +60,26 @@ export default function MissionsPage() {
       const response = await api.get(`/missions?support_unit_id=${unitId}`);
       setMissions(response.data);
     } catch {
-      Alert.alert("Erro", "Não foi possível carregar as missões.");
+      showError("Não foi possível carregar", "As missões não puderam ser carregadas agora.");
     } finally {
       setLoading(false);
     }
   }
 
   async function handleDelete(missionId: string) {
-    Alert.alert("Excluir", "Tem certeza que deseja excluir esta missão?", [
-      { text: "Cancelar", style: "cancel" },
-      {
-        text: "Excluir",
-        style: "destructive",
-        onPress: async () => {
-          try {
-            await api.delete(`/missions/${missionId}`);
-            setMissions((prev) => prev.filter((m) => m._id !== missionId));
-          } catch {
-            Alert.alert("Erro", "Não foi possível excluir a missão.");
-          }
-        },
+    confirmFeedback({
+      title: "Excluir missão?",
+      message: "Esta missão deixará de aparecer para voluntários.",
+      confirmText: "Excluir",
+      onConfirm: async () => {
+        try {
+          await api.delete(`/missions/${missionId}`);
+          setMissions((prev) => prev.filter((m) => m._id !== missionId));
+        } catch {
+          showError("Não foi possível excluir", "Tente novamente em alguns instantes.");
+        }
       },
-    ]);
+    });
   }
 
   function handleCreate() {
@@ -113,7 +111,7 @@ export default function MissionsPage() {
       }
       setModalVisible(false);
     } catch {
-      Alert.alert("Erro", "Não foi possível salvar a missão.");
+      showError("Não foi possível salvar", "Verifique os dados da missão e tente novamente.");
     }
   }
 
@@ -161,15 +159,17 @@ export default function MissionsPage() {
       />
 
       {isSupportUnit && (
-        <TouchableOpacity
-          testID="mission-create-fab"
-          style={styles.fab}
-          onPress={handleCreate}
-          activeOpacity={0.85}
-        >
-          <Ionicons name="add" size={24} color="#fff" />
-          <Text style={styles.fabText}>Nova missão</Text>
-        </TouchableOpacity>
+        <View style={styles.actionBar}>
+          <TouchableOpacity
+            testID="mission-create-fab"
+            style={styles.primaryAction}
+            onPress={handleCreate}
+            activeOpacity={0.86}
+          >
+            <Ionicons name="add" size={20} color="#fff" />
+            <Text style={styles.primaryActionText}>Nova missão</Text>
+          </TouchableOpacity>
+        </View>
       )}
 
       <MissionModal
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   },
   list: {
     padding: spacing.md,
-    paddingBottom: 100,
+    paddingBottom: 136,
     gap: spacing.sm,
   },
   empty: {
@@ -229,24 +229,27 @@ const styles = StyleSheet.create({
     textAlign: "center",
     lineHeight: 22,
   },
-  fab: {
+  actionBar: {
     position: "absolute",
-    bottom: spacing.lg,
-    right: spacing.md,
     left: spacing.md,
+    right: spacing.md,
+    bottom: 64,
+  },
+  primaryAction: {
+    minHeight: 46,
     backgroundColor: colors.action,
-    borderRadius: 14,
+    borderRadius: 12,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 16,
-    gap: spacing.xs,
-    shadowColor: colors.action,
+    gap: spacing.sm,
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
+    shadowOpacity: 0.16,
+    shadowRadius: 8,
+    elevation: 4,
   },
-  fabText: {
+  primaryActionText: {
     fontFamily: fonts.semibold,
     fontSize: 14,
     color: "#fff",

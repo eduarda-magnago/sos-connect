@@ -2,7 +2,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import {
-  Alert,
   FlatList,
   StyleSheet,
   Text,
@@ -14,6 +13,7 @@ import { LoadingState } from "../../components/ui/LoadingState";
 import { colors, fonts, radius, spacing } from "../../constants/theme";
 import { useAuth } from "../../contexts/AuthContext";
 import api from "../../services/api";
+import { showError } from "../../components/ui/FeedbackProvider";
 import {
   getLocalApplications,
   type LocalApplication,
@@ -152,7 +152,7 @@ export default function Candidatures() {
       setCards([]);
     } catch (error) {
       console.error(error);
-      Alert.alert("Erro", "Não foi possível carregar as candidaturas.");
+      showError("Não foi possível carregar", "As candidaturas não puderam ser carregadas agora.");
     } finally {
       setLoading(false);
     }
@@ -175,7 +175,7 @@ export default function Candidatures() {
       );
     } catch (error) {
       console.error(error);
-      Alert.alert("Erro", "Não foi possível confirmar a participação.");
+      showError("Não foi possível confirmar", "Tente novamente em alguns instantes.");
     } finally {
       setProcessingId(null);
     }
@@ -256,12 +256,12 @@ function CandidatureItem({
     <View style={styles.card}>
       <View style={styles.cardHeader}>
         <View style={[styles.iconBox, { backgroundColor: `${config.color}18` }]}>
-          <Ionicons name={config.icon} size={22} color={config.color} />
+          <Ionicons name={config.icon} size={21} color={config.color} />
         </View>
 
         <View style={styles.cardContent}>
           <View style={styles.titleRow}>
-            <Text style={styles.cardTitle} numberOfLines={1}>
+            <Text style={styles.cardTitle} numberOfLines={2}>
               {item.title}
             </Text>
             <View style={[styles.badge, { backgroundColor: `${config.color}18` }]}>
@@ -322,39 +322,44 @@ const styles = StyleSheet.create({
   },
   list: {
     padding: spacing.md,
-    gap: spacing.sm,
+    paddingBottom: 112,
+    gap: spacing.md,
   },
   card: {
     backgroundColor: colors.card,
-    borderRadius: radius.lg,
+    borderRadius: radius.md,
     padding: spacing.md,
-    gap: spacing.xs,
-    elevation: 2,
+    gap: spacing.sm,
+    borderWidth: 1,
+    borderColor: colors.border,
+    elevation: 1,
   },
   cardHeader: {
     flexDirection: "row",
     gap: spacing.md,
   },
   iconBox: {
-    width: 48,
-    height: 48,
+    width: 46,
+    height: 46,
     borderRadius: radius.md,
     alignItems: "center",
     justifyContent: "center",
   },
   cardContent: {
     flex: 1,
-    gap: 3,
+    minWidth: 0,
+    gap: 4,
   },
   titleRow: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
     gap: spacing.sm,
   },
   cardTitle: {
     flex: 1,
     fontFamily: fonts.bold,
     fontSize: 15,
+    lineHeight: 19,
     color: colors.foreground,
   },
   mutedText: {
@@ -369,7 +374,7 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     fontFamily: fonts.semibold,
-    fontSize: 11,
+    fontSize: 10,
   },
   divider: {
     height: 1,

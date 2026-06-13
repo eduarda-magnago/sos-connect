@@ -1,6 +1,5 @@
 import { useCallback, useState } from "react";
 import {
-  Alert,
   FlatList,
   StyleSheet,
   Text,
@@ -13,6 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import api from "../../services/api";
 import { colors, fonts, spacing } from "../../constants/theme";
 import { LoadingState } from "../../components/ui/LoadingState";
+import { showError, showSuccess } from "../../components/ui/FeedbackProvider";
 
 type Certificate = {
   _id: string;
@@ -72,7 +72,7 @@ export default function Certificates() {
       setCertificates(certificatesWithDetails);
     } catch (error) {
       console.error(error);
-      Alert.alert("Erro", "Não foi possível carregar os certificados.");
+      showError("Não foi possível carregar", "Os certificados não puderam ser carregados agora.");
     } finally {
       setLoading(false);
     }
@@ -86,13 +86,13 @@ export default function Certificates() {
         responseType: "arraybuffer",
       });
 
-      Alert.alert(
+      showSuccess(
         "Certificado disponível",
-        `O certificado ${certificate.certificate_code} foi localizado com sucesso.`
+        `O certificado ${certificate.certificate_code} foi localizado com sucesso.`,
       );
     } catch (error) {
       console.error(error);
-      Alert.alert("Erro", "Não foi possível acessar o certificado.");
+      showError("Não foi possível acessar", "Tente abrir o certificado novamente em instantes.");
     } finally {
       setProcessingId(null);
     }
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
 
   list: {
     padding: spacing.md,
-    paddingBottom: spacing.xl,
+    paddingBottom: 112,
     gap: spacing.sm,
   },
 

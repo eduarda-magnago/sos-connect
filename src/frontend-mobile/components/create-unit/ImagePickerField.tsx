@@ -1,16 +1,34 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, fonts, spacing } from '../../constants/theme';
 
 type ImagePickerFieldProps = {
   image: string | null;
   onPress: () => void;
+  loading?: boolean;
 };
 
-export function ImagePickerField({ image, onPress }: ImagePickerFieldProps) {
+export function ImagePickerField({ image, onPress, loading = false }: ImagePickerFieldProps) {
   return (
-    <TouchableOpacity style={styles.imageArea} onPress={onPress} activeOpacity={0.8}>
-      {image ? (
+    <TouchableOpacity
+      style={styles.imageArea}
+      onPress={onPress}
+      activeOpacity={0.8}
+      disabled={loading}
+    >
+      {loading ? (
+        <View style={styles.placeholder}>
+          <ActivityIndicator color={colors.primary} />
+          <Text style={styles.placeholderText}>Enviando imagem...</Text>
+        </View>
+      ) : image ? (
         <Image source={{ uri: image }} style={styles.imagePreview} />
       ) : (
         <View style={styles.placeholder}>
@@ -23,6 +41,13 @@ export function ImagePickerField({ image, onPress }: ImagePickerFieldProps) {
           <Text style={styles.buttonText}>Escolher arquivo</Text>
         </View>
       )}
+
+      {!loading && image ? (
+        <View style={styles.overlay}>
+          <Ionicons name="camera" size={24} color={colors.card} />
+          <Text style={styles.overlayText}>Trocar foto</Text>
+        </View>
+      ) : null}
     </TouchableOpacity>
   );
 }
@@ -38,6 +63,20 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
+  },
+
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 4,
+  },
+
+  overlayText: {
+    fontSize: 13,
+    color: colors.card,
+    fontFamily: fonts.medium,
   },
 
   placeholder: {

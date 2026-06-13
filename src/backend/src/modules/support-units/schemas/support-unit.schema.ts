@@ -52,6 +52,9 @@ export class SupportUnit {
   @Prop({ trim: true })
   description?: string;
 
+  @Prop({ trim: true })
+  image_url?: string;
+
   @Prop({ type: ContactSchema, required: true })
   contact: Contact;
 

@@ -36,6 +36,10 @@ export class UpdateSupportUnitDto {
   @IsOptional()
   description?: string;
 
+  @IsString()
+  @IsOptional()
+  image_url?: string;
+
   @ValidateNested()
   @Type(() => ContactDto)
   @IsOptional()

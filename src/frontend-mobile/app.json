@@ -31,7 +31,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Permita acesso às fotos para adicionar imagem da unidade."
+          "photosPermission": "Permita acesso as fotos para adicionar imagem da unidade.",
+          "cameraPermission": "Permita acesso a camera para fotografar a unidade."
         }
       ],
       "@react-native-community/datetimepicker"

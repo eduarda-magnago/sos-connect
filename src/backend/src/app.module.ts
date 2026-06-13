@@ -13,6 +13,7 @@ import { MissionVolunteersModule } from './modules/mission-volunteers/mission-vo
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { CertificatesModule } from './modules/certificates/certificates.module';
 import { GeocodingModule } from './modules/geocoding/geocoding.module';
+import { UploadModule } from './common/upload/upload.module';
 
 @Module({
   imports: [
@@ -24,6 +25,9 @@ import { GeocodingModule } from './modules/geocoding/geocoding.module';
         JWT_EXPIRES_IN: Joi.string().required(),
         PORT: Joi.number().default(3000),
         NODE_ENV: Joi.string().valid('development', 'production', 'test').default('development'),
+        CLOUDINARY_CLOUD_NAME: Joi.string().required(),
+        CLOUDINARY_API_KEY: Joi.string().required(),
+        CLOUDINARY_API_SECRET: Joi.string().required(),
       }),
     }),
     MongooseModule.forRootAsync({
@@ -42,6 +46,7 @@ import { GeocodingModule } from './modules/geocoding/geocoding.module';
     NotificationsModule,
     CertificatesModule,
     GeocodingModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

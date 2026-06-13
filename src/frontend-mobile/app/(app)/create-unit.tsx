@@ -8,10 +8,10 @@ import {
   View,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 
 import api from '../../services/api';
+import { pickAndUploadImage, takeAndUploadPhoto } from '../../services/upload';
 import { colors, spacing } from '../../constants/theme';
 
 import { ImagePickerField } from '../../components/create-unit/ImagePickerField';
@@ -48,6 +48,7 @@ export default function CreateUnit() {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
   const [image, setImage] = useState<string | null>(null);
   const [form, setForm] = useState<CreateUnitForm>(initialForm);
 
@@ -58,16 +59,30 @@ export default function CreateUnit() {
     }));
   }
 
-  async function pickImage() {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [16, 9],
-      quality: 0.8,
-    });
+  function showImageOptions() {
+    Alert.alert('Escolher foto', 'De onde quer importar a imagem?', [
+      { text: 'Galeria', onPress: () => uploadImage('gallery') },
+      { text: 'Camera', onPress: () => uploadImage('camera') },
+      { text: 'Cancelar', style: 'cancel' },
+    ]);
+  }
 
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
+  async function uploadImage(source: 'gallery' | 'camera') {
+    setImageLoading(true);
+
+    try {
+      const url =
+        source === 'gallery'
+          ? await pickAndUploadImage('support-units')
+          : await takeAndUploadPhoto('support-units');
+
+      if (url) {
+        setImage(url);
+      }
+    } catch (error: any) {
+      Alert.alert('Erro', error.message || 'Nao foi possivel enviar a imagem.');
+    } finally {
+      setImageLoading(false);
     }
   }
 
@@ -126,6 +141,7 @@ export default function CreateUnit() {
         },
         capacity: parseInt(form.capacity, 10),
         status: form.status,
+        image_url: image,
       });
 
       Alert.alert('✓ Sucesso', 'Unidade criada! Aguarde a validação do admin.', [
@@ -147,7 +163,11 @@ export default function CreateUnit() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        <ImagePickerField image={image} onPress={pickImage} />
+        <ImagePickerField
+          image={image}
+          onPress={showImageOptions}
+          loading={imageLoading}
+        />
 
         <View style={styles.form}>
           <FormInput

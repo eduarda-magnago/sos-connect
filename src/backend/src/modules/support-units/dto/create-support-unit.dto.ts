@@ -58,6 +58,11 @@ export class CreateSupportUnitDto {
   @Min(1)
   capacity: number;
 
+  @IsNumber()
+  @Min(0)
+  @IsOptional()
+  current_occupancy?: number;
+
   @IsArray()
   @IsString({ each: true })
   @IsOptional()

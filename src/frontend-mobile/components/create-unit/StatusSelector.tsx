@@ -1,40 +1,31 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { colors, fonts, radius, spacing } from '../../constants/theme';
+import { colors, fonts, radius } from '../../constants/theme';
 
 type StatusSelectorProps = {
   value: string;
   onChange: (value: string) => void;
 };
 
-const statuses = [
-  { value: 'open', label: 'Disponível' },
-  { value: 'full', label: 'Lotado' },
-  { value: 'closed', label: 'Fechado' },
-];
-
 export function StatusSelector({ value, onChange }: StatusSelectorProps) {
+  const isClosed = value === 'closed';
+
   return (
     <View style={styles.field}>
-      <Text style={styles.label}>Status</Text>
+      <Text style={styles.label}>Status manual</Text>
 
-      <View style={styles.row}>
-        {statuses.map((status) => {
-          const active = value === status.value;
+      <TouchableOpacity
+        onPress={() => onChange(isClosed ? 'open' : 'closed')}
+        style={[styles.chip, isClosed && styles.chipActive]}
+        activeOpacity={0.8}
+      >
+        <Text style={[styles.chipText, isClosed && styles.chipTextActive]}>
+          Fechado
+        </Text>
+      </TouchableOpacity>
 
-          return (
-            <TouchableOpacity
-              key={status.value}
-              onPress={() => onChange(status.value)}
-              style={[styles.chip, active && styles.chipActive]}
-              activeOpacity={0.8}
-            >
-              <Text style={[styles.chipText, active && styles.chipTextActive]}>
-                {status.label}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
+      <Text style={styles.hint}>
+        Disponivel ou lotado sera calculado pela ocupacao atual.
+      </Text>
     </View>
   );
 }
@@ -50,13 +41,8 @@ const styles = StyleSheet.create({
     color: colors.foreground,
   },
 
-  row: {
-    flexDirection: 'row',
-    gap: spacing.sm,
-  },
-
   chip: {
-    flex: 1,
+    minHeight: 42,
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: radius.sm,
@@ -77,5 +63,11 @@ const styles = StyleSheet.create({
 
   chipTextActive: {
     color: colors.action,
+  },
+
+  hint: {
+    fontFamily: fonts.regular,
+    fontSize: 11,
+    color: colors.muted,
   },
 });

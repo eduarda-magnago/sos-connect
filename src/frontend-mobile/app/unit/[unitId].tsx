@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Alert, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, Linking, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import api from '../../services/api';
@@ -10,7 +10,6 @@ import { LoadingState } from '../../components/ui/LoadingState';
 import { UnitHeader } from '../../components/unit-detail/UnitHeader';
 import { UnitInfo } from '../../components/unit-detail/UnitInfo';
 import { UnitRoleActions } from '../../components/unit-detail/UnitRoleActions';
-import { MapModal } from '../../components/unit-detail/MapModal';
 
 type UserRole = 'victim' | 'volunteer' | 'support_unit' | 'admin';
 
@@ -47,7 +46,6 @@ export default function UnitDetailModal() {
 
   const [unit, setUnit] = useState<SupportUnit | null>(null);
   const [loading, setLoading] = useState(true);
-  const [mapVisible, setMapVisible] = useState(false);
 
   useEffect(() => {
     loadUnit();
@@ -65,12 +63,66 @@ export default function UnitDetailModal() {
     }
   }
 
-  function handleRoutePress() {
+  async function handleRoutePress() {
     if (!unit?.location?.coordinates) {
       Alert.alert('Rota', 'Localização não disponível.');
       return;
     }
-    setMapVisible(true);
+    const longitude = Number(unit.location.coordinates[0]);
+    const latitude = Number(unit.location.coordinates[1]);
+
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+      Alert.alert('Rota', 'Localizacao nao disponivel.');
+      return;
+    }
+
+    const label = encodeURIComponent(unit.name);
+    const destination = `${latitude},${longitude}`;
+    const mapsUrl =
+      Platform.OS === 'ios'
+        ? `http://maps.apple.com/?daddr=${destination}&q=${label}`
+        : `geo:0,0?q=${destination}(${label})`;
+    const fallbackUrl = `https://www.google.com/maps/dir/?api=1&destination=${destination}&travelmode=driving`;
+
+    try {
+      const supported = await Linking.canOpenURL(mapsUrl);
+      await Linking.openURL(supported ? mapsUrl : fallbackUrl);
+    } catch (error) {
+      console.error(error);
+      try {
+        await Linking.openURL(fallbackUrl);
+      } catch {
+        Alert.alert('Rota', 'Nao foi possivel abrir o app de mapas.');
+      }
+    }
+  }
+
+  function handleDeletePress() {
+    if (!unit) {
+      return;
+    }
+
+    Alert.alert('Apagar unidade', 'Tem certeza que deseja apagar esta unidade de apoio?', [
+      { text: 'Cancelar', style: 'cancel' },
+      {
+        text: 'Apagar',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            await api.delete(`/support-units/${unit._id}`);
+            Alert.alert('Sucesso', 'Unidade apagada com sucesso.', [
+              {
+                text: 'OK',
+                onPress: () => router.replace('/(app)/support-units' as any),
+              },
+            ]);
+          } catch (error) {
+            console.error(error);
+            Alert.alert('Erro', 'Nao foi possivel apagar a unidade.');
+          }
+        },
+      },
+    ]);
   }
 
   if (loading) {
@@ -83,9 +135,6 @@ export default function UnitDetailModal() {
 
   const config = statusConfig[unit.status] || statusConfig.open;
   const isOwner = unit.support_unit_user_id === user?._id;
-
-  const longitude = unit.location?.coordinates[0];
-  const latitude = unit.location?.coordinates[1];
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -115,6 +164,7 @@ export default function UnitDetailModal() {
           onAskHelpPress={() => Alert.alert('Ajuda', 'Funcionalidade futura.')}
           onVolunteerPress={() => router.push(`/unit/${unit._id}/missions` as any)}
           onEditPress={() => router.push(`/unit/${unit._id}/edit` as any)}
+          onDeletePress={handleDeletePress}
           onDonationsPress={() => router.push(`/unit/${unit._id}/donations` as any)}
           onMissionsPress={() => router.push(`/unit/${unit._id}/missions` as any)}
           onApprovePress={() => Alert.alert('Admin', 'Funcionalidade futura.')}
@@ -123,15 +173,6 @@ export default function UnitDetailModal() {
 
       <View style={styles.bottomSpace} />
 
-      {latitude && longitude && (
-        <MapModal
-          visible={mapVisible}
-          onClose={() => setMapVisible(false)}
-          latitude={latitude}
-          longitude={longitude}
-          title={unit.name}
-        />
-      )}
     </ScrollView>
   );
 }

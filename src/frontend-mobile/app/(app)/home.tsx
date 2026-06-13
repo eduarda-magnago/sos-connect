@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 
 import api from '../../services/api';
 import { colors, fonts, spacing } from '../../constants/theme';
@@ -59,32 +59,39 @@ export default function Home() {
 
   const activeCount = countActiveFilters(filters);
 
-  useEffect(() => {
-    init();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      init();
+    }, [filters]),
+  );
 
   async function init() {
     const coords = await getLocation();
-    await loadUnits(EMPTY_FILTERS, coords);
+    await loadUnits(filters, coords);
   }
 
   async function getLocation(): Promise<LocationCoords | null> {
-    const { status } = await Location.requestForegroundPermissionsAsync();
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
 
-    if (status !== 'granted') {
+      if (status !== 'granted') {
+        return null;
+      }
+
+      const location = await Location.getCurrentPositionAsync({});
+
+      const coords = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+
+      setUserLocation(coords);
+
+      return coords;
+    } catch (error) {
+      console.warn('Nao foi possivel obter a localizacao atual.', error);
       return null;
     }
-
-    const location = await Location.getCurrentPositionAsync({});
-
-    const coords = {
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-    };
-
-    setUserLocation(coords);
-
-    return coords;
   }
 
   async function loadUnits(

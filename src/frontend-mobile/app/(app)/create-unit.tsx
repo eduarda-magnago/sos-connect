@@ -26,8 +26,10 @@ type CreateUnitForm = {
   phone: string;
   CNPJ: string;
   description: string;
+  services: string;
   status: string;
   capacity: string;
+  currentOccupancy: string;
   lat: string;
   lng: string;
 };
@@ -38,8 +40,10 @@ const initialForm: CreateUnitForm = {
   phone: '',
   CNPJ: '',
   description: '',
+  services: '',
   status: 'open',
   capacity: '',
+  currentOccupancy: '0',
   lat: '',
   lng: '',
 };
@@ -57,6 +61,21 @@ export default function CreateUnit() {
       ...prev,
       [key]: value,
     }));
+  }
+
+  function parseServices(value: string) {
+    return value
+      .split(',')
+      .map((service) => service.trim())
+      .filter(Boolean);
+  }
+
+  function getComputedStatus(capacity: number, currentOccupancy: number) {
+    if (form.status === 'closed') {
+      return 'closed';
+    }
+
+    return currentOccupancy >= capacity ? 'full' : 'open';
   }
 
   function showImageOptions() {
@@ -109,6 +128,7 @@ export default function CreateUnit() {
       !form.email ||
       !form.phone ||
       !form.capacity ||
+      form.currentOccupancy === '' ||
       !form.lat ||
       !form.lng
     ) {
@@ -127,6 +147,31 @@ export default function CreateUnit() {
     setLoading(true);
 
     try {
+      const lat = parseFloat(form.lat);
+      const lng = parseFloat(form.lng);
+      const capacity = parseInt(form.capacity, 10);
+      const currentOccupancy = parseInt(form.currentOccupancy, 10);
+
+      if (
+        Number.isNaN(lat) ||
+        Number.isNaN(lng) ||
+        Number.isNaN(capacity) ||
+        Number.isNaN(currentOccupancy)
+      ) {
+        Alert.alert('Atencao', 'Capacidade, ocupacao atual e coordenadas precisam ser numeros validos.');
+        return;
+      }
+
+      if (capacity < 1 || currentOccupancy < 0) {
+        Alert.alert('Atencao', 'Capacidade deve ser maior que zero e ocupacao atual nao pode ser negativa.');
+        return;
+      }
+
+      if (currentOccupancy > capacity) {
+        Alert.alert('Atencao', 'A ocupacao atual nao pode ser maior que a capacidade.');
+        return;
+      }
+
       await api.post('/support-units', {
         name: form.name,
         CNPJ: form.CNPJ,
@@ -136,12 +181,14 @@ export default function CreateUnit() {
           phone: form.phone,
         },
         location: {
-          lat: parseFloat(form.lat),
-          lng: parseFloat(form.lng),
+          lat,
+          lng,
         },
-        capacity: parseInt(form.capacity, 10),
-        status: form.status,
+        capacity,
+        current_occupancy: currentOccupancy,
+        status: getComputedStatus(capacity, currentOccupancy),
         image_url: image,
+        services_available: parseServices(form.services),
       });
 
       Alert.alert('✓ Sucesso', 'Unidade criada! Aguarde a validação do admin.', [
@@ -222,6 +269,14 @@ export default function CreateUnit() {
             onChangeText={(value) => updateField('description', value)}
           />
 
+          <FormInput
+            label="Servicos disponiveis"
+            placeholder="Ex: alimentacao, abrigo, agua"
+            value={form.services}
+            multiline
+            onChangeText={(value) => updateField('services', value)}
+          />
+
           <StatusSelector
             value={form.status}
             onChange={(value) => updateField('status', value)}
@@ -233,6 +288,14 @@ export default function CreateUnit() {
             value={form.capacity}
             keyboardType="numeric"
             onChangeText={(value) => updateField('capacity', value)}
+          />
+
+          <FormInput
+            label="Ocupacao atual *"
+            placeholder="0"
+            value={form.currentOccupancy}
+            keyboardType="numeric"
+            onChangeText={(value) => updateField('currentOccupancy', value)}
           />
 
           <SubmitButton

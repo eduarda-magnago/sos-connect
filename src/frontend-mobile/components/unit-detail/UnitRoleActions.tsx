@@ -11,6 +11,7 @@ type UnitRoleActionsProps = {
   onAskHelpPress: () => void;
   onVolunteerPress: () => void;
   onEditPress: () => void;
+  onDeletePress: () => void;
   onDonationsPress: () => void;
   onMissionsPress: () => void;
   onApprovePress: () => void;
@@ -31,6 +32,7 @@ export function UnitRoleActions({
   onAskHelpPress,
   onVolunteerPress,
   onEditPress,
+  onDeletePress,
   onDonationsPress,
   onMissionsPress,
   onApprovePress,
@@ -76,7 +78,7 @@ export function UnitRoleActions({
 
         {role === "support_unit" && isOwner && (
           <>
-            <ActionButton title="Editar unidade" icon="create-outline" onPress={onEditPress} />
+            <ActionButton title="Apagar unidade" icon="trash-outline" onPress={onDeletePress} />
             <ActionButton
               title="Gerenciar doações"
               icon="gift-outline"

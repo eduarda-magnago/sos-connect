@@ -27,7 +27,12 @@ export class CertificatesController {
     @Body() createDto: CreateCertificateDto,
     @CurrentUser() user: UserDocument,
   ) {
-    return this.certificatesService.create(createDto, user._id.toString());
+    return this.certificatesService.create(createDto, user._id.toString(), user.role);
+  }
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  findAll(@CurrentUser() user: UserDocument) {
+    return this.certificatesService.findAll(user.role);
   }
 
   @Get('me')

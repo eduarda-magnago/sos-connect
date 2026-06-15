@@ -21,6 +21,7 @@ export default function AppLayout() {
   const isVolunteer = user?.role === "volunteer";
   const isSupportUnit = user?.role === "support_unit";
   const avatarUrl = getMediaUrl(user?.avatar);
+  const isAdmin = user?.role === "admin";
 
   return (
     <Tabs
@@ -144,7 +145,7 @@ export default function AppLayout() {
         options={{
           title: "Certificados",
           headerTitle: "Certificados",
-          href: isVolunteer ? undefined : null,
+          href: isVolunteer || isAdmin ? undefined : null,
           tabBarIcon: ({ color, focused }) => (
             <TabIcon name="ribbon-outline" color={color} label="Certif." focused={focused} />
           ),

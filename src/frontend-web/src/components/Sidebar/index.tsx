@@ -35,6 +35,7 @@ const menuByRole: Record<string, MenuItem[]> = {
   admin: [
     { icon: House, label: "Dashboard", path: "/home" },
     { icon: Buildings, label: "Unidades de Apoio", path: "/support-units" },
+    { icon: Medal, label: "Certificados", path: "/certificates" },
   ],
 };
 

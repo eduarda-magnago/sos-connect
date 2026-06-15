@@ -8,8 +8,8 @@ interface Application {
   mission_id: {
     _id: string
     title: string
-    description: string
-    date: string
+    description?: string
+    date?: string
   }
   user_id: {
     _id: string
@@ -32,26 +32,29 @@ export default function Candidatures() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    async function loadApplications() {
-      if (!user?._id) return
-
-      try {
-        const res = await api.get('/mission-volunteers')
-
-        const userApplications = res.data.filter((application: Application) => {
-          return application.user_id?._id === user._id
-        })
-
-        setApplications(userApplications)
-      } catch (err) {
-        console.error(err)
-      } finally {
-        setLoading(false)
-      }
-    }
-
     loadApplications()
-  }, [user])
+  }, [user?._id])
+
+  async function loadApplications() {
+    if (!user?._id) return
+
+    try {
+      setLoading(true)
+
+      const response = await api.get('/mission-volunteers')
+
+      const userApplications = response.data.filter(
+        (application: Application) => application.user_id?._id === user._id
+      )
+
+      setApplications(userApplications)
+    } catch (error) {
+      console.error(error)
+      alert('Não foi possível carregar as candidaturas.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   if (loading) {
     return (
@@ -79,29 +82,40 @@ export default function Candidatures() {
                 key={application._id}
                 className="border border-gray-200 rounded-md px-6 py-4 space-y-3"
               >
-                <p className="text-sm font-medium text-gray-900">
-                  Abrigo Esperança
-                </p>
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">
+                      {application.mission_id?.title ?? 'Missão'}
+                    </p>
 
-                <p className="text-xs text-gray-700">
-                  📍 Rua Santa Teresa, Glicério, São Paulo, São Paulo
-                </p>
+                    {application.mission_id?.date && (
+                      <p className="text-xs text-gray-500 mt-1">
+                        {new Date(application.mission_id.date).toLocaleDateString(
+                          'pt-BR'
+                        )}
+                      </p>
+                    )}
+                  </div>
 
-                <p className="text-xs text-gray-700">
-                  <strong>Missão:</strong> {application.mission_id?.title}
-                </p>
+                  <span className="text-xs rounded-full px-3 py-1 bg-gray-100 text-gray-600">
+                    Missão
+                  </span>
+                </div>
 
-                <p className="text-xs text-gray-700">
-                  <strong>Data:</strong>{' '}
-                  {new Date(application.mission_id.date).toLocaleDateString(
-                    'pt-BR'
-                  )}
-                </p>
+                <div className="border-t border-gray-100 pt-3 space-y-1">
+                  <p className="text-xs text-gray-700">
+                    <strong>Candidato:</strong> {application.user_id?.name}
+                  </p>
 
-                <p className="text-xs text-gray-700">
-                  <strong>Status:</strong>{' '}
-                  {statusLabel[application.status] ?? application.status}
-                </p>
+                  <p className="text-xs text-gray-700">
+                    <strong>Email:</strong> {application.user_id?.email}
+                  </p>
+
+                  <p className="text-xs text-gray-700">
+                    <strong>Status:</strong>{' '}
+                    {statusLabel[application.status] ?? application.status}
+                  </p>
+                </div>
               </div>
             ))}
           </div>

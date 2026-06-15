@@ -33,6 +33,7 @@ type BackendMissionApplication = {
     title: string;
     description?: string;
     date?: string;
+    volunteer_ids?: string[];
     support_unit_id:
       | string
       | {
@@ -58,6 +59,10 @@ type CandidatureCard = {
   availableOnSchedule?: boolean;
   status: string;
   date?: string;
+
+  missionId?: string;
+  volunteerId?: string;
+  volunteerIds?: string[];
 };
 
 const statusLabel: Record<string, string> = {
@@ -103,11 +108,26 @@ export default function Candidatures() {
       const localApplications = await getLocalApplications();
 
       if (user.role === "volunteer") {
-        setCards(
-          localApplications
-            .filter((application) => application.applicantUserId === user._id)
-            .map(localToCard)
-        );
+        const missionApplicationsResponse = await api.get("/mission-volunteers");
+      
+        const missionCards = missionApplicationsResponse.data
+          .filter(
+            (application: BackendMissionApplication) =>
+              application.user_id?._id === user._id
+          )
+          .map((application: BackendMissionApplication) =>
+            backendMissionToCard(application)
+          );
+      
+        const localDonationCards = localApplications
+          .filter(
+            (application) =>
+              application.applicantUserId === user._id &&
+              application.type === "donation"
+          )
+          .map(localToCard);
+      
+        setCards([...localDonationCards, ...missionCards]);
         return;
       }
 
@@ -168,6 +188,16 @@ export default function Candidatures() {
         status: "approved",
       });
 
+      if (card.missionId && card.volunteerId) {
+        const volunteerIds = Array.from(
+          new Set([...(card.volunteerIds ?? []), card.volunteerId])
+        );
+      
+        await api.put(`/missions/${card.missionId}`, {
+          volunteer_ids: volunteerIds,
+        });
+      }
+
       setCards((prev) =>
         prev.map((item) =>
           item.id === card.id ? { ...item, status: "approved" } : item
@@ -202,6 +232,7 @@ export default function Candidatures() {
           <CandidatureItem
             item={item}
             processing={processingId === item.id}
+            canConfirm={user?.role === "support_unit"}
             onConfirm={() => handleConfirm(item)}
           />
         )}
@@ -237,16 +268,22 @@ function backendMissionToCard(
     applicantEmail: application.user_id?.email ?? "",
     status: application.status,
     date: application.mission_id?.date,
+
+    missionId: application.mission_id?._id,
+    volunteerId: application.user_id?._id,
+    volunteerIds: application.mission_id?.volunteer_ids ?? [],
   };
 }
 
 function CandidatureItem({
   item,
   processing,
+  canConfirm,
   onConfirm,
 }: {
   item: CandidatureCard;
   processing: boolean;
+  canConfirm: boolean;
   onConfirm: () => void;
 }) {
   const config = typeConfig[item.type];
@@ -292,7 +329,7 @@ function CandidatureItem({
         Status: {statusLabel[item.status] ?? item.status}
       </Text>
 
-      {item.source === "backend" && (
+      {item.source === "backend" && canConfirm &&(
         <TouchableOpacity
           style={[
             styles.confirmButton,

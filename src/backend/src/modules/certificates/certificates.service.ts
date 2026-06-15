@@ -30,9 +30,23 @@ export class CertificatesService {
     return `CERT-${year}-${suffix}`;
   }
 
+  async findAll(role: UserRole): Promise<CertificateDocument[]> {
+    if (role !== UserRole.ADMIN) {
+      throw new ForbiddenException(
+        'Apenas administradores podem listar certificados',
+      );
+    }
+  
+    return this.certificateModel
+      .find()
+      .sort({ issued_at: -1 })
+      .exec();
+  }
+
   async create(
     dto: CreateCertificateDto,
     issuerUserId: string,
+    issuerRole: UserRole,
   ): Promise<CertificateDocument> {
     const mission = await this.missionsService.findOne(dto.mission_id);
 
@@ -40,9 +54,9 @@ export class CertificatesService {
       mission.support_unit_id.toString(),
     );
 
-    if (unit.support_unit_user_id.toString() !== issuerUserId) {
+    if (issuerRole !== UserRole.ADMIN) {
       throw new ForbiddenException(
-        'Você não tem permissão para emitir certificados desta missão',
+        'Apenas administradores podem emitir certificados',
       );
     }
 

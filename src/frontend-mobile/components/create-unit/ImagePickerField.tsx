@@ -57,7 +57,7 @@ export function ImagePickerField({ image, onPress, loading = false }: ImagePicke
 
 const styles = StyleSheet.create({
   imageArea: {
-    minHeight: 188,
+    height: 188,
     backgroundColor: colors.card,
     marginHorizontal: spacing.md,
     marginTop: spacing.md,

@@ -45,6 +45,13 @@ Aplicação publicada na Vercel:
 https://sos-connect-frontend-beta.vercel.app/
 
 ------------------------------------------------------------------------
+### 🔹 Frontend APK
+
+Versão para download:
+
+https://drive.google.com/drive/folders/1yePw6dVqGdFQCHmkLgjEcW4J6_go_9W4?usp=drive_link
+
+------------------------------------------------------------------------
 
 ## 🛠️ Tecnologias Utilizadas
 
